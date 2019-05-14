@@ -66,23 +66,23 @@ public abstract class Actor extends Entity implements IDurable {
 	public Direction getHeading() { return heading; }
 	
 	/************************************************************************************************************
-	 * An accessor method to retrieve this Character's level.
+	 * An accessor method to retrieve this Actor's level.
 	 * <p>
 	 * 
-	 * @return This Character's level.
+	 * @return This Actor's level.
 	 */
 	public int getLevel() { return level; }
 
 	/************************************************************************************************************
-	 * A modifier method to set this Character's level.
+	 * A modifier method to set this Actor's level.
 	 * <p>
 	 * 
 	 * @param level
-	 *        The new level of this Character.
+	 *        The new level of this Actor.
 	 * 
 	 * @precondition The parameter level is greater than or equal to 1.
 	 * 
-	 * @postcondition This Character's level has been modified.
+	 * @postcondition This Actor's level has been modified.
 	 * 
 	 * @throws IllegalArgumentException
 	 *         IllegalArgumentException is thrown if the parameter level is less than 1.
@@ -285,12 +285,12 @@ public abstract class Actor extends Entity implements IDurable {
 	 * <p>
 	 * <CODE>public boolean isAlive()</CODE>
 	 * 
-	 * @return True if this Actor is still alive (hitPoints is greater than zero); false otherwise.
+	 * @return True if this Actor is still alive, false otherwise.
 	 */
 	public boolean isAlive() { return alive; }
 	
 	/************************************************************************************************************
-	 * A method to immediately kill this Actor's.
+	 * A method to immediately kill this Actor.
 	 * <p>
 	 * <CODE>public void kill()</CODE>
 	 */
