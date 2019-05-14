@@ -127,6 +127,13 @@ public abstract class Actor extends Entity implements IDurable {
 	}
 	
 	/************************************************************************************************************
+	 * An accessor method to retrieve this Actor's available hit points.
+	 * 
+	 * @return This Actor's available hit points.
+	 */
+	public int getHitPoints() { return hitPoints; }
+	
+	/************************************************************************************************************
 	 * A modifier method to set this Actor's available hit points (health).
 	 * <p>
 	 * <CODE>public void setHitPoints(int hitPoints)</CODE>
@@ -245,6 +252,13 @@ public abstract class Actor extends Entity implements IDurable {
 			throw new IllegalArgumentException(
 					"Input parameter must not be less than zero: " + addMaxHitPointsAmount);
 	}
+	
+	/************************************************************************************************************
+	 * An accessor method to retrieve this Actor's maximum available hit points.
+	 * 
+	 * @return This Actor's maximum available hit points.
+	 */
+	public int getMaxHitPoints() { return maxHitPoints; }
 	
 	/************************************************************************************************************
 	 * A modifier method to set this Actor's maximum available hit points (health).
