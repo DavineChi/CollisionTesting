@@ -1,27 +1,20 @@
 package _ATest;
 
-import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.geom.Shape;
 
 public abstract class Actor extends Entity implements IDurable {
-
-	private static final float PROXIMITY_RADIUS  = Constants.WIDTH * 2.0f;
 	
-	private Rectangle squareBounds;
-	private Circle circularBounds;
 	private Direction heading;
 	private boolean alive;
 	
 	protected int level;
 	
 	public Actor(String name, float positionX, float positionY, Direction heading) {
-
+		
 		this.level = 1;
 		this.name = name;
-		this.squareBounds = new Rectangle(positionX - (Constants.WIDTH / 2), positionY - (Constants.HEIGHT / 2), Constants.WIDTH, Constants.HEIGHT);
-		this.circularBounds = new Circle(positionX, positionY, PROXIMITY_RADIUS);
 		this.position = new Position(positionX, positionY);
+		this.slickBounds = new Rectangle(positionX, positionY, Constants.WIDTH, Constants.HEIGHT);
 		this.boundingBox = new BoundingBox(positionX, positionY, Constants.WIDTH, Constants.HEIGHT);
 		this.hitPoints = 80;
 		this.maxHitPoints = hitPoints;
@@ -44,11 +37,11 @@ public abstract class Actor extends Entity implements IDurable {
 		this(name, positionX, positionY, new Direction(heading));
 	}
 	
-	public abstract void move(float newX, float newY);
+	public abstract boolean move(float newX, float newY);
 
-	public boolean intersects(Shape shape) {
+	public boolean intersects(BoundingBox other) {
 		
-		return squareBounds.intersects(shape);
+		return boundingBox.intersects(other);
 	}
 	
 	public void setHeading(double heading) {
@@ -58,19 +51,19 @@ public abstract class Actor extends Entity implements IDurable {
 	
 	public void setX(float xPosition) {
 		
-		squareBounds.setX(xPosition - (Constants.WIDTH / 2));
-		circularBounds.setX(xPosition - PROXIMITY_RADIUS);
+		position.setX(xPosition);
+		slickBounds.setX(xPosition);
+		boundingBox.setX(xPosition);
 	}
 	
 	public void setY(float yPosition) {
 		
-		squareBounds.setY(yPosition - (Constants.WIDTH / 2));
-		circularBounds.setY(yPosition - PROXIMITY_RADIUS);
+		position.setY(yPosition);
+		slickBounds.setY(yPosition);
+		boundingBox.setY(yPosition);
 	}
 	
 	public Direction getHeading() { return heading; }
-	public Rectangle getSquareBounds() { return squareBounds; }
-	public Circle getCircularBounds() { return circularBounds; }
 	
 	/************************************************************************************************************
 	 * An accessor method to retrieve this Character's level.

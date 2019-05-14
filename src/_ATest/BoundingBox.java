@@ -22,10 +22,10 @@ public class BoundingBox extends Rectangle {
 	
 	public boolean intersects(BoundingBox other) {
 		
-		return (posX + width+1 >= other.posX) &&
-               (posX-1 <= other.posX + other.width) &&
-               (posY + height+1 >= other.posY) &&
-               (posY-1 <= other.posY + other.height);
+		return (posX + width >= other.posX) &&
+               (posX <= other.posX + other.width) &&
+               (posY + height >= other.posY) &&
+               (posY <= other.posY + other.height);
 	}
 	
 	public boolean willIntersect(BoundingBox other, float deltaFactor) {

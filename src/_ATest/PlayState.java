@@ -1,11 +1,10 @@
 package _ATest;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Rectangle;
-import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -16,8 +15,8 @@ public class PlayState extends BasicGameState {
 	private int id;
 	
 	private Player player;
-	private Shape obstacle;
-	//private Player obstacle;
+	//private Shape obstacle;
+	private Player obstacle;
 	
 	private float playerPosX;
 	private float playerPosY;
@@ -49,8 +48,8 @@ public class PlayState extends BasicGameState {
 		strIntersects = "FALSE";
 		
 		player = new Player("Ayrn", playerPosX, playerPosY, new Direction(180.0));
-		obstacle = new Rectangle(180.0f, 150.0f, 192.0f, 96.0f);
-		//obstacle = new Player("Obstacle", 180.0f, 150.0f, new Direction(180.0));
+		//obstacle = new Rectangle(180.0f, 150.0f, 192.0f, 96.0f);
+		obstacle = new Player("Obstacle", 180.0f, 150.0f, new Direction(180.0));
 	}
 	
 	@Override
@@ -60,21 +59,9 @@ public class PlayState extends BasicGameState {
 		
 		float deltaFactor = MOVEMENT_FACTOR * 0.0625f * delta;
 		
-		float newPlayerX = player.getSquareBounds().getX();
-		float newPlayerY = player.getSquareBounds().getY();
+		float newPlayerX = playerPosX;
+		float newPlayerY = playerPosY;
 		
-//		boolean intersects = player.intersects(obstacle);
-//		
-//		if (intersects) {
-//			
-//			strIntersects = "Intersects: TRUE";
-//		}
-//		
-//		else if (!intersects) {
-//			
-//			strIntersects = "Intersects: FALSE";
-//		}
-//		
 //		if (input.isKeyPressed(Input.KEY_T)) {
 //			
 //			teleport();
@@ -108,14 +95,32 @@ public class PlayState extends BasicGameState {
 			player.setHeading(90.0);
 		}
 		
-//		if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
-//			
-//			mouseX = input.getMouseX();
-//			mouseY = input.getMouseY();
-//			
-//			coords = "x: " + mouseX + ", y: " + mouseY;
-//		}
-//		
+		boolean intersects = player.getBoundingBox().intersects(obstacle.getBoundingBox());
+		
+		if (intersects) {
+			
+			strIntersects = "Intersects: TRUE";
+		}
+		
+		else if (!intersects) {
+			
+			strIntersects = "Intersects: FALSE";
+		}
+		
+		if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
+			
+			mouseX = input.getMouseX();
+			mouseY = input.getMouseY();
+			
+			coords = "x: " + mouseX + ", y: " + mouseY;
+		}
+		
+		if (player.move(newPlayerX, newPlayerY)) {
+			
+			playerPosX = player.getBoundingBox().getX();
+			playerPosY = player.getBoundingBox().getY();
+		}
+		
 //		if (input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)) {
 //			
 //			double currentX = (double)playerPosX;
@@ -145,48 +150,31 @@ public class PlayState extends BasicGameState {
 //			player.setX(playerPosX);
 //			player.setY(playerPosY);
 //		}
-		
-		// TODO: Validation pass is here
-		// Basically, we set the new player position if validation passes,
-		// otherwise we do nothing.
-		
-		
-		// TODO:
-		// Notes: After investigation, I believe the root cause of the collision
-		// detection problem is that I need to store data about which coordinate
-		// sets/subsets are "blocked" and flag them as such. In this demo, this
-		// would be the entire extents of the obstacle rectangle. The algorithm
-		// must be able to infer that these coordinates cannot be breached by the
-		// player. Right now, it does not have this information.
-		if (isValidLocation(newPlayerX, newPlayerY)) {
-			
-			player.move(newPlayerX, newPlayerY);
-		}
 	}
 	
 	private boolean isValidLocation(float x, float y) {
 		
 		boolean result = true;
 		
-		if (x + Constants.WIDTH >= obstacle.getX()) {
+		if (x + Constants.WIDTH >= obstacle.getBoundingBox().getX()) {
 			
 			result = false;
 		}
 		
-		if (x <= obstacle.getX() + obstacle.getWidth()) {
-			
-			result = false;
-		}
-		
-		if (y + Constants.HEIGHT >= obstacle.getY()) {
-			
-			result = false;
-		}
-		
-		if (y <= obstacle.getY() + obstacle.getHeight()) {
-			
-			result = false;
-		}
+//		if (x <= obstacle.getX() + obstacle.getWidth()) {
+//			
+//			result = false;
+//		}
+//		
+//		if (y + Constants.HEIGHT >= obstacle.getY()) {
+//			
+//			result = false;
+//		}
+//		
+//		if (y <= obstacle.getY() + obstacle.getHeight()) {
+//			
+//			result = false;
+//		}
 		
 		return result;
 	}
@@ -194,9 +182,11 @@ public class PlayState extends BasicGameState {
 	@Override
 	public void render(GameContainer container, StateBasedGame game, Graphics brush) throws SlickException {
 		
-		brush.draw(player.getSquareBounds());
-		brush.draw(player.getCircularBounds());
-		brush.draw(obstacle);
+		brush.setColor(Color.white);
+		brush.draw(player.getSlickBounds());
+		brush.setColor(Color.gray.darker());
+		brush.setColor(Color.white);
+		brush.draw(obstacle.getSlickBounds());
 		brush.drawString(coords, 20.0f, 420.0f);
 		brush.drawString(strIntersects, 90.0f, 10.0f);
 		brush.drawString("[Rise: " + String.valueOf(rise), 270.0f, 10.0f);

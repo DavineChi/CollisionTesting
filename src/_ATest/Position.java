@@ -2,17 +2,20 @@ package _ATest;
 
 public class Position {
 
-	private double x;
-	private double y;
+	private float x;
+	private float y;
 	
-	public Position(double x, double y) {
+	public Position(float x, float y) {
 		
 		this.x = x;
 		this.y = y;
 	}
 
-	public double getX() { return x; }
-	public double getY() { return y; }
+	public float getX() { return x; }
+	public float getY() { return y; }
+	
+	public void setX(float x) { this.x = x; }
+	public void setY(float y) { this.y = y; }
 
 	@Override
 	public String toString() {
