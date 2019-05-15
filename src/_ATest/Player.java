@@ -23,43 +23,38 @@ public class Player extends Actor {
 	}
 	
 	@Override
-	public boolean move(float newX, float newY) {
+	public boolean moveX(float newX, float newY) {
 		
-		float xCoord = newX + this.boundingBox.getWidth();
-		float yCoord = newY + this.boundingBox.getHeight();
+		float width = newX + boundingBox.getWidth();
+		float height = newY + boundingBox.getHeight();
 		
-		if (xCoord < 180.0f) {
+		if (width >= 180.0f && newX <= 212.0f && height >= 151.0f && newY <= 182.0f) {
 			
-			setX(newX);
-			setY(newY);
-			
-			return true;
+			return false;
 		}
 		
-		if (yCoord < 150.0f) {
+		else {
 			
 			setX(newX);
-			setY(newY);
-			
 			return true;
 		}
+	}
+
+	@Override
+	public boolean moveY(float newX, float newY) {
 		
-//		if (xCoord + 32.0f > 212.0f) {
-//			
-//			setX(newX);
-//			setY(newY);
-//			
-//			return true;
-//		}
-//		
-//		if (yCoord + 32.0f > 182.0f) {
-//			
-//			setX(newX);
-//			setY(newY);
-//			
-//			return true;
-//		}
+		float width = newX + boundingBox.getWidth();
+		float height = newY + boundingBox.getHeight();
 		
-		return false;
+		if (width >= 180.0f && newX <= 212.0f && height >= 151.0f && newY <= 182.0f) {
+			
+			return false;
+		}
+		
+		else {
+			
+			setY(newY);
+			return true;
+		}
 	}
 }

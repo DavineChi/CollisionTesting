@@ -62,37 +62,42 @@ public class PlayState extends BasicGameState {
 		float newPlayerX = playerPosX;
 		float newPlayerY = playerPosY;
 		
-//		if (input.isKeyPressed(Input.KEY_T)) {
-//			
-//			teleport();
-//		}
-		
-		if (input.isKeyPressed(Input.KEY_W) || input.isKeyDown(Input.KEY_W)) {
+		if (input.isKeyPressed(Input.KEY_T)) {
 			
-			newPlayerY = playerPosY - deltaFactor;
-			
-			player.setHeading(0.0);
+			teleport();
 		}
 		
-		if (input.isKeyPressed(Input.KEY_A) || input.isKeyDown(Input.KEY_A)) {
+		if (isValidMovementKey(input)) {
 			
-			newPlayerX = playerPosX - deltaFactor;
+			if (input.isKeyPressed(Input.KEY_W) || input.isKeyDown(Input.KEY_W)) {
+				
+				newPlayerY = playerPosY - deltaFactor;
+				
+				player.setHeading(0.0);
+			}
 			
-			player.setHeading(270.0);
-		}
-		
-		if (input.isKeyPressed(Input.KEY_S) || input.isKeyDown(Input.KEY_S)) {
+			if (input.isKeyPressed(Input.KEY_A) || input.isKeyDown(Input.KEY_A)) {
+				
+				newPlayerX = playerPosX - deltaFactor;
+				
+				player.setHeading(270.0);
+			}
 			
-			newPlayerY = playerPosY + deltaFactor;
+			if (input.isKeyPressed(Input.KEY_S) || input.isKeyDown(Input.KEY_S)) {
+				
+				newPlayerY = playerPosY + deltaFactor;
+				
+				player.setHeading(180.0);
+			}
 			
-			player.setHeading(180.0);
-		}
-		
-		if (input.isKeyPressed(Input.KEY_D) || input.isKeyDown(Input.KEY_D)) {
+			if (input.isKeyPressed(Input.KEY_D) || input.isKeyDown(Input.KEY_D)) {
+				
+				newPlayerX = playerPosX + deltaFactor;
+				
+				player.setHeading(90.0);
+			}
 			
-			newPlayerX = playerPosX + deltaFactor;
-			
-			player.setHeading(90.0);
+			updatePlayerPosition(newPlayerX, newPlayerY);
 		}
 		
 		boolean intersects = player.getBoundingBox().intersects(obstacle.getBoundingBox());
@@ -113,12 +118,6 @@ public class PlayState extends BasicGameState {
 			mouseY = input.getMouseY();
 			
 			coords = "x: " + mouseX + ", y: " + mouseY;
-		}
-		
-		if (player.move(newPlayerX, newPlayerY)) {
-			
-			playerPosX = player.getBoundingBox().getX();
-			playerPosY = player.getBoundingBox().getY();
 		}
 		
 //		if (input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)) {
@@ -152,31 +151,27 @@ public class PlayState extends BasicGameState {
 //		}
 	}
 	
-	private boolean isValidLocation(float x, float y) {
+	private void updatePlayerPosition(float x, float y) {
 		
-		boolean result = true;
-		
-		if (x + Constants.WIDTH >= obstacle.getBoundingBox().getX()) {
+		if (player.moveX(x, y)) {
 			
-			result = false;
+			playerPosX = x;
+			playerPosY = y;
 		}
 		
-//		if (x <= obstacle.getX() + obstacle.getWidth()) {
-//			
-//			result = false;
-//		}
-//		
-//		if (y + Constants.HEIGHT >= obstacle.getY()) {
-//			
-//			result = false;
-//		}
-//		
-//		if (y <= obstacle.getY() + obstacle.getHeight()) {
-//			
-//			result = false;
-//		}
+		if (player.moveY(x, y)) {
+			
+			playerPosX = x;
+			playerPosY = y;
+		}		
+	}
+
+	private boolean isValidMovementKey(Input input) {
 		
-		return result;
+		return input.isKeyPressed(Input.KEY_W) || input.isKeyDown(Input.KEY_W) ||
+		       input.isKeyPressed(Input.KEY_A) || input.isKeyDown(Input.KEY_A) ||
+		       input.isKeyPressed(Input.KEY_S) || input.isKeyDown(Input.KEY_S) ||
+		       input.isKeyPressed(Input.KEY_D) || input.isKeyDown(Input.KEY_D);
 	}
 	
 	@Override

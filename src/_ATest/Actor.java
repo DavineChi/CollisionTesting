@@ -37,7 +37,9 @@ public abstract class Actor extends Entity implements IDurable {
 		this(name, positionX, positionY, new Direction(heading));
 	}
 	
-	public abstract boolean move(float newX, float newY);
+	//public abstract boolean move(float newX, float newY);
+	public abstract boolean moveX(float newX, float newY);
+	public abstract boolean moveY(float newX, float newY);
 
 	public boolean intersects(BoundingBox other) {
 		
