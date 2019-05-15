@@ -22,13 +22,18 @@ public class Player extends Actor {
 		super(name, playerPosX, playerPosY, heading);
 	}
 	
+	private boolean validLocation(float width, float height, float newX, float newY) {
+		
+		return !(width >= 180.0f && newX <= 211.0f && height >= 150.0f && newY <= 181.0f);
+	}
+	
 	@Override
 	public boolean moveX(float newX, float newY) {
 		
 		float width = newX + boundingBox.getWidth();
 		float height = newY + boundingBox.getHeight();
 		
-		if (width >= 180.0f && newX <= 212.0f && height >= 151.0f && newY <= 182.0f) {
+		if (!validLocation(width, height, newX, newY)) {
 			
 			return false;
 		}
@@ -46,7 +51,7 @@ public class Player extends Actor {
 		float width = newX + boundingBox.getWidth();
 		float height = newY + boundingBox.getHeight();
 		
-		if (width >= 180.0f && newX <= 212.0f && height >= 151.0f && newY <= 182.0f) {
+		if (!validLocation(width, height, newX, newY)) {
 			
 			return false;
 		}

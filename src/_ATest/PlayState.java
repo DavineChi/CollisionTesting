@@ -156,12 +156,12 @@ public class PlayState extends BasicGameState {
 		if (player.moveX(x, y)) {
 			
 			playerPosX = x;
-			playerPosY = y;
+			//playerPosY = y;
 		}
 		
 		if (player.moveY(x, y)) {
 			
-			playerPosX = x;
+			//playerPosX = x;
 			playerPosY = y;
 		}		
 	}
@@ -178,10 +178,10 @@ public class PlayState extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game, Graphics brush) throws SlickException {
 		
 		brush.setColor(Color.white);
-		brush.draw(player.getSlickBounds());
+		brush.draw(player.getBoundingBox());
 		brush.setColor(Color.gray.darker());
 		brush.setColor(Color.white);
-		brush.draw(obstacle.getSlickBounds());
+		brush.draw(obstacle.getBoundingBox());
 		brush.drawString(coords, 20.0f, 420.0f);
 		brush.drawString(strIntersects, 90.0f, 10.0f);
 		brush.drawString("[Rise: " + String.valueOf(rise), 270.0f, 10.0f);

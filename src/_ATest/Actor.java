@@ -1,7 +1,5 @@
 package _ATest;
 
-import org.newdawn.slick.geom.Rectangle;
-
 public abstract class Actor extends Entity implements IDurable {
 	
 	private Direction heading;
@@ -14,7 +12,6 @@ public abstract class Actor extends Entity implements IDurable {
 		this.level = 1;
 		this.name = name;
 		this.position = new Position(positionX, positionY);
-		this.slickBounds = new Rectangle(positionX, positionY, Constants.WIDTH, Constants.HEIGHT);
 		this.boundingBox = new BoundingBox(positionX, positionY, Constants.WIDTH, Constants.HEIGHT);
 		this.hitPoints = 80;
 		this.maxHitPoints = hitPoints;
@@ -54,14 +51,12 @@ public abstract class Actor extends Entity implements IDurable {
 	public void setX(float xPosition) {
 		
 		position.setX(xPosition);
-		slickBounds.setX(xPosition);
 		boundingBox.setX(xPosition);
 	}
 	
 	public void setY(float yPosition) {
 		
 		position.setY(yPosition);
-		slickBounds.setY(yPosition);
 		boundingBox.setY(yPosition);
 	}
 	
