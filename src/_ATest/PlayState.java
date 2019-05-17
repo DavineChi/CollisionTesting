@@ -126,13 +126,13 @@ public class PlayState extends BasicGameState {
 			coords = "x: " + mouseX + ", y: " + mouseY;
 		}
 		
-		counter++;
-		
-		if (counter > 60) {
-			
-			counter = 0;
-			System.out.println(player.getX() + ", " + player.getY());
-		}
+//		counter++;
+//		
+//		if (counter > 60) {
+//			
+//			counter = 0;
+//			System.out.println(player.getX() + ", " + player.getY());
+//		}
 		
 //		if (input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)) {
 //			

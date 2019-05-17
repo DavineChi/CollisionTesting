@@ -26,14 +26,13 @@ public class Player extends Actor {
 	
 	private boolean validLocation(float width, float height, float newX, float newY) {
 		
-		float size = 10.0f;
+		float size = 0.1f;
 		
-		width = (int)Math.floor(width);
-		height = (int)Math.floor(height);
 		newX = (int)Math.floor(newX);
 		newY = (int)Math.floor(newY);
 		
-		if (!(width + size >= 180 && newX - size <= 211 && height + size >= 150 && newY - size <= 181)) {
+		if (!(newX + width + size >= 180 && newX - size <= 211 &&
+			  newY + height + size >= 150 && newY - size <= 181)) {
 			
 			return true;
 		}
@@ -44,17 +43,27 @@ public class Player extends Actor {
 	
 	public void move(float dx, float dy, long delta) {
 		
-		this.setX(x + (delta * dx) * SPEED_MODIFIER);
-		this.setY(y + (delta * dy) * SPEED_MODIFIER);
+		float newX = x + dx;
+		float newY = y + dy;
+		float width = dx + boundingBox.getWidth();
+		float height = dy + boundingBox.getHeight();
+		
+		if (validLocation(width, height, newX, newY)) {
+			
+			this.setX(x + (delta * dx) * SPEED_MODIFIER);
+			this.setY(y + (delta * dy) * SPEED_MODIFIER);
+		}
 	}
 	
 	@Override
 	public boolean moveX(float dx, float dy, long delta) {
 		
+		float newX = x + dx;
+		float newY = y + dy;
 		float width = dx + boundingBox.getWidth();
 		float height = dy + boundingBox.getHeight();
 		
-		if (!validLocation(width, height, dx, dy)) {
+		if (!validLocation(width, height, newX, newY)) {
 			
 			return false;
 		}
