@@ -11,7 +11,9 @@ public abstract class Actor extends Entity implements IDurable {
 		
 		this.level = 1;
 		this.name = name;
-		this.position = new Position(positionX, positionY);
+//		this.position = new Position(positionX, positionY);
+		this.x = positionX;
+		this.y = positionY;
 		this.boundingBox = new BoundingBox(positionX, positionY, Constants.WIDTH, Constants.HEIGHT);
 		this.hitPoints = 80;
 		this.maxHitPoints = hitPoints;
@@ -34,9 +36,8 @@ public abstract class Actor extends Entity implements IDurable {
 		this(name, positionX, positionY, new Direction(heading));
 	}
 	
-	//public abstract boolean move(float newX, float newY);
-	public abstract boolean moveX(float newX, float newY);
-	public abstract boolean moveY(float newX, float newY);
+	public abstract boolean moveX(float dx, float dy, long delta);
+	public abstract boolean moveY(float dx, float dy, long delta);
 
 	public boolean intersects(BoundingBox other) {
 		
@@ -46,18 +47,6 @@ public abstract class Actor extends Entity implements IDurable {
 	public void setHeading(double heading) {
 		
 		this.heading.setHeading(heading);
-	}
-	
-	public void setX(float xPosition) {
-		
-		position.setX(xPosition);
-		boundingBox.setX(xPosition);
-	}
-	
-	public void setY(float yPosition) {
-		
-		position.setY(yPosition);
-		boundingBox.setY(yPosition);
 	}
 	
 	public Direction getHeading() { return heading; }

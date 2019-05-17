@@ -18,8 +18,8 @@ public class PlayState extends BasicGameState {
 	//private Shape obstacle;
 	private Player obstacle;
 	
-	private float playerPosX;
-	private float playerPosY;
+//	private float playerPosX;
+//	private float playerPosY;
 	
 	private int mouseX;
 	private int mouseY;
@@ -33,6 +33,8 @@ public class PlayState extends BasicGameState {
 	private double run;
 	private double angleInDegrees;
 	
+	private int counter = 0;
+	
 	public PlayState(int id) {
 		
 		this.id = id;
@@ -41,13 +43,13 @@ public class PlayState extends BasicGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
 		
-		playerPosX = 32.0f;
-		playerPosY = 32.0f;
+//		playerPosX = 32.0f;
+//		playerPosY = 32.0f;
 		
 		coords = "";
 		strIntersects = "FALSE";
 		
-		player = new Player("Ayrn", playerPosX, playerPosY, new Direction(180.0));
+		player = new Player("Ayrn", 32.0f, 32.0f, new Direction(180.0));
 		//obstacle = new Rectangle(180.0f, 150.0f, 192.0f, 96.0f);
 		obstacle = new Player("Obstacle", 180.0f, 150.0f, new Direction(180.0));
 	}
@@ -57,10 +59,10 @@ public class PlayState extends BasicGameState {
 		
 		Input input = container.getInput();
 		
-		float deltaFactor = MOVEMENT_FACTOR * 0.0625f * delta;
+		//float deltaFactor = MOVEMENT_FACTOR * 0.0625f * delta;
 		
-		float newPlayerX = playerPosX;
-		float newPlayerY = playerPosY;
+		//float newPlayerX = player.getX();
+		//float newPlayerY = player.getY();
 		
 		if (input.isKeyPressed(Input.KEY_T)) {
 			
@@ -69,35 +71,39 @@ public class PlayState extends BasicGameState {
 		
 		if (isValidMovementKey(input)) {
 			
+			float dx = 0;
+			float dy = 0;
+			
 			if (input.isKeyPressed(Input.KEY_W) || input.isKeyDown(Input.KEY_W)) {
 				
-				newPlayerY = playerPosY - deltaFactor;
-				
-				player.setHeading(0.0);
+				dy = -1.0f;
+				//newPlayerY = player.getY() - deltaFactor * dy;
 			}
 			
 			if (input.isKeyPressed(Input.KEY_A) || input.isKeyDown(Input.KEY_A)) {
 				
-				newPlayerX = playerPosX - deltaFactor;
-				
-				player.setHeading(270.0);
+				dx = -1.0f;
+				//newPlayerX = player.getX() - deltaFactor * dx;
 			}
 			
 			if (input.isKeyPressed(Input.KEY_S) || input.isKeyDown(Input.KEY_S)) {
 				
-				newPlayerY = playerPosY + deltaFactor;
+				dy = 1.0f;
+				//newPlayerY = player.getY() + deltaFactor * dy;
 				
-				player.setHeading(180.0);
 			}
 			
 			if (input.isKeyPressed(Input.KEY_D) || input.isKeyDown(Input.KEY_D)) {
 				
-				newPlayerX = playerPosX + deltaFactor;
+				dx = 1.0f;
+				//newPlayerX = player.getX() + deltaFactor * dx;
 				
-				player.setHeading(90.0);
 			}
 			
-			updatePlayerPosition(newPlayerX, newPlayerY);
+			if (dx != 0 || dy != 0) {
+				
+				player.move(dx, dy, delta);
+			}
 		}
 		
 		boolean intersects = player.getBoundingBox().intersects(obstacle.getBoundingBox());
@@ -118,6 +124,14 @@ public class PlayState extends BasicGameState {
 			mouseY = input.getMouseY();
 			
 			coords = "x: " + mouseX + ", y: " + mouseY;
+		}
+		
+		counter++;
+		
+		if (counter > 60) {
+			
+			counter = 0;
+			System.out.println(player.getX() + ", " + player.getY());
 		}
 		
 //		if (input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)) {
@@ -151,21 +165,6 @@ public class PlayState extends BasicGameState {
 //		}
 	}
 	
-	private void updatePlayerPosition(float x, float y) {
-		
-		if (player.moveX(x, y)) {
-			
-			playerPosX = x;
-			//playerPosY = y;
-		}
-		
-		if (player.moveY(x, y)) {
-			
-			//playerPosX = x;
-			playerPosY = y;
-		}		
-	}
-
 	private boolean isValidMovementKey(Input input) {
 		
 		return input.isKeyPressed(Input.KEY_W) || input.isKeyDown(Input.KEY_W) ||
@@ -187,8 +186,8 @@ public class PlayState extends BasicGameState {
 		brush.drawString("[Rise: " + String.valueOf(rise), 270.0f, 10.0f);
 		brush.drawString("Run: " + String.valueOf(run) + "]", 390.0f, 10.0f);
 		brush.drawString("Angle: " + String.valueOf(angleInDegrees), 520.0f, 10.0f);
-		brush.drawString("Player X: " + String.valueOf(playerPosX), 653.0f, 405.0f);
-		brush.drawString("Player Y: " + String.valueOf(playerPosY), 653.0f, 425.0f);
+		brush.drawString("Player X: " + String.valueOf(player.getX()), 653.0f, 405.0f);
+		brush.drawString("Player Y: " + String.valueOf(player.getY()), 653.0f, 425.0f);
 	}
 	
 	@Override
@@ -198,9 +197,6 @@ public class PlayState extends BasicGameState {
 	}
 	
 	private void teleport() {
-		
-		playerPosX = 300.0f;
-		playerPosY = 300.0f;
 		
 		player.setX(300.0f);
 		player.setY(300.0f);
