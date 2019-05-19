@@ -33,6 +33,8 @@ public class PlayState extends BasicGameState {
 	
 	private Image[] playerMove;
 	
+	private GameMap map;
+	
 	public PlayState(int id) {
 		
 		this.id = id;
@@ -52,6 +54,8 @@ public class PlayState extends BasicGameState {
 		
 		player = new Player("Ayrn", 32.0f, 32.0f, 36.0f, 48.0f, new Direction(180.0), spritesheet);
 		obstacle = new Player("Obstacle", 180.0f, 150.0f, new Direction(180.0));
+		
+		map = new GameMap("res/base_test.tmx");
 	}
 	
 	@Override
@@ -145,6 +149,7 @@ public class PlayState extends BasicGameState {
 		brush.drawString("Player X: " + String.valueOf(player.getX()), Constants.SCREEN_WIDTH - 154.0f, Constants.SCREEN_HEIGHT - 45.0f);
 		brush.drawString("Player Y: " + String.valueOf(player.getY()), Constants.SCREEN_WIDTH - 154.0f, Constants.SCREEN_HEIGHT - 25.0f);
 		
+		map.render(0, 0);
 		brush.drawImage(player.getSprite(), player.getX(), player.getY());
 	}
 	

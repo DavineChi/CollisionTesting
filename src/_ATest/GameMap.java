@@ -1,32 +1,12 @@
 package _ATest;
 
-public class GameMap {
+import org.newdawn.slick.SlickException;
+import org.newdawn.slick.tiled.TiledMap;
 
-	private static final int MAP_WIDTH = 20;
-	private static final int MAP_HEIGHT = 10;
+public class GameMap extends TiledMap {
 	
-	private static int[][] gameMap;
-	
-	public static int[][] instance() {
+	public GameMap(String inputStream) throws SlickException {
 		
-		if (gameMap == null) {
-			
-			initialize();
-		}
-		
-		return gameMap;
-	}
-	
-	private static void initialize() {
-		
-		gameMap = new int[MAP_HEIGHT][MAP_WIDTH];
-		
-		for (int i = 0; i < MAP_HEIGHT; i++) {
-			
-			for (int j = 0; j < MAP_WIDTH; j++) {
-				
-				
-			}
-		}
+		super(inputStream);
 	}
 }
