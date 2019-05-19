@@ -23,9 +23,9 @@ public class Main extends StateBasedGame {
 		
 		try {
 			
-			AppGameContainer gameContainer = new AppGameContainer(new Main("Test"));
+			AppGameContainer gameContainer = new AppGameContainer(new Main(Constants.GLOBAL_GAME_NAME));
 			
-			gameContainer.setDisplayMode(800, 450, false);
+			gameContainer.setDisplayMode(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, false);
 			gameContainer.setTargetFrameRate(60);
 			gameContainer.setShowFPS(true);
 			gameContainer.start();

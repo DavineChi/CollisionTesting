@@ -7,33 +7,30 @@ public abstract class Actor extends Entity implements IDurable {
 	
 	protected int level;
 	
-	public Actor(String name, float positionX, float positionY, Direction heading) {
+	public Actor(String name, float x, float y, Direction heading) {
 		
 		this.level = 1;
 		this.name = name;
-//		this.position = new Position(positionX, positionY);
-		this.x = positionX;
-		this.y = positionY;
-		this.boundingBox = new BoundingBox(positionX, positionY, Constants.WIDTH, Constants.HEIGHT);
+		this.x = x;
+		this.y = y;
+		this.boundingBox = new BoundingBox(x, y, Constants.WIDTH, Constants.HEIGHT);
 		this.hitPoints = 80;
 		this.maxHitPoints = hitPoints;
 		this.heading = heading;
 		this.alive = true;
 	}
  
-	public Actor(String name) {
-
-		this(name, 1.0f, 1.0f, new Direction(180.0));
-	}
-	
-	public Actor(String name, float positionX, float positionY) {
-
-		this(name, positionX, positionY, new Direction(180.0));
-	}
-	
-	public Actor(String name, float positionX, float positionY, double heading) {
-
-		this(name, positionX, positionY, new Direction(heading));
+	public Actor(String name, float x, float y, float width, float height, Direction heading) {
+		
+		this.level = 1;
+		this.name = name;
+		this.x = x;
+		this.y = y;
+		this.boundingBox = new BoundingBox(x, y, width, height);
+		this.hitPoints = 80;
+		this.maxHitPoints = hitPoints;
+		this.heading = heading;
+		this.alive = true;
 	}
 	
 	public abstract boolean moveX(float dx, float dy, long delta);

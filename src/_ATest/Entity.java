@@ -3,7 +3,6 @@ package _ATest;
 public abstract class Entity {
 	
 	protected String      name = "";
-//	protected Position    position;
 	protected float       x;
 	protected float       y;
 	protected BoundingBox boundingBox;
@@ -12,9 +11,6 @@ public abstract class Entity {
 	
 	public String getName() { return name; }
 	public void setName(String name) { this.name = name; }
-	
-//	public Position getPosition() { return position; }
-//	public void setPosition(Position position) { this.position = position; }
 	
 	public float getX() { return x; }
 	public float getY() { return y; }

@@ -3,23 +3,19 @@ package _ATest;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class PlayState extends BasicGameState {
-
-	private static final float MOVEMENT_FACTOR = 2.5f;
 	
 	private int id;
 	
 	private Player player;
-	//private Shape obstacle;
 	private Player obstacle;
-	
-//	private float playerPosX;
-//	private float playerPosY;
 	
 	private int mouseX;
 	private int mouseY;
@@ -27,13 +23,15 @@ public class PlayState extends BasicGameState {
 	private String coords;
 	private String strIntersects;
 	
-	//private Velocity velocity;
+	private Image sprites;
+	private SpriteSheet spritesheet;
 	
-	private double rise;
-	private double run;
-	private double angleInDegrees;
+	private Image[] playerMoveRight;
+	private Image[] playerMoveDown;
+	private Image[] playerMoveLeft;
+	private Image[] playerMoveUp;
 	
-	private int counter = 0;
+	private Image[] playerMove;
 	
 	public PlayState(int id) {
 		
@@ -43,14 +41,16 @@ public class PlayState extends BasicGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
 		
-//		playerPosX = 32.0f;
-//		playerPosY = 32.0f;
-		
 		coords = "";
 		strIntersects = "FALSE";
 		
-		player = new Player("Ayrn", 32.0f, 32.0f, new Direction(180.0));
-		//obstacle = new Rectangle(180.0f, 150.0f, 192.0f, 96.0f);
+		sprites = new Image("res/Fumiko.png");
+		
+		sprites = sprites.getScaledCopy(1.5f);
+		
+		spritesheet = new SpriteSheet(sprites, 36, 48);
+		
+		player = new Player("Ayrn", 32.0f, 32.0f, 36.0f, 48.0f, new Direction(180.0), spritesheet);
 		obstacle = new Player("Obstacle", 180.0f, 150.0f, new Direction(180.0));
 	}
 	
@@ -58,11 +58,6 @@ public class PlayState extends BasicGameState {
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 		
 		Input input = container.getInput();
-		
-		//float deltaFactor = MOVEMENT_FACTOR * 0.0625f * delta;
-		
-		//float newPlayerX = player.getX();
-		//float newPlayerY = player.getY();
 		
 		if (input.isKeyPressed(Input.KEY_T)) {
 			
@@ -77,27 +72,29 @@ public class PlayState extends BasicGameState {
 			if (input.isKeyPressed(Input.KEY_W) || input.isKeyDown(Input.KEY_W)) {
 				
 				dy = -1.0f;
-				//newPlayerY = player.getY() - deltaFactor * dy;
+				
+				player.setDirection(0);
 			}
 			
 			if (input.isKeyPressed(Input.KEY_A) || input.isKeyDown(Input.KEY_A)) {
 				
 				dx = -1.0f;
-				//newPlayerX = player.getX() - deltaFactor * dx;
+				
+				player.setDirection(270);
 			}
 			
 			if (input.isKeyPressed(Input.KEY_S) || input.isKeyDown(Input.KEY_S)) {
 				
 				dy = 1.0f;
-				//newPlayerY = player.getY() + deltaFactor * dy;
 				
+				player.setDirection(180);
 			}
 			
 			if (input.isKeyPressed(Input.KEY_D) || input.isKeyDown(Input.KEY_D)) {
 				
 				dx = 1.0f;
-				//newPlayerX = player.getX() + deltaFactor * dx;
 				
+				player.setDirection(90);
 			}
 			
 			if (dx != 0 || dy != 0) {
@@ -125,44 +122,6 @@ public class PlayState extends BasicGameState {
 			
 			coords = "x: " + mouseX + ", y: " + mouseY;
 		}
-		
-//		counter++;
-//		
-//		if (counter > 60) {
-//			
-//			counter = 0;
-//			System.out.println(player.getX() + ", " + player.getY());
-//		}
-		
-//		if (input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)) {
-//			
-//			double currentX = (double)playerPosX;
-//			double currentY = (double)playerPosY;
-//			
-//			mouseX = input.getMouseX();
-//			mouseY = input.getMouseY();
-//			
-//			//Position currentPoint = new Position(currentX, currentY);
-//			//Position targetPoint = new Position(mouseX, mouseY);
-//			
-//			//velocity = new Velocity(deltaFactor, new EuclideanVector(currentPoint, targetPoint, 90.0));
-//			
-//			coords = "x: " + mouseX + ", y: " + mouseY;
-//			
-//			rise = mouseY - currentY; // Math.abs(currentY - mouseY);
-//			run = mouseX - currentX;  // Math.abs(currentX - mouseX);
-//			
-//			double slope = rise / run;
-//			double arcTan = Math.atan(slope);
-//			
-//			angleInDegrees = arcTan * (180.0 / Math.PI);
-//			
-//			playerPosX = input.getMouseX();
-//			playerPosY = input.getMouseY();
-//			
-//			player.setX(playerPosX);
-//			player.setY(playerPosY);
-//		}
 	}
 	
 	private boolean isValidMovementKey(Input input) {
@@ -177,17 +136,16 @@ public class PlayState extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game, Graphics brush) throws SlickException {
 		
 		brush.setColor(Color.white);
-		brush.draw(player.getBoundingBox());
+		//brush.draw(player.getBoundingBox());
 		brush.setColor(Color.gray.darker());
 		brush.setColor(Color.white);
 		brush.draw(obstacle.getBoundingBox());
-		brush.drawString(coords, 20.0f, 420.0f);
+		brush.drawString(coords, 20.0f, Constants.SCREEN_HEIGHT - 30.0f);
 		brush.drawString(strIntersects, 90.0f, 10.0f);
-		brush.drawString("[Rise: " + String.valueOf(rise), 270.0f, 10.0f);
-		brush.drawString("Run: " + String.valueOf(run) + "]", 390.0f, 10.0f);
-		brush.drawString("Angle: " + String.valueOf(angleInDegrees), 520.0f, 10.0f);
-		brush.drawString("Player X: " + String.valueOf(player.getX()), 653.0f, 405.0f);
-		brush.drawString("Player Y: " + String.valueOf(player.getY()), 653.0f, 425.0f);
+		brush.drawString("Player X: " + String.valueOf(player.getX()), Constants.SCREEN_WIDTH - 154.0f, Constants.SCREEN_HEIGHT - 45.0f);
+		brush.drawString("Player Y: " + String.valueOf(player.getY()), Constants.SCREEN_WIDTH - 154.0f, Constants.SCREEN_HEIGHT - 25.0f);
+		
+		brush.drawImage(player.getSprite(), player.getX(), player.getY());
 	}
 	
 	@Override

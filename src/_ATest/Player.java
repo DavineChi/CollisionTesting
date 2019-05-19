@@ -1,44 +1,77 @@
 package _ATest;
 
+import org.newdawn.slick.Image;
+import org.newdawn.slick.SpriteSheet;
+
 public class Player extends Actor {
 	
-	private static final float SPEED_MODIFIER = 0.15f;
+	private static final float SPEED_MODIFIER = 0.1f;
+	private static final float MULTIPLIER = 10.0f;
 	
-	public Player(String name) {
+	private Image currentDirection;
+	private Image[] playerImage;
+	
+	public Player(String name, float x, float y, Direction heading) {
 		
-		super(name);
+		super(name, x, y, heading);
 	}
 	
-	public Player(String name, float playerPosX, float playerPosY) {
+	public Player(String name, float x, float y, Direction heading, SpriteSheet spritesheet) {
 		
-		super(name, playerPosX, playerPosY);
+		super(name, x, y, heading);
+		
+		playerImage = new Image[4];
+		
+		initSprites(spritesheet);
 	}
 	
-	public Player(String name, float playerPosX, float playerPosY, double heading) {
+	public Player(String name, float x, float y, float width, float height, Direction heading, SpriteSheet spritesheet) {
 		
-		super(name, playerPosX, playerPosY, heading);
+		super(name, x, y, width, height, heading);
+		
+		playerImage = new Image[4];
+		
+		initSprites(spritesheet);
 	}
 	
-	public Player(String name, float playerPosX, float playerPosY, Direction heading) {
+	private void initSprites(SpriteSheet spritesheet) {
 		
-		super(name, playerPosX, playerPosY, heading);
+		int counter = 0;
+		
+		for (int i = 0; i < 4; i++) {
+			
+			playerImage[i] = spritesheet.getSprite(0, counter);
+			counter = counter + 1;
+		}
+	}
+	
+	public Image getSprite() {
+		
+		if (currentDirection == null) {
+			
+			currentDirection = playerImage[2];
+		}
+		
+		return currentDirection;
+	}
+	
+	public void setDirection(int heading) {
+		
+		if (heading == 0)   { currentDirection = playerImage[0]; }
+		if (heading == 90)  { currentDirection = playerImage[1]; }
+		if (heading == 180) { currentDirection = playerImage[2]; }
+		if (heading == 270) { currentDirection = playerImage[3]; }
 	}
 	
 	private boolean validLocation(float width, float height, float newX, float newY) {
 		
-		float size = 0.1f;
+		float size = SPEED_MODIFIER * MULTIPLIER;
 		
 		newX = (int)Math.floor(newX);
 		newY = (int)Math.floor(newY);
 		
-		if (!(newX + width + size >= 180 && newX - size <= 211 &&
-			  newY + height + size >= 150 && newY - size <= 181)) {
-			
-			return true;
-		}
-		
-		//return !(width >= 180.0f && newX <= 211.0f && height >= 150.0f && newY <= 181.0f);
-		return false;
+		return !(newX + width + size >= 180 && newX - size <= 213 &&
+				 newY + height + size >= 151 && newY - size <= 182);
 	}
 	
 	public void move(float dx, float dy, long delta) {
