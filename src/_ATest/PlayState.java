@@ -52,7 +52,7 @@ public class PlayState extends BasicGameState {
 		
 		spritesheet = new SpriteSheet(sprites, 36, 48);
 		
-		player = new Player("Ayrn", 32.0f, 32.0f, 36.0f, 48.0f, new Direction(180.0), spritesheet);
+		player = new Player("Ayrn", 457.0f, 140.0f, 36.0f, 48.0f, new Direction(180.0), spritesheet);
 		obstacle = new Player("Obstacle", 180.0f, 150.0f, new Direction(180.0));
 		
 		map = new GameMap("res/base_test.tmx");

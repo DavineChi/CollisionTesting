@@ -40,7 +40,7 @@ public class Player extends Actor {
 		
 		for (int i = 0; i < 4; i++) {
 			
-			playerImage[i] = spritesheet.getSprite(0, counter);
+			playerImage[i] = spritesheet.getSprite(1, counter);
 			counter = counter + 1;
 		}
 	}
