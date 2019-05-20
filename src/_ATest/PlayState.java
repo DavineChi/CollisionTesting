@@ -26,13 +26,6 @@ public class PlayState extends BasicGameState {
 	private Image sprites;
 	private SpriteSheet spritesheet;
 	
-	private Image[] playerMoveRight;
-	private Image[] playerMoveDown;
-	private Image[] playerMoveLeft;
-	private Image[] playerMoveUp;
-	
-	private Image[] playerMove;
-	
 	private GameMap map;
 	
 	private boolean displayMap;
@@ -54,7 +47,7 @@ public class PlayState extends BasicGameState {
 		
 		spritesheet = new SpriteSheet(sprites, 36, 48);
 		
-		player = new Player("Ayrn", 457.0f, 116.0f, 36.0f, 48.0f, new Direction(180.0), spritesheet);
+		player = new Player("Ayrn", 462.0f, 116.0f, 36.0f, 48.0f, new Direction(180.0), spritesheet);
 		obstacle = new Player("Water", 64.0f, 384.0f, 192.0f, 192.0f, new Direction(0.0));
 		
 		map = new GameMap("res/base_test.tmx");
