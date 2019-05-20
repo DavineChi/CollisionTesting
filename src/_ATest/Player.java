@@ -6,7 +6,7 @@ import org.newdawn.slick.SpriteSheet;
 
 public class Player extends Actor {
 	
-	private static final float SPEED_MODIFIER = 0.1f;
+	private static final float SPEED_MODIFIER = 0.10f;
 	private static final float MULTIPLIER = 10.0f;
 	
 	private static final int AMINATION_SPEED = 168;
@@ -181,7 +181,8 @@ public class Player extends Actor {
 		newY = (int)Math.floor(newY);
 		
 		return !(newX + width + size >= 64 && newX - size <= 256 &&
-				 newY + height + size >= 384 && newY - size <= 576);
+				 newY + height + size >= 384 && newY - size <= 576) &&
+				 (newY + size > 40) && (newX - size > 64);
 	}
 	
 	public void move(float dx, float dy, long delta) {
