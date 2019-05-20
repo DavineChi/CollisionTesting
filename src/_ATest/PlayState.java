@@ -53,7 +53,7 @@ public class PlayState extends BasicGameState {
 		spritesheet = new SpriteSheet(sprites, 36, 48);
 		
 		player = new Player("Ayrn", 457.0f, 140.0f, 36.0f, 48.0f, new Direction(180.0), spritesheet);
-		obstacle = new Player("Obstacle", 180.0f, 150.0f, new Direction(180.0));
+		obstacle = new Player("Water", 64.0f, 384.0f, 192.0f, 192.0f, new Direction(0.0));
 		
 		map = new GameMap("res/base_test.tmx");
 	}
@@ -150,7 +150,31 @@ public class PlayState extends BasicGameState {
 		brush.drawString("Player Y: " + String.valueOf(player.getY()), Constants.SCREEN_WIDTH - 154.0f, Constants.SCREEN_HEIGHT - 25.0f);
 		
 		map.render(0, 0);
-		brush.drawImage(player.getSprite(), player.getX(), player.getY());
+		
+		if (container.getInput().isKeyPressed(Input.KEY_W) || container.getInput().isKeyDown(Input.KEY_W)) {
+			
+			player.getNorthAnimation().draw(player.getX(), player.getY());
+		}
+		
+		else if (container.getInput().isKeyPressed(Input.KEY_D) || container.getInput().isKeyDown(Input.KEY_D)) {
+			
+			player.getEastAnimation().draw(player.getX(), player.getY());
+		}
+		
+		else if (container.getInput().isKeyPressed(Input.KEY_S) || container.getInput().isKeyDown(Input.KEY_S)) {
+			
+			player.getSouthAnimation().draw(player.getX(), player.getY());
+		}
+		
+		else if (container.getInput().isKeyPressed(Input.KEY_A) || container.getInput().isKeyDown(Input.KEY_A)) {
+			
+			player.getWestAnimation().draw(player.getX(), player.getY());
+		}
+		
+		else {
+			
+			brush.drawImage(player.getSprite(), player.getX(), player.getY());
+		}
 	}
 	
 	@Override
