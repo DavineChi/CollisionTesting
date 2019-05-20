@@ -35,6 +35,8 @@ public class PlayState extends BasicGameState {
 	
 	private GameMap map;
 	
+	private boolean displayMap;
+	
 	public PlayState(int id) {
 		
 		this.id = id;
@@ -52,16 +54,31 @@ public class PlayState extends BasicGameState {
 		
 		spritesheet = new SpriteSheet(sprites, 36, 48);
 		
-		player = new Player("Ayrn", 457.0f, 140.0f, 36.0f, 48.0f, new Direction(180.0), spritesheet);
+		player = new Player("Ayrn", 457.0f, 116.0f, 36.0f, 48.0f, new Direction(180.0), spritesheet);
 		obstacle = new Player("Water", 64.0f, 384.0f, 192.0f, 192.0f, new Direction(0.0));
 		
 		map = new GameMap("res/base_test.tmx");
+		
+		displayMap = true;
 	}
 	
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 		
 		Input input = container.getInput();
+		
+		if (input.isKeyPressed(Input.KEY_F7)) {
+			
+			if (displayMap) {
+				
+				displayMap = false;
+			}
+			
+			else {
+				
+				displayMap = true;
+			}
+		}
 		
 		if (input.isKeyPressed(Input.KEY_T)) {
 			
@@ -149,7 +166,10 @@ public class PlayState extends BasicGameState {
 		brush.drawString("Player X: " + String.valueOf(player.getX()), Constants.SCREEN_WIDTH - 154.0f, Constants.SCREEN_HEIGHT - 45.0f);
 		brush.drawString("Player Y: " + String.valueOf(player.getY()), Constants.SCREEN_WIDTH - 154.0f, Constants.SCREEN_HEIGHT - 25.0f);
 		
-		map.render(0, 0);
+		if (displayMap) {
+			
+			map.render(0, 0);
+		}
 		
 		if (container.getInput().isKeyPressed(Input.KEY_W) || container.getInput().isKeyDown(Input.KEY_W)) {
 			
