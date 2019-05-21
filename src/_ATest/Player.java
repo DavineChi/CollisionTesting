@@ -24,20 +24,6 @@ public class Player extends Actor {
 	private Animation animatePlayerSouth;
 	private Animation animatePlayerWest;
 	
-	public Player(String name, float x, float y, Direction heading) {
-		
-		super(name, x, y, heading);
-	}
-	
-	public Player(String name, float x, float y, Direction heading, SpriteSheet spritesheet) {
-		
-		super(name, x, y, heading);
-		
-		playerImage = new Image[4];
-		
-		initSprites(spritesheet);
-	}
-	
 	public Player(String name, float x, float y, float width, float height, Direction heading) {
 		
 		super(name, x, y, width, height, heading);

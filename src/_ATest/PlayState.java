@@ -30,6 +30,8 @@ public class PlayState extends BasicGameState {
 	
 	private boolean displayMap;
 	
+	private Potion potion;
+	
 	public PlayState(int id) {
 		
 		this.id = id;
@@ -47,12 +49,14 @@ public class PlayState extends BasicGameState {
 		
 		spritesheet = new SpriteSheet(sprites, 36, 48);
 		
-		player = new Player("Ayrn", 462.0f, 116.0f, 36.0f, 48.0f, new Direction(180.0), spritesheet);
+		player = new Player("Ayrn", 462.0f, 116.0f, Constants.WIDTH, Constants.HEIGHT, new Direction(180.0), spritesheet);
 		obstacle = new Player("Water", 64.0f, 384.0f, 192.0f, 192.0f, new Direction(0.0));
 		
 		map = new GameMap("res/base_test.tmx");
 		
 		displayMap = true;
+		
+		potion = new Potion("Potion", 200.0f, 312.0f, 24.0f, 24.0f);
 	}
 	
 	@Override
@@ -164,6 +168,22 @@ public class PlayState extends BasicGameState {
 			map.render(0, 0);
 		}
 		
+		if ((player.getY() + player.getHeight() >= potion.getY() + potion.getHeight()) &&
+		    (player.getY() <= potion.getY() + potion.getHeight())) {
+			
+			brush.drawImage(potion.getSprite(), potion.getX(), potion.getY());
+			drawPlayer(container, brush);
+		}
+		
+		if (player.getY() + player.getHeight() < potion.getY() + potion.getHeight()) {
+			
+			drawPlayer(container, brush);
+			brush.drawImage(potion.getSprite(), potion.getX(), potion.getY());
+		}
+	}
+	
+	private void drawPlayer(GameContainer container, Graphics brush) {
+		
 		if (container.getInput().isKeyPressed(Input.KEY_W) || container.getInput().isKeyDown(Input.KEY_W)) {
 			
 			player.getNorthAnimation().draw(player.getX(), player.getY());
@@ -190,15 +210,15 @@ public class PlayState extends BasicGameState {
 		}
 	}
 	
-	@Override
-	public int getID() {
-		
-		return id;
-	}
-	
 	private void teleport() {
 		
 		player.setX(300.0f);
 		player.setY(300.0f);
+	}
+	
+	@Override
+	public int getID() {
+		
+		return id;
 	}
 }

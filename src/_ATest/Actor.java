@@ -7,25 +7,14 @@ public abstract class Actor extends Entity implements IDurable {
 	
 	protected int level;
 	
-	public Actor(String name, float x, float y, Direction heading) {
-		
-		this.level = 1;
-		this.name = name;
-		this.x = x;
-		this.y = y;
-		this.boundingBox = new BoundingBox(x, y, Constants.WIDTH, Constants.HEIGHT);
-		this.hitPoints = 80;
-		this.maxHitPoints = hitPoints;
-		this.heading = heading;
-		this.alive = true;
-	}
- 
 	public Actor(String name, float x, float y, float width, float height, Direction heading) {
 		
 		this.level = 1;
 		this.name = name;
 		this.x = x;
 		this.y = y;
+		this.width = width;
+		this.height = height;
 		this.boundingBox = new BoundingBox(x, y, width, height);
 		this.hitPoints = 80;
 		this.maxHitPoints = hitPoints;
