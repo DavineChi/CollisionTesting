@@ -168,7 +168,7 @@ public class PlayState extends BasicGameState {
 			map.render(0, 0);
 		}
 		
-		if ((player.getY() + player.getHeight() >= potion.getY() + potion.getHeight()) &&
+		if ((player.getY() + player.getHeight() >= potion.getY() + potion.getHeight()) ||
 		    (player.getY() <= potion.getY() + potion.getHeight())) {
 			
 			brush.drawImage(potion.getSprite(), potion.getX(), potion.getY());
