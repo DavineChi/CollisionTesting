@@ -165,6 +165,15 @@ public class PlayState extends BasicGameState {
 		
 		if (displayMap) {
 			
+			float x, y, w, h;
+			
+			x = player.getX() - 250.0f;
+			y = player.getY() - 150.0f;
+			w = player.getWidth() + 500.0f;
+			h = player.getHeight() + 300.0f;
+			
+			//brush.setWorldClip(x, y, w, h);
+			brush.translate(x, y);
 			map.render(0, 0);
 		}
 		

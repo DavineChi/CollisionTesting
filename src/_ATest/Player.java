@@ -9,7 +9,7 @@ public class Player extends Actor {
 	private static final float SPEED_MODIFIER = 0.10f;
 	private static final float MULTIPLIER = 10.0f;
 	
-	private static final int AMINATION_SPEED = 168;
+	private static final int ANIMATION_SPEED = 168;
 	
 	private static final int NORTH = 0;
 	private static final int EAST  = 1;
@@ -42,10 +42,10 @@ public class Player extends Actor {
 		Image[] south = initSouthAnimationSprites(spritesheet);
 		Image[] west = initWestAnimationSprites(spritesheet);
 		
-		animatePlayerNorth = new Animation(north, AMINATION_SPEED);
-		animatePlayerEast = new Animation(east, AMINATION_SPEED);
-		animatePlayerSouth = new Animation(south, AMINATION_SPEED);
-		animatePlayerWest = new Animation(west, AMINATION_SPEED);
+		animatePlayerNorth = new Animation(north, ANIMATION_SPEED);
+		animatePlayerEast = new Animation(east, ANIMATION_SPEED);
+		animatePlayerSouth = new Animation(south, ANIMATION_SPEED);
+		animatePlayerWest = new Animation(west, ANIMATION_SPEED);
 		
 		animatePlayerNorth.setLooping(true);
 		animatePlayerEast.setLooping(true);
