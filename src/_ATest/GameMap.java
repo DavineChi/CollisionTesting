@@ -9,6 +9,4 @@ public class GameMap extends TiledMap {
 		
 		super(inputStream);
 	}
-	
-	
 }

@@ -1,6 +1,7 @@
 package _ATest;
 
 import org.newdawn.slick.Color;
+import org.newdawn.slick.ControllerListener;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -13,24 +14,18 @@ import org.newdawn.slick.state.StateBasedGame;
 public class PlayState extends BasicGameState {
 	
 	private int id;
-	
 	private Player player;
 	private Player obstacle;
-	
 	private int mouseX;
 	private int mouseY;
-	
 	private String coords;
 	private String strIntersects;
-	
 	private Image sprites;
 	private SpriteSheet spritesheet;
-	
 	private GameMap map;
-	
 	private boolean displayMap;
-	
 	private Potion potion;
+	private Input input;
 	
 	public PlayState(int id) {
 		
@@ -39,6 +34,8 @@ public class PlayState extends BasicGameState {
 	
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
+		
+		input = container.getInput();
 		
 		coords = "";
 		strIntersects = "FALSE";
@@ -61,8 +58,6 @@ public class PlayState extends BasicGameState {
 	
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
-		
-		Input input = container.getInput();
 		
 		if (input.isKeyPressed(Input.KEY_F7)) {
 			
@@ -165,50 +160,50 @@ public class PlayState extends BasicGameState {
 		
 		if (displayMap) {
 			
-			float x, y, w, h;
+			float x = player.getX() - 250.0f;
+			float y = player.getY() - 150.0f;
+			float w = 500.0f;
+			float h = 300.0f;
 			
-			x = player.getX() - 250.0f;
-			y = player.getY() - 150.0f;
-			w = player.getWidth() + 500.0f;
-			h = player.getHeight() + 300.0f;
+			//brush.setWorldClip(12.0f, 14.0f, 815.0f, 383.0f);
+			brush.translate(-50, -50);
 			
-			//brush.setWorldClip(x, y, w, h);
-			brush.translate(x, y);
 			map.render(0, 0);
+			//map.render((int)player.getX()*-1, (int)player.getY()*-1);
 		}
 		
 		if ((player.getY() + player.getHeight() >= potion.getY() + potion.getHeight()) ||
 		    (player.getY() <= potion.getY() + potion.getHeight())) {
 			
 			brush.drawImage(potion.getSprite(), potion.getX(), potion.getY());
-			drawPlayer(container, brush);
+			drawPlayer(brush);
 		}
 		
 		if (player.getY() + player.getHeight() < potion.getY() + potion.getHeight()) {
 			
-			drawPlayer(container, brush);
+			drawPlayer(brush);
 			brush.drawImage(potion.getSprite(), potion.getX(), potion.getY());
 		}
 	}
 	
-	private void drawPlayer(GameContainer container, Graphics brush) {
+	private void drawPlayer(Graphics brush) {
 		
-		if (container.getInput().isKeyPressed(Input.KEY_W) || container.getInput().isKeyDown(Input.KEY_W)) {
+		if (input.isKeyPressed(Input.KEY_W) || input.isKeyDown(Input.KEY_W)) {
 			
 			player.getNorthAnimation().draw(player.getX(), player.getY());
 		}
 		
-		else if (container.getInput().isKeyPressed(Input.KEY_D) || container.getInput().isKeyDown(Input.KEY_D)) {
+		else if (input.isKeyPressed(Input.KEY_D) || input.isKeyDown(Input.KEY_D)) {
 			
 			player.getEastAnimation().draw(player.getX(), player.getY());
 		}
 		
-		else if (container.getInput().isKeyPressed(Input.KEY_S) || container.getInput().isKeyDown(Input.KEY_S)) {
+		else if (input.isKeyPressed(Input.KEY_S) || input.isKeyDown(Input.KEY_S)) {
 			
 			player.getSouthAnimation().draw(player.getX(), player.getY());
 		}
 		
-		else if (container.getInput().isKeyPressed(Input.KEY_A) || container.getInput().isKeyDown(Input.KEY_A)) {
+		else if (input.isKeyPressed(Input.KEY_A) || input.isKeyDown(Input.KEY_A)) {
 			
 			player.getWestAnimation().draw(player.getX(), player.getY());
 		}
