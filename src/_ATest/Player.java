@@ -11,13 +11,21 @@ public class Player extends Actor {
 	
 	private static final int ANIMATION_SPEED = 168;
 	
-	private static final int NORTH = 0;
-	private static final int EAST  = 1;
-	private static final int SOUTH = 2;
-	private static final int WEST  = 3;
+	private enum Carindal {
+		
+		NORTH,
+		EAST,
+		SOUTH,
+		WEST
+	}
 	
 	private Image currentDirection;
 	private Image[] playerImage;
+	
+	private Image[] northSprites;
+	private Image[] eastSprites;
+	private Image[] southSprites;
+	private Image[] westSprites;
 	
 	private Animation animatePlayerNorth;
 	private Animation animatePlayerEast;
@@ -83,16 +91,12 @@ public class Player extends Actor {
 		playerImage = new Image[4];
 		
 		initSprites(spritesheet);
+		initAnimationSprites(spritesheet);
 		
-		Image[] north = initNorthAnimationSprites(spritesheet);
-		Image[] east = initEastAnimationSprites(spritesheet);
-		Image[] south = initSouthAnimationSprites(spritesheet);
-		Image[] west = initWestAnimationSprites(spritesheet);
-		
-		animatePlayerNorth = new Animation(north, ANIMATION_SPEED);
-		animatePlayerEast = new Animation(east, ANIMATION_SPEED);
-		animatePlayerSouth = new Animation(south, ANIMATION_SPEED);
-		animatePlayerWest = new Animation(west, ANIMATION_SPEED);
+		animatePlayerNorth = new Animation(northSprites, ANIMATION_SPEED);
+		animatePlayerEast = new Animation(eastSprites, ANIMATION_SPEED);
+		animatePlayerSouth = new Animation(southSprites, ANIMATION_SPEED);
+		animatePlayerWest = new Animation(westSprites, ANIMATION_SPEED);
 		
 		animatePlayerNorth.setLooping(true);
 		animatePlayerEast.setLooping(true);
@@ -105,76 +109,30 @@ public class Player extends Actor {
 	public Animation getSouthAnimation() { return animatePlayerSouth; }
 	public Animation getWestAnimation()  { return animatePlayerWest;  }
 	
-	private Image[] initNorthAnimationSprites(SpriteSheet spritesheet) {
+	private void initAnimationSprites(SpriteSheet spritesheet) {
 		
-		Image[] result = new Image[4];
+		Image[] result = null;
+		Image[][] imageList = new Image[4][1];
 		
-		int counter = 0;
-		
-		for (int i = 0; i < result.length; i++) {
+		for (Carindal cardinal : Carindal.values()) {
+
+			int ordinal = cardinal.ordinal();
 			
-			result[i] = spritesheet.getSprite(counter, NORTH);
+			result = new Image[4];
 			
-			counter++;
+			for (int i = 0; i < result.length; i++) {
+				
+				result[i] = spritesheet.getSprite(i, ordinal);
+			}
+			
+			result[3] = result[1];
+			imageList[ordinal] = result;
 		}
 		
-		result[3] = result[1];
-		
-		return result;
-	}
-	
-	private Image[] initEastAnimationSprites(SpriteSheet spritesheet) {
-		
-		Image[] result = new Image[4];
-		
-		int counter = 0;
-		
-		for (int i = 0; i < result.length; i++) {
-			
-			result[i] = spritesheet.getSprite(counter, EAST);
-			
-			counter++;
-		}
-		
-		result[3] = result[1];
-		
-		return result;
-	}
-	
-	private Image[] initSouthAnimationSprites(SpriteSheet spritesheet) {
-		
-		Image[] result = new Image[4];
-		
-		int counter = 0;
-		
-		for (int i = 0; i < result.length; i++) {
-			
-			result[i] = spritesheet.getSprite(counter, SOUTH);
-			
-			counter++;
-		}
-		
-		result[3] = result[1];
-		
-		return result;
-	}
-	
-	private Image[] initWestAnimationSprites(SpriteSheet spritesheet) {
-		
-		Image[] result = new Image[4];
-		
-		int counter = 0;
-		
-		for (int i = 0; i < result.length; i++) {
-			
-			result[i] = spritesheet.getSprite(counter, WEST);
-			
-			counter++;
-		}
-		
-		result[3] = result[1];
-		
-		return result;
+		northSprites = imageList[0];
+		eastSprites  = imageList[1];
+		southSprites = imageList[2];
+		westSprites  = imageList[3];
 	}
 	
 	private void initSprites(SpriteSheet spritesheet) {
