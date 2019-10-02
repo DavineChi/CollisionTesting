@@ -1,7 +1,7 @@
 package _ATest;
 
 /****************************************************************************************************************
- * This is a base class used for creation and management of various Tiles.
+ * Base class used for creation and management of various Tiles.
  * 
  * @author Shannon Fisher
  */
