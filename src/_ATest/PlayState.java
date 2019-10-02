@@ -41,7 +41,7 @@ public class PlayState extends BasicGameState {
 		
 		sprites = new Image("res/Fumiko.png");
 		
-		sprites = sprites.getScaledCopy(1.5f);
+		sprites = sprites.getScaledCopy(1.50f);
 		
 		spritesheet = new SpriteSheet(sprites, 36, 48);
 		
@@ -165,9 +165,10 @@ public class PlayState extends BasicGameState {
 			float h = 300.0f;
 			
 			//brush.setWorldClip(12.0f, 14.0f, 815.0f, 383.0f);
-			brush.translate(-50, -50);
+			brush.translate((player.getX() * -1), (player.getY() * -1));
+			map.render(600, 330, 0, 0, 500, 200);
+			//map.render(0, 0);
 			
-			map.render(0, 0);
 			//map.render((int)player.getX()*-1, (int)player.getY()*-1);
 		}
 		
