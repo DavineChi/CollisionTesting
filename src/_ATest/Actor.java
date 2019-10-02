@@ -7,6 +7,28 @@ public abstract class Actor extends Entity implements IDurable {
 	
 	protected int level;
 	
+	/************************************************************************************************************
+	 * Constructor used to create a new Actor.
+	 * <p>
+	 * 
+	 * @param name
+	 *   The name for this Actor.
+	 * 
+	 * @param x
+	 *   The Cartesian x-coordinate for this Actor.
+	 * 
+	 * @param y
+	 *   The Cartesian y-coordinate for this Actor.
+	 * 
+	 * @param width
+	 *   The width of this Actor.
+	 * 
+	 * @param height
+	 *   The height of this Actor.
+	 * 
+	 * @param heading
+	 *   The heading of this Actor.
+	 */
 	public Actor(String name, float x, float y, float width, float height, Direction heading) {
 		
 		this.level = 1;
