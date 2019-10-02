@@ -24,11 +24,58 @@ public class Player extends Actor {
 	private Animation animatePlayerSouth;
 	private Animation animatePlayerWest;
 	
+	/************************************************************************************************************
+	 * Constructor used to create a new Player.
+	 * <p>
+	 * 
+	 * @param name
+	 *   The name for this Player.
+	 * 
+	 * @param x
+	 *   The Cartesian x-coordinate for this Player.
+	 * 
+	 * @param y
+	 *   The Cartesian y-coordinate for this Player.
+	 * 
+	 * @param width
+	 *   The width of this Player.
+	 * 
+	 * @param height
+	 *   The height of this Player.
+	 * 
+	 * @param heading
+	 *   The heading of this Player.
+	 */
 	public Player(String name, float x, float y, float width, float height, Direction heading) {
 		
 		super(name, x, y, width, height, heading);
 	}
 	
+	/************************************************************************************************************
+	 * Constructor used to create a new Player.
+	 * <p>
+	 * 
+	 * @param name
+	 *   The name for this Player.
+	 * 
+	 * @param x
+	 *   The Cartesian x-coordinate for this Player.
+	 * 
+	 * @param y
+	 *   The Cartesian y-coordinate for this Player.
+	 * 
+	 * @param width
+	 *   The width of this Player.
+	 * 
+	 * @param height
+	 *   The height of this Player.
+	 * 
+	 * @param heading
+	 *   The heading of this Player.
+	 * 
+	 * @param spritesheet
+	 *   The spritesheet used for rendering this Player's graphics.
+	 */
 	public Player(String name, float x, float y, float width, float height, Direction heading, SpriteSheet spritesheet) {
 		
 		super(name, x, y, width, height, heading);
