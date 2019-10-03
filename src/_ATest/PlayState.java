@@ -151,7 +151,7 @@ public class PlayState extends BasicGameState {
 		//brush.draw(player.getBoundingBox());
 		brush.setColor(Color.gray.darker());
 		brush.setColor(Color.white);
-		brush.draw(obstacle.getBoundingBox());
+		//brush.draw(obstacle.getBoundingBox());
 		brush.drawString(coords, 20.0f, Constants.SCREEN_HEIGHT - 30.0f);
 		brush.drawString(strIntersects, 90.0f, 10.0f);
 		brush.drawString("Player X: " + String.valueOf(player.getX()), Constants.SCREEN_WIDTH - 154.0f, Constants.SCREEN_HEIGHT - 45.0f);
@@ -159,17 +159,11 @@ public class PlayState extends BasicGameState {
 		
 		if (displayMap) {
 			
-			float x = player.getX() - 250.0f;
-			float y = player.getY() - 150.0f;
-			float w = 500.0f;
-			float h = 300.0f;
-			
 			//brush.setWorldClip(12.0f, 14.0f, 815.0f, 383.0f);
-			brush.translate((player.getX() * -1), (player.getY() * -1));
-			map.render(600, 330, 0, 0, 500, 200);
-			//map.render(0, 0);
 			
-			//map.render((int)player.getX()*-1, (int)player.getY()*-1);
+			Camera.instance().translate(player, map, brush, (Constants.SCREEN_WIDTH / 2), (Constants.SCREEN_HEIGHT / 2));
+			
+			//map.render(600, 330, 0, 0, 500, 200);
 		}
 		
 		if ((player.getY() + player.getHeight() >= potion.getY() + potion.getHeight()) ||
