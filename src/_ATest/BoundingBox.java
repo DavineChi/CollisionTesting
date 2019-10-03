@@ -1,8 +1,9 @@
 package _ATest;
 
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Shape;
 
-public class BoundingBox extends Rectangle {
+public class BoundingBox extends Rectangle implements ICollision {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -20,20 +21,26 @@ public class BoundingBox extends Rectangle {
 		this.height = height;
 	}
 	
-	public boolean intersects(BoundingBox other) {
+	@Override
+	public boolean intersects(Shape other) {
 		
-		return (posX + width >= other.posX) &&
-               (posX <= other.posX + other.width) &&
-               (posY + height >= other.posY) &&
-               (posY <= other.posY + other.height);
+		BoundingBox object = (BoundingBox)other;
+		
+		return (posX + width >= object.posX) &&
+               (posX <= object.posX + object.width) &&
+               (posY + height >= object.posY) &&
+               (posY <= object.posY + object.height);
 	}
 	
-	public boolean willIntersect(BoundingBox other, float deltaFactor) {
+	@Override
+	public boolean willIntersect(Shape other, float deltaFactor) {
 		
-		return ((posX + width) * deltaFactor >= other.posX) &&
-               (posX * deltaFactor <= other.posX + other.width) &&
-               ((posY + height) * deltaFactor >= other.posY) &&
-               (posY * deltaFactor <= other.posY + other.height);
+		BoundingBox object = (BoundingBox)other;
+		
+		return ((posX + width) * deltaFactor >= object.posX) &&
+	               (posX * deltaFactor <= object.posX + object.width) &&
+	               ((posY + height) * deltaFactor >= object.posY) &&
+	               (posY * deltaFactor <= object.posY + object.height);
 	}
 	
 	public float getPosX() {
@@ -55,27 +62,31 @@ public class BoundingBox extends Rectangle {
 		
 		this.posY = posY;
 	}
-
+	
+	@Override
 	public float getWidth() {
 		
 		return width;
 	}
-
+	
+	@Override
 	public void setWidth(float width) {
 		
 		this.width = width;
 	}
-
+	@Override
+	
 	public float getHeight() {
 		
 		return height;
 	}
-
+	
+	@Override
 	public void setHeight(float height) {
 		
 		this.height = height;
 	}
-
+	
 	@Override
 	public String toString() {
 		
