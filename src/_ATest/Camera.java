@@ -1,13 +1,10 @@
 package _ATest;
 
+import org.newdawn.slick.Graphics;
+
 public final class Camera {
 
 	private static Camera camera = null;
-	
-	private float x;
-	private float y;
-	private float width;
-	private float height;
 	
 	public static Camera instance() {
 		
@@ -19,23 +16,9 @@ public final class Camera {
 		return camera;
 	}
 	
-	public void setX(float x) {
+	public void translate(Player player, GameMap map, Graphics brush, float offsetX, float offsetY) {
 		
-		camera.x = x;
-	}
-
-	public void setY(float y) {
-		
-		camera.y = y;
-	}
-
-	public void setWidth(float width) {
-		
-		camera.width = width;
-	}
-
-	public void setHeight(float height) {
-		
-		camera.height = height;
+		brush.translate((player.getX() * -1) + offsetX, (player.getY() * -1) + offsetY);
+		map.render(0, 0, 0, 0, (int)offsetX, (int)offsetY);
 	}
 }
