@@ -109,6 +109,19 @@ public class Player extends Actor {
 	public Animation getSouthAnimation() { return animatePlayerSouth; }
 	public Animation getWestAnimation()  { return animatePlayerWest;  }
 	
+	// Helper method to initialize the sprites for this Player.
+	private void initSprites(SpriteSheet spritesheet) {
+		
+		int counter = 0;
+		
+		for (int i = 0; i < 4; i++) {
+			
+			playerImage[i] = spritesheet.getSprite(1, counter);
+			counter = counter + 1;
+		}
+	}
+	
+	// Helper method to initialize the animation sprites for this Player.
 	private void initAnimationSprites(SpriteSheet spritesheet) {
 		
 		Image[] result = null;
@@ -133,17 +146,6 @@ public class Player extends Actor {
 		eastSprites  = imageList[1];
 		southSprites = imageList[2];
 		westSprites  = imageList[3];
-	}
-	
-	private void initSprites(SpriteSheet spritesheet) {
-		
-		int counter = 0;
-		
-		for (int i = 0; i < 4; i++) {
-			
-			playerImage[i] = spritesheet.getSprite(1, counter);
-			counter = counter + 1;
-		}
 	}
 	
 	public Image getSprite() {
