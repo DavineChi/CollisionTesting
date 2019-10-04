@@ -2,24 +2,25 @@
     - We have a problem where the player bounding box is getting stuck in an obstacle
     - AABB vs SAT (separating axis theorem)
 
-2.) GameMap (Data Structure)
+2.) Implement running
+
+3.) GameMap (Data Structure)
     - Should act as a high-level (highest?) container for all entities
 
-3.) Create a simple magic potion entity
+4.) Create a simple magic potion entity
     - Determine how to "inject" into GameMap at specified x,y coordinate
 
-4.) Utilized corrected collision detection algorithm to allow player to loot based on proximity
+5.) Utilized corrected collision detection algorithm to allow player to loot based on proximity
 
-5.) Need a backpack implementation to carry items
+6.) Need a backpack implementation to carry items
     - A form of listener will need to be developed
 
-6.) Magic Potion is a consumable; implement the action for when player consumes this item
+7.) Magic Potion is a consumable; implement the action for when player consumes this item
 
-7.) Console or output pane (like combat log from WoW)
+8.) Console or output pane (like combat log from WoW)
     - Priority 1: just get some standard output:
         (yellow) You loot 13 Silver, 80 Copper
     (dark green) You recieve loot: [Vrykul Bones]. ( <- bracketed item, including brackets, is white )
      (dark blue) Tallhorn Stag dies, you gain 79 experience. (+36 exp Rested bonus, -43 raid penalty)
 
-8.) Design and implement acceleration / motion by point and click
-
+9.) Design and implement acceleration / motion by point and click
