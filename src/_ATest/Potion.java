@@ -8,7 +8,7 @@ public class Potion extends Entity {
 
 	private static final int CAPACITY = 10;
 	
-	private Image sprites;
+	private Image potionSprites;
 	private SpriteSheet spritesheet;
 	private Image potionImage;
 	
@@ -27,10 +27,11 @@ public class Potion extends Entity {
 		
 		try {
 			
-			sprites = new Image("res/potions.png");
-			sprites = sprites.getScaledCopy(1.5f);
-			spritesheet = new SpriteSheet(sprites, (int)width, (int)height);
-			potionImage = spritesheet.getSprite(1, 1);
+			potionSprites = new Image("res/potions.png");
+			//sprites = sprites.getScaledCopy(1.5f);
+			spritesheet = new SpriteSheet(potionSprites, (int)width, (int)height);
+			spritesheet.setFilter(Image.FILTER_NEAREST);
+			potionImage = spritesheet.getSprite(1, 1).getScaledCopy(2f);
 		}
 		
 		catch (SlickException ex) {

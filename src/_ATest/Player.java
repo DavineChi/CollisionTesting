@@ -9,10 +9,9 @@ public class Player extends Actor {
 	private static final float SPEED_MODIFIER = 0.10f;
 	private static final float MULTIPLIER = 10.0f;
 	
-	private static final int ANIMATION_SPEED = 168;
+	private static final int ANIMATION_SPEED = 180;
 	
 	private float speedModifier;
-	private boolean running;
 	
 	private enum Carindal {
 		
@@ -71,9 +70,7 @@ public class Player extends Actor {
 	 */
 	public Player(String name, float x, float y, float width, float height, Direction heading) {
 		
-		super(name, x, y, width, height, heading);
-		
-		running = false;
+		super(name, x, y, width * Constants.SPRITE_SCALE, height * Constants.SPRITE_SCALE, heading);
 	}
 	
 	/************************************************************************************************************
@@ -103,11 +100,10 @@ public class Player extends Actor {
 	 */
 	public Player(String name, float x, float y, float width, float height, Direction heading, SpriteSheet spritesheet) {
 		
-		super(name, x, y, width, height, heading);
+		super(name, x, y, width * Constants.SPRITE_SCALE, height * Constants.SPRITE_SCALE, heading);
 		
 		this.spritesheet = spritesheet;
 		
-		running = false;
 		speedModifier = 0.10f;
 		
 		playerDirections = new Image[4];
@@ -154,7 +150,7 @@ public class Player extends Actor {
 		
 		for (int i = 0; i < 4; i++) {
 			
-			playerDirections[i] = spritesheet.getSprite(1, counter);
+			playerDirections[i] = spritesheet.getSprite(1, counter).getScaledCopy(Constants.SPRITE_SCALE);
 			counter = counter + 1;
 		}
 	}
@@ -174,7 +170,7 @@ public class Player extends Actor {
 			
 			for (int i = 0; i < (result.length - 1); i++) {
 				
-				result[i] = spritesheet.getSprite(counter, ordinal);
+				result[i] = spritesheet.getSprite(counter, ordinal).getScaledCopy(Constants.SPRITE_SCALE);
 				
 				counter++;
 			}
@@ -204,7 +200,7 @@ public class Player extends Actor {
 			
 			for (int i = 0; i < (result.length - 1); i++) {
 				
-				result[i] = spritesheet.getSprite(counter, ordinal);
+				result[i] = spritesheet.getSprite(counter, ordinal).getScaledCopy(Constants.SPRITE_SCALE);
 				
 				counter++;
 			}

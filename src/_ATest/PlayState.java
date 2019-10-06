@@ -19,7 +19,7 @@ public class PlayState extends BasicGameState {
 	private int mouseY;
 	private String coords;
 	private String strIntersects;
-	private Image sprites;
+	private Image playerSprites;
 	private SpriteSheet spritesheet;
 	private GameMap map;
 	private boolean displayMap;
@@ -39,20 +39,19 @@ public class PlayState extends BasicGameState {
 		coords = "";
 		strIntersects = "FALSE";
 		
-		sprites = new Image("res/Fumiko.png");
+		playerSprites = new Image("res/Fumiko.png");
+		spritesheet = new SpriteSheet(playerSprites, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT);
 		
-		sprites = sprites.getScaledCopy(1.50f);
+		spritesheet.setFilter(Image.FILTER_NEAREST);
 		
-		spritesheet = new SpriteSheet(sprites, 36, 48);
-		
-		player = new Player("Ayrn", 462.0f, 116.0f, Constants.WIDTH, Constants.HEIGHT, new Direction(180.0), spritesheet);
+		player = new Player("Ayrn", 462.0f, 116.0f, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, new Direction(180.0), spritesheet);
 		obstacle = new Player("Water", 64.0f, 384.0f, 192.0f, 192.0f, new Direction(0.0));
 		
 		map = new GameMap("res/base_test.tmx");
 		
 		displayMap = true;
 		
-		potion = new Potion("Potion", 200.0f, 312.0f, 24.0f, 24.0f);
+		potion = new Potion("Potion", 200.0f, 312.0f, 16.0f, 16.0f);
 	}
 	
 	@Override
@@ -173,8 +172,6 @@ public class PlayState extends BasicGameState {
 			//brush.setWorldClip(12.0f, 14.0f, 815.0f, 383.0f);
 			
 			Camera.instance().translate(player, map, brush, (Constants.SCREEN_WIDTH / 2), (Constants.SCREEN_HEIGHT / 2));
-			
-			//map.render(600, 330, 0, 0, 500, 200);
 		}
 		
 		if ((player.getY() + player.getHeight() >= potion.getY() + potion.getHeight()) ||

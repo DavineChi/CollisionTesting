@@ -20,5 +20,6 @@ public final class Camera {
 		
 		brush.translate((player.getX() * -1) + offsetX, (player.getY() * -1) + offsetY);
 		map.render(0, 0, 0, 0, (int)offsetX, (int)offsetY);
+		brush.draw(player.getBoundingBox());
 	}
 }
