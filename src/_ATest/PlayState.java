@@ -47,6 +47,8 @@ public class PlayState extends BasicGameState {
 		player = new Player("Ayrn", 462.0f, 116.0f, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, new Direction(180.0), spritesheet);
 		obstacle = new Player("Water", 64.0f, 384.0f, 192.0f, 192.0f, new Direction(0.0));
 		
+		GameMap.init();
+		
 		map = new GameMap("res/base_test.tmx");
 		
 		displayMap = true;
@@ -171,9 +173,14 @@ public class PlayState extends BasicGameState {
 			
 			//brush.setWorldClip(12.0f, 14.0f, 815.0f, 383.0f);
 			
-			Camera.instance().translate(player, map, brush, (Constants.SCREEN_WIDTH / 2), (Constants.SCREEN_HEIGHT / 2));
+			//Camera.instance().translate(player, map, brush, (float)(Constants.SCREEN_WIDTH / 2), (float)(Constants.SCREEN_HEIGHT / 2));
+			
+			brush.translate((player.getX() * -1) + Constants.SCREEN_WIDTH / 2, (player.getY() * -1) + Constants.SCREEN_HEIGHT / 2);
+			map.render(0, 0, 0, 0, (int)Constants.SCREEN_WIDTH / 2, (int)Constants.SCREEN_HEIGHT / 2);
+			brush.draw(player.getBoundingBox());
 		}
 		
+		// Draw the potion under the player to simulate perspective.
 		if ((player.getY() + player.getHeight() >= potion.getY() + potion.getHeight()) ||
 		    (player.getY() <= potion.getY() + potion.getHeight())) {
 			
@@ -181,6 +188,7 @@ public class PlayState extends BasicGameState {
 			drawPlayer(brush);
 		}
 		
+		// Draw the potion over the player to simulate perspective.
 		if (player.getY() + player.getHeight() < potion.getY() + potion.getHeight()) {
 			
 			drawPlayer(brush);

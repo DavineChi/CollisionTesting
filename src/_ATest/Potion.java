@@ -32,6 +32,9 @@ public class Potion extends Entity {
 			spritesheet = new SpriteSheet(potionSprites, (int)width, (int)height);
 			spritesheet.setFilter(Image.FILTER_NEAREST);
 			potionImage = spritesheet.getSprite(1, 1).getScaledCopy(2f);
+			
+			this.width = this.width * 2;
+			this.height = this.height * 2;
 		}
 		
 		catch (SlickException ex) {
