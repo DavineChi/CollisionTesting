@@ -168,7 +168,7 @@ public class PlayState extends BasicGameState {
 		
 		if (displayMap) {
 			
-			//brush.setWorldClip(12.0f, 14.0f, 815.0f, 383.0f);
+			brush.setWorldClip(0f, 0f, 1200.0f, 600.0f);
 			
 			//Camera.instance().translate(player, map, brush, (float)(Constants.SCREEN_WIDTH / 2), (float)(Constants.SCREEN_HEIGHT / 2));
 			
@@ -183,7 +183,7 @@ public class PlayState extends BasicGameState {
 			//brush.draw(player.getBoundingBox());
 		}
 		
-		// Draw the potion under the player to simulate perspective.
+		// Draw the potion under the player to simulate perspectived.
 		if ((player.getY() + player.getHeight() >= potion.getY() + potion.getHeight()) ||
 		    (player.getY() <= potion.getY() + potion.getHeight())) {
 			
@@ -197,8 +197,6 @@ public class PlayState extends BasicGameState {
 			drawPlayer(brush);
 			brush.drawImage(potion.getSprite(), potion.getX(), potion.getY());
 		}
-		
-		
 	}
 	
 	private void drawPlayer(Graphics brush) {
