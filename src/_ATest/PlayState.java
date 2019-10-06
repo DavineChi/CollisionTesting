@@ -111,7 +111,17 @@ public class PlayState extends BasicGameState {
 			
 			if (dx != 0 || dy != 0) {
 				
-				player.move(dx, dy, delta);
+				// If holding the "run" key...
+				if (input.isKeyDown(Input.KEY_LSHIFT)) {
+					
+					player.move(dx, dy, delta * 2);
+				}
+				
+				// Otherwise, just walk.
+				else {
+					
+					player.move(dx, dy, delta);
+				}
 			}
 		}
 		
@@ -141,7 +151,8 @@ public class PlayState extends BasicGameState {
 		return input.isKeyPressed(Input.KEY_W) || input.isKeyDown(Input.KEY_W) ||
 		       input.isKeyPressed(Input.KEY_A) || input.isKeyDown(Input.KEY_A) ||
 		       input.isKeyPressed(Input.KEY_S) || input.isKeyDown(Input.KEY_S) ||
-		       input.isKeyPressed(Input.KEY_D) || input.isKeyDown(Input.KEY_D);
+		       input.isKeyPressed(Input.KEY_D) || input.isKeyDown(Input.KEY_D) ||
+		       input.isKeyPressed(Input.KEY_LSHIFT);
 	}
 	
 	@Override
@@ -182,29 +193,60 @@ public class PlayState extends BasicGameState {
 	
 	private void drawPlayer(Graphics brush) {
 		
-		if (input.isKeyPressed(Input.KEY_W) || input.isKeyDown(Input.KEY_W)) {
+		if (input.isKeyDown(Input.KEY_LSHIFT)) {
 			
-			player.getNorthAnimation().draw(player.getX(), player.getY());
+			if (input.isKeyPressed(Input.KEY_W) || input.isKeyDown(Input.KEY_W)) {
+				
+				player.getNorthAnimationRunning().draw(player.getX(), player.getY());
+			}
+			
+			else if (input.isKeyPressed(Input.KEY_D) || input.isKeyDown(Input.KEY_D)) {
+				
+				player.getEastAnimationRunning().draw(player.getX(), player.getY());
+			}
+			
+			else if (input.isKeyPressed(Input.KEY_S) || input.isKeyDown(Input.KEY_S)) {
+				
+				player.getSouthAnimationRunning().draw(player.getX(), player.getY());
+			}
+			
+			else if (input.isKeyPressed(Input.KEY_A) || input.isKeyDown(Input.KEY_A)) {
+				
+				player.getWestAnimationRunning().draw(player.getX(), player.getY());
+			}
+			
+			else {
+				
+				brush.drawImage(player.getSprite(), player.getX(), player.getY());
+			}
 		}
 		
-		else if (input.isKeyPressed(Input.KEY_D) || input.isKeyDown(Input.KEY_D)) {
+		else if (!(input.isKeyDown(Input.KEY_LSHIFT))) {
 			
-			player.getEastAnimation().draw(player.getX(), player.getY());
-		}
-		
-		else if (input.isKeyPressed(Input.KEY_S) || input.isKeyDown(Input.KEY_S)) {
+			if (input.isKeyPressed(Input.KEY_W) || input.isKeyDown(Input.KEY_W)) {
+				
+				player.getNorthAnimationWalking().draw(player.getX(), player.getY());
+			}
 			
-			player.getSouthAnimation().draw(player.getX(), player.getY());
-		}
-		
-		else if (input.isKeyPressed(Input.KEY_A) || input.isKeyDown(Input.KEY_A)) {
+			else if (input.isKeyPressed(Input.KEY_D) || input.isKeyDown(Input.KEY_D)) {
+				
+				player.getEastAnimationWalking().draw(player.getX(), player.getY());
+			}
 			
-			player.getWestAnimation().draw(player.getX(), player.getY());
-		}
-		
-		else {
+			else if (input.isKeyPressed(Input.KEY_S) || input.isKeyDown(Input.KEY_S)) {
+				
+				player.getSouthAnimationWalking().draw(player.getX(), player.getY());
+			}
 			
-			brush.drawImage(player.getSprite(), player.getX(), player.getY());
+			else if (input.isKeyPressed(Input.KEY_A) || input.isKeyDown(Input.KEY_A)) {
+				
+				player.getWestAnimationWalking().draw(player.getX(), player.getY());
+			}
+			
+			else {
+				
+				brush.drawImage(player.getSprite(), player.getX(), player.getY());
+			}
 		}
 	}
 	

@@ -11,6 +11,9 @@ public class Player extends Actor {
 	
 	private static final int ANIMATION_SPEED = 168;
 	
+	private float speedModifier;
+	private boolean running;
+	
 	private enum Carindal {
 		
 		NORTH,
@@ -19,18 +22,30 @@ public class Player extends Actor {
 		WEST
 	}
 	
+	private SpriteSheet spritesheet;
+	
 	private Image currentDirection;
-	private Image[] playerImage;
+	private Image[] playerDirections;
 	
-	private Image[] northSprites;
-	private Image[] eastSprites;
-	private Image[] southSprites;
-	private Image[] westSprites;
+	private Image[] northSpritesWalking;
+	private Image[] eastSpritesWalking;
+	private Image[] southSpritesWalking;
+	private Image[] westSpritesWalking;
 	
-	private Animation animatePlayerNorth;
-	private Animation animatePlayerEast;
-	private Animation animatePlayerSouth;
-	private Animation animatePlayerWest;
+	private Image[] northSpritesRunning;
+	private Image[] eastSpritesRunning;
+	private Image[] southSpritesRunning;
+	private Image[] westSpritesRunning;
+	
+	private Animation animatePlayerNorthWalking;
+	private Animation animatePlayerEastWalking;
+	private Animation animatePlayerSouthWalking;
+	private Animation animatePlayerWestWalking;
+	
+	private Animation animatePlayerNorthRunning;
+	private Animation animatePlayerEastRunning;
+	private Animation animatePlayerSouthRunning;
+	private Animation animatePlayerWestRunning;
 	
 	/************************************************************************************************************
 	 * Constructor used to create a new Player.
@@ -57,6 +72,8 @@ public class Player extends Actor {
 	public Player(String name, float x, float y, float width, float height, Direction heading) {
 		
 		super(name, x, y, width, height, heading);
+		
+		running = false;
 	}
 	
 	/************************************************************************************************************
@@ -88,41 +105,62 @@ public class Player extends Actor {
 		
 		super(name, x, y, width, height, heading);
 		
-		playerImage = new Image[4];
+		this.spritesheet = spritesheet;
 		
-		initSprites(spritesheet);
-		initAnimationSprites(spritesheet);
+		running = false;
+		speedModifier = 0.10f;
 		
-		animatePlayerNorth = new Animation(northSprites, ANIMATION_SPEED);
-		animatePlayerEast = new Animation(eastSprites, ANIMATION_SPEED);
-		animatePlayerSouth = new Animation(southSprites, ANIMATION_SPEED);
-		animatePlayerWest = new Animation(westSprites, ANIMATION_SPEED);
+		playerDirections = new Image[4];
 		
-		animatePlayerNorth.setLooping(true);
-		animatePlayerEast.setLooping(true);
-		animatePlayerSouth.setLooping(true);
-		animatePlayerWest.setLooping(true);
+		initStaticDirectionSprites();
+		initAnimationSpritesWalking();
+		initAnimationSpritesRunning();
+		
+		animatePlayerNorthWalking = new Animation(northSpritesWalking, ANIMATION_SPEED);
+		animatePlayerEastWalking = new Animation(eastSpritesWalking, ANIMATION_SPEED);
+		animatePlayerSouthWalking = new Animation(southSpritesWalking, ANIMATION_SPEED);
+		animatePlayerWestWalking = new Animation(westSpritesWalking, ANIMATION_SPEED);
+		
+		animatePlayerNorthRunning = new Animation(northSpritesRunning, ANIMATION_SPEED);
+		animatePlayerEastRunning = new Animation(eastSpritesRunning, ANIMATION_SPEED);
+		animatePlayerSouthRunning = new Animation(southSpritesRunning, ANIMATION_SPEED);
+		animatePlayerWestRunning = new Animation(westSpritesRunning, ANIMATION_SPEED);
+		
+		animatePlayerNorthWalking.setLooping(true);
+		animatePlayerEastWalking.setLooping(true);
+		animatePlayerSouthWalking.setLooping(true);
+		animatePlayerWestWalking.setLooping(true);
+		
+		animatePlayerNorthRunning.setLooping(true);
+		animatePlayerEastRunning.setLooping(true);
+		animatePlayerSouthRunning.setLooping(true);
+		animatePlayerWestRunning.setLooping(true);
 	}
 	
-	public Animation getNorthAnimation() { return animatePlayerNorth; }
-	public Animation getEastAnimation()  { return animatePlayerEast;  }
-	public Animation getSouthAnimation() { return animatePlayerSouth; }
-	public Animation getWestAnimation()  { return animatePlayerWest;  }
+	public Animation getNorthAnimationWalking() { return animatePlayerNorthWalking; }
+	public Animation getEastAnimationWalking()  { return animatePlayerEastWalking;  }
+	public Animation getSouthAnimationWalking() { return animatePlayerSouthWalking; }
+	public Animation getWestAnimationWalking()  { return animatePlayerWestWalking;  }
 	
-	// Helper method to initialize the sprites for this Player.
-	private void initSprites(SpriteSheet spritesheet) {
+	public Animation getNorthAnimationRunning() { return animatePlayerNorthRunning; }
+	public Animation getEastAnimationRunning()  { return animatePlayerEastRunning;  }
+	public Animation getSouthAnimationRunning() { return animatePlayerSouthRunning; }
+	public Animation getWestAnimationRunning()  { return animatePlayerWestRunning;  }
+	
+	// Helper method to initialize the static directional sprites for this Player.
+	private void initStaticDirectionSprites() {
 		
 		int counter = 0;
 		
 		for (int i = 0; i < 4; i++) {
 			
-			playerImage[i] = spritesheet.getSprite(1, counter);
+			playerDirections[i] = spritesheet.getSprite(1, counter);
 			counter = counter + 1;
 		}
 	}
 	
-	// Helper method to initialize the animation sprites for this Player.
-	private void initAnimationSprites(SpriteSheet spritesheet) {
+	// Helper method to initialize the walking animation sprites for this Player.
+	private void initAnimationSpritesWalking() {
 		
 		Image[] result = null;
 		Image[][] imageList = new Image[4][1];
@@ -130,29 +168,62 @@ public class Player extends Actor {
 		for (Carindal cardinal : Carindal.values()) {
 
 			int ordinal = cardinal.ordinal();
+			int counter = 0;
 			
 			result = new Image[4];
 			
-			for (int i = 0; i < result.length; i++) {
+			for (int i = 0; i < (result.length - 1); i++) {
 				
-				result[i] = spritesheet.getSprite(i, ordinal);
+				result[i] = spritesheet.getSprite(counter, ordinal);
+				
+				counter++;
 			}
 			
 			result[3] = result[1];
 			imageList[ordinal] = result;
 		}
 		
-		northSprites = imageList[0];
-		eastSprites  = imageList[1];
-		southSprites = imageList[2];
-		westSprites  = imageList[3];
+		northSpritesWalking = imageList[0];
+		eastSpritesWalking  = imageList[1];
+		southSpritesWalking = imageList[2];
+		westSpritesWalking  = imageList[3];
+	}
+	
+	// Helper method to initialize the running animation sprites for this Player.
+	private void initAnimationSpritesRunning() {
+		
+		Image[] result = null;
+		Image[][] imageList = new Image[4][1];
+		
+		for (Carindal cardinal : Carindal.values()) {
+
+			int ordinal = cardinal.ordinal();
+			int counter = 3;
+			
+			result = new Image[4];
+			
+			for (int i = 0; i < (result.length - 1); i++) {
+				
+				result[i] = spritesheet.getSprite(counter, ordinal);
+				
+				counter++;
+			}
+			
+			result[3] = result[1];
+			imageList[ordinal] = result;
+		}
+		
+		northSpritesRunning = imageList[0];
+		eastSpritesRunning  = imageList[1];
+		southSpritesRunning = imageList[2];
+		westSpritesRunning  = imageList[3];
 	}
 	
 	public Image getSprite() {
 		
 		if (currentDirection == null) {
 			
-			currentDirection = playerImage[2];
+			currentDirection = playerDirections[2];
 		}
 		
 		return currentDirection;
@@ -160,15 +231,15 @@ public class Player extends Actor {
 	
 	public void setDirection(int heading) {
 		
-		if (heading == 0)   { currentDirection = playerImage[0]; }
-		if (heading == 90)  { currentDirection = playerImage[1]; }
-		if (heading == 180) { currentDirection = playerImage[2]; }
-		if (heading == 270) { currentDirection = playerImage[3]; }
+		if (heading == 0)   { currentDirection = playerDirections[0]; }
+		if (heading == 90)  { currentDirection = playerDirections[1]; }
+		if (heading == 180) { currentDirection = playerDirections[2]; }
+		if (heading == 270) { currentDirection = playerDirections[3]; }
 	}
 	
 	private boolean validLocation(float width, float height, float newX, float newY) {
 		
-		float size = SPEED_MODIFIER * MULTIPLIER;
+		float size = speedModifier * MULTIPLIER;
 		
 		newX = (int)Math.floor(newX);
 		newY = (int)Math.floor(newY);

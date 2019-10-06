@@ -2,7 +2,7 @@
     - We have a problem where the player bounding box is getting stuck in an obstacle
     - AABB vs SAT (separating axis theorem)
 
-2.) Implement running
+2.) Implement running (COMPLETED 2019.10.05)
 
 3.) GameMap (Data Structure)
     - Should act as a high-level (highest?) container for all entities
