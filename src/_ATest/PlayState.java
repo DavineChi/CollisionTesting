@@ -160,14 +160,11 @@ public class PlayState extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game, Graphics brush) throws SlickException {
 		
 		brush.setColor(Color.white);
-		//brush.draw(player.getBoundingBox());
 		brush.setColor(Color.gray.darker());
 		brush.setColor(Color.white);
 		//brush.draw(obstacle.getBoundingBox());
-		brush.drawString(coords, 20.0f, Constants.SCREEN_HEIGHT - 30.0f);
-		brush.drawString(strIntersects, 90.0f, 10.0f);
-		brush.drawString("Player X: " + String.valueOf(player.getX()), Constants.SCREEN_WIDTH - 154.0f, Constants.SCREEN_HEIGHT - 45.0f);
-		brush.drawString("Player Y: " + String.valueOf(player.getY()), Constants.SCREEN_WIDTH - 154.0f, Constants.SCREEN_HEIGHT - 25.0f);
+		
+		drawDebugInfo(brush);
 		
 		if (displayMap) {
 			
@@ -175,9 +172,15 @@ public class PlayState extends BasicGameState {
 			
 			//Camera.instance().translate(player, map, brush, (float)(Constants.SCREEN_WIDTH / 2), (float)(Constants.SCREEN_HEIGHT / 2));
 			
-			brush.translate((player.getX() * -1) + Constants.SCREEN_WIDTH / 2, (player.getY() * -1) + Constants.SCREEN_HEIGHT / 2);
-			map.render(0, 0, 0, 0, (int)Constants.SCREEN_WIDTH / 2, (int)Constants.SCREEN_HEIGHT / 2);
-			brush.draw(player.getBoundingBox());
+			int x = (int)Math.ceil((player.getX() * -1) + Constants.SCREEN_WIDTH / 2);
+			int y = (int)Math.ceil((player.getY() * -1) + Constants.SCREEN_HEIGHT / 2);
+			
+			int width = (int)Math.floor(Constants.SCREEN_WIDTH / 2);
+			int height = (int)Math.floor(Constants.SCREEN_HEIGHT / 2);
+			
+			brush.translate(x, y);
+			map.render(0, 0, 0, 0, width, height);
+			//brush.draw(player.getBoundingBox());
 		}
 		
 		// Draw the potion under the player to simulate perspective.
@@ -194,6 +197,8 @@ public class PlayState extends BasicGameState {
 			drawPlayer(brush);
 			brush.drawImage(potion.getSprite(), potion.getX(), potion.getY());
 		}
+		
+		
 	}
 	
 	private void drawPlayer(Graphics brush) {
@@ -253,6 +258,14 @@ public class PlayState extends BasicGameState {
 				brush.drawImage(player.getSprite(), player.getX(), player.getY());
 			}
 		}
+	}
+	
+	private void drawDebugInfo(Graphics brush) {
+		
+		brush.drawString(coords, 20.0f, Constants.SCREEN_HEIGHT - 30.0f);
+		brush.drawString(strIntersects, 90.0f, 10.0f);
+		brush.drawString("Player X: " + String.valueOf(player.getX()), Constants.SCREEN_WIDTH - 154.0f, Constants.SCREEN_HEIGHT - 45.0f);
+		brush.drawString("Player Y: " + String.valueOf(player.getY()), Constants.SCREEN_WIDTH - 154.0f, Constants.SCREEN_HEIGHT - 25.0f);
 	}
 	
 	private void teleport() {
