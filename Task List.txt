@@ -10,7 +10,7 @@
 4.) Create a simple magic potion entity
     - Determine how to "inject" into GameMap at specified x,y coordinate
 
-5.) Utilized corrected collision detection algorithm to allow player to loot based on proximity
+5.) Utilize corrected collision detection algorithm to allow player to loot based on proximity
 
 6.) Need a backpack implementation to carry items
     - A form of listener will need to be developed
