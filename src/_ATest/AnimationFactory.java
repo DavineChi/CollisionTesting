@@ -2,7 +2,6 @@ package _ATest;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
 public class AnimationFactory {
@@ -32,30 +31,23 @@ public class AnimationFactory {
 	public static Animation createAnimation(SpriteSheet spriteSheet, int x, int y, int nSprites, int duration) {
 		
 		Image[] frames = new Image[nSprites + 1];
-		Animation result = new Animation(frames, duration);
+		Animation result = null;
 		
-		// TODO: implementation
+		int ordinal = y;
+		int counter = x;
+		
+		for (int i = 0; i < (frames.length - 1); i++) {
+			
+			frames[i] = spriteSheet.getSprite(counter, ordinal).getScaledCopy(Constants.SPRITE_SCALE);
+			
+			counter++;
+		}
+		
+		frames[3] = frames[1];
+		result = new Animation(frames, duration);
+		
+		result.setLooping(true);
 		
 		return result;
-	}
-	
-	public static void main(String[] args) {
-		
-		Image playerSprites = null;
-		SpriteSheet spritesheet = null;
-		Animation animatePlayerSouthWalking = null;
-		
-		try {
-			
-			playerSprites = new Image("res/Fumiko.png");
-		}
-		
-		catch (SlickException ex) {
-			
-			ex.printStackTrace();
-		}
-		
-		spritesheet = new SpriteSheet(playerSprites, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT);
-		animatePlayerSouthWalking = AnimationFactory.createAnimation(spritesheet, 0, 2, 3, 180);
 	}
 }
