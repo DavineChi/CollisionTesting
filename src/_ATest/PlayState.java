@@ -180,7 +180,7 @@ public class PlayState extends BasicGameState {
 			
 			brush.translate(x, y);
 			map.render(0, 0, 0, 0, width, height);
-			//brush.draw(player.getBoundingBox());
+			brush.draw(player.getBoundingBox());
 		}
 		
 		// Draw the potion under the player to simulate perspectived.
@@ -197,6 +197,8 @@ public class PlayState extends BasicGameState {
 			drawPlayer(brush);
 			brush.drawImage(potion.getSprite(), potion.getX(), potion.getY());
 		}
+		
+		brush.draw(potion.getBoundingBox());
 	}
 	
 	private void drawPlayer(Graphics brush) {
