@@ -4,6 +4,11 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SpriteSheet;
 
+/****************************************************************************************************************
+ * Factory class for ease of Animation creation and management.
+ * 
+ * @author Shannon Fisher
+ */
 public class AnimationFactory {
 	
 	/************************************************************************************************************
