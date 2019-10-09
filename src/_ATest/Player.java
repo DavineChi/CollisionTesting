@@ -13,28 +13,10 @@ public class Player extends Actor {
 	
 	private float speedModifier;
 	
-	private enum Carindal {
-		
-		NORTH,
-		EAST,
-		SOUTH,
-		WEST
-	}
-	
-	private SpriteSheet spritesheet;
+	private SpriteSheet spriteSheet;
 	
 	private Image currentDirection;
 	private Image[] playerDirections;
-	
-	private Image[] northSpritesWalking;
-	private Image[] eastSpritesWalking;
-	private Image[] southSpritesWalking;
-	private Image[] westSpritesWalking;
-	
-	private Image[] northSpritesRunning;
-	private Image[] eastSpritesRunning;
-	private Image[] southSpritesRunning;
-	private Image[] westSpritesRunning;
 	
 	private Animation animatePlayerNorthWalking;
 	private Animation animatePlayerEastWalking;
@@ -95,42 +77,30 @@ public class Player extends Actor {
 	 * @param heading
 	 *   The heading of this Player.
 	 * 
-	 * @param spritesheet
-	 *   The spritesheet used for rendering this Player's graphics.
+	 * @param spriteSheet
+	 *   The sprite sheet used for rendering this Player's graphics.
 	 */
-	public Player(String name, float x, float y, float width, float height, Direction heading, SpriteSheet spritesheet) {
+	public Player(String name, float x, float y, float width, float height, Direction heading, SpriteSheet spriteSheet) {
 		
 		super(name, x, y, width * Constants.SPRITE_SCALE, height * Constants.SPRITE_SCALE, heading);
 		
-		this.spritesheet = spritesheet;
+		this.spriteSheet = spriteSheet;
 		
 		speedModifier = 0.10f;
 		
 		playerDirections = new Image[4];
 		
 		initStaticDirectionSprites();
-		initAnimationSpritesWalking();
-		initAnimationSpritesRunning();
 		
-		animatePlayerNorthWalking = new Animation(northSpritesWalking, ANIMATION_SPEED);
-		animatePlayerEastWalking = new Animation(eastSpritesWalking, ANIMATION_SPEED);
-		animatePlayerSouthWalking = new Animation(southSpritesWalking, ANIMATION_SPEED);
-		animatePlayerWestWalking = new Animation(westSpritesWalking, ANIMATION_SPEED);
+		animatePlayerNorthWalking = AnimationFactory.createAnimation(spriteSheet, 0, 0, 3, ANIMATION_SPEED);
+		animatePlayerEastWalking  = AnimationFactory.createAnimation(spriteSheet, 0, 1, 3, ANIMATION_SPEED);
+		animatePlayerSouthWalking = AnimationFactory.createAnimation(spriteSheet, 0, 2, 3, ANIMATION_SPEED);
+		animatePlayerWestWalking  = AnimationFactory.createAnimation(spriteSheet, 0, 3, 3, ANIMATION_SPEED);
 		
-		animatePlayerNorthRunning = new Animation(northSpritesRunning, ANIMATION_SPEED);
-		animatePlayerEastRunning = new Animation(eastSpritesRunning, ANIMATION_SPEED);
-		animatePlayerSouthRunning = new Animation(southSpritesRunning, ANIMATION_SPEED);
-		animatePlayerWestRunning = new Animation(westSpritesRunning, ANIMATION_SPEED);
-		
-		animatePlayerNorthWalking.setLooping(true);
-		animatePlayerEastWalking.setLooping(true);
-		animatePlayerSouthWalking.setLooping(true);
-		animatePlayerWestWalking.setLooping(true);
-		
-		animatePlayerNorthRunning.setLooping(true);
-		animatePlayerEastRunning.setLooping(true);
-		animatePlayerSouthRunning.setLooping(true);
-		animatePlayerWestRunning.setLooping(true);
+		animatePlayerNorthRunning = AnimationFactory.createAnimation(spriteSheet, 3, 0, 3, ANIMATION_SPEED);
+		animatePlayerEastRunning  = AnimationFactory.createAnimation(spriteSheet, 3, 1, 3, ANIMATION_SPEED);
+		animatePlayerSouthRunning = AnimationFactory.createAnimation(spriteSheet, 3, 2, 3, ANIMATION_SPEED);
+		animatePlayerWestRunning  = AnimationFactory.createAnimation(spriteSheet, 3, 3, 3, ANIMATION_SPEED);
 	}
 	
 	public Animation getNorthAnimationWalking() { return animatePlayerNorthWalking; }
@@ -150,69 +120,9 @@ public class Player extends Actor {
 		
 		for (int i = 0; i < 4; i++) {
 			
-			playerDirections[i] = spritesheet.getSprite(1, counter).getScaledCopy(Constants.SPRITE_SCALE);
+			playerDirections[i] = spriteSheet.getSprite(1, counter).getScaledCopy(Constants.SPRITE_SCALE);
 			counter = counter + 1;
 		}
-	}
-	
-	// Helper method to initialize the walking animation sprites for this Player.
-	private void initAnimationSpritesWalking() {
-		
-		Image[] result = null;
-		Image[][] imageList = new Image[4][1];
-		
-		for (Carindal cardinal : Carindal.values()) {
-
-			int ordinal = cardinal.ordinal();
-			int counter = 0;
-			
-			result = new Image[4];
-			
-			for (int i = 0; i < (result.length - 1); i++) {
-				
-				result[i] = spritesheet.getSprite(counter, ordinal).getScaledCopy(Constants.SPRITE_SCALE);
-				
-				counter++;
-			}
-			
-			result[3] = result[1];
-			imageList[ordinal] = result;
-		}
-		
-		northSpritesWalking = imageList[0];
-		eastSpritesWalking  = imageList[1];
-		southSpritesWalking = imageList[2];
-		westSpritesWalking  = imageList[3];
-	}
-	
-	// Helper method to initialize the running animation sprites for this Player.
-	private void initAnimationSpritesRunning() {
-		
-		Image[] result = null;
-		Image[][] imageList = new Image[4][1];
-		
-		for (Carindal cardinal : Carindal.values()) {
-
-			int ordinal = cardinal.ordinal();
-			int counter = 3;
-			
-			result = new Image[4];
-			
-			for (int i = 0; i < (result.length - 1); i++) {
-				
-				result[i] = spritesheet.getSprite(counter, ordinal).getScaledCopy(Constants.SPRITE_SCALE);
-				
-				counter++;
-			}
-			
-			result[3] = result[1];
-			imageList[ordinal] = result;
-		}
-		
-		northSpritesRunning = imageList[0];
-		eastSpritesRunning  = imageList[1];
-		southSpritesRunning = imageList[2];
-		westSpritesRunning  = imageList[3];
 	}
 	
 	public Image getSprite() {

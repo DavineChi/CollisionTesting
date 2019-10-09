@@ -1,26 +1,28 @@
-1.) Get collision working correctly
-    - We have a problem where the player bounding box is getting stuck in an obstacle
-    - AABB vs SAT (separating axis theorem)
-
-2.) Implement running (COMPLETED 2019.10.05)
-
-3.) GameMap (Data Structure)
-    - Should act as a high-level (highest?) container for all entities
-
-4.) Create a simple magic potion entity
-    - Determine how to "inject" into GameMap at specified x,y coordinate
-
-5.) Utilized corrected collision detection algorithm to allow player to loot based on proximity
-
-6.) Need a backpack implementation to carry items
-    - A form of listener will need to be developed
-
-7.) Magic Potion is a consumable; implement the action for when player consumes this item
-
-8.) Console or output pane (like combat log from WoW)
-    - Priority 1: just get some standard output:
-        (yellow) You loot 13 Silver, 80 Copper
-    (dark green) You recieve loot: [Vrykul Bones]. ( <- bracketed item, including brackets, is white )
-     (dark blue) Tallhorn Stag dies, you gain 79 experience. (+36 exp Rested bonus, -43 raid penalty)
-
-9.) Design and implement acceleration / motion by point and click
++-----+----------------------------------+----------------------------------------------------------------------------------------------------+------------+
+| ID  | Task Description                 | Comments                                                                                           | Completion |
++-----+----------------------------------+----------------------------------------------------------------------------------------------------+------------+
+| 001 | Get collision working correctly  | Player bounding box is getting stuck in an obstacle                                                |            |
+|     |                                  | AABB vs SAT (separating axis theorem)                                                              |            |
++-----+----------------------------------+----------------------------------------------------------------------------------------------------+------------+
+| 002 | Implement running                | Include associated running / sprite animation                                                      | 2019.10.05 |
++-----+----------------------------------+----------------------------------------------------------------------------------------------------+------------+
+| 003 | GameMap (Data Structure)         | Should act as a high-level (highest?) container for all entities                                   |            |
++-----+----------------------------------+----------------------------------------------------------------------------------------------------+------------+
+| 004 | Simple magic potion entity       | Determine how to "inject" into GameMap at specified x,y coordinate                                 |            |
++-----+----------------------------------+----------------------------------------------------------------------------------------------------+------------+
+| 005 | Player loot functionality        | Utilize corrected collision detection, based on proximity                                          |            |
++-----+----------------------------------+----------------------------------------------------------------------------------------------------+------------+
+| 006 | Backpack implementation          | A form of listener will need to be developed                                                       |            |
++-----+----------------------------------+----------------------------------------------------------------------------------------------------+------------+
+| 007 | Magic Potion is a consumable     | Implement the action for when player consumes this item                                            |            |
++-----+----------------------------------+----------------------------------------------------------------------------------------------------+------------+
+| 008 | Console / output pane (like WoW) |  Priority 1: just get some standard output:                                                        |            |
+|     |                                  |     (yellow) You loot 13 Silver, 80 Copper                                                         |            |
+|     |                                  | (dark green) You recieve loot: [Vrykul Bones]. ( <- bracketed item, including brackets, is white ) |            |
+|     |                                  |  (dark blue) Tallhorn Stag dies, you gain 79 experience. (+36 exp Rested bonus, -43 raid penalty)  |            |
++-----+----------------------------------+----------------------------------------------------------------------------------------------------+------------+
+| 009 | Acceleration                     | Motion by point and click                                                                          |            |
++-----+----------------------------------+----------------------------------------------------------------------------------------------------+------------+
+|     |                                  |                                                                                                    |            |
++-----+----------------------------------+----------------------------------------------------------------------------------------------------+------------+
+|     |                                  |                                                                                                    |            |

@@ -1,5 +1,10 @@
 package _ATest;
 
+/****************************************************************************************************************
+ * Base class for all objects in the game world.
+ * 
+ * @author Shannon Fisher
+ */
 public abstract class Entity {
 	
 	protected String      name = "";
