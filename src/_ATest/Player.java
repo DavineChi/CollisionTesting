@@ -13,14 +13,6 @@ public class Player extends Actor {
 	
 	private float speedModifier;
 	
-	private enum Carindal {
-		
-		NORTH,
-		EAST,
-		SOUTH,
-		WEST
-	}
-	
 	private SpriteSheet spritesheet;
 	
 	private Image currentDirection;
