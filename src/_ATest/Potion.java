@@ -19,6 +19,7 @@ public class Potion extends Entity {
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		this.boundingBox = new BoundingBox(x, y, width * Constants.SPRITE_SCALE, height * Constants.SPRITE_SCALE);
 		
 		initSprite();
 	}
