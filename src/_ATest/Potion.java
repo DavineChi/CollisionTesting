@@ -5,26 +5,27 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
 public class Potion extends Entity {
-
-	private static final int CAPACITY = 10;
+	
+	private int capacity;
 	
 	private Image potionSprites;
 	private SpriteSheet spritesheet;
 	private Image potionImage;
 	
-	public Potion(String name, float x, float y, float width, float height) {
+	public Potion(String name, int capacity, float x, float y, float width, float height) {
 		
 		this.name = name;
+		this.capacity = capacity;
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
 		this.boundingBox = new BoundingBox(x, y, width * Constants.SPRITE_SCALE, height * Constants.SPRITE_SCALE);
 		
-		initSprite();
+		init();
 	}
 	
-	private void initSprite() {
+	private void init() {
 		
 		try {
 			
@@ -49,8 +50,12 @@ public class Potion extends Entity {
 		return potionImage;
 	}
 	
-	public void activate(Player player) {
+	public int consume() {
 		
-		player.addHitPoints(CAPACITY);
+		int result = capacity;
+		
+		capacity = 0;
+		
+		return result;
 	}
 }
