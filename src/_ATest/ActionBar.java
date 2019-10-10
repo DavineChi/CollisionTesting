@@ -15,6 +15,11 @@ public class ActionBar extends Rectangle {
 		backpackButton = new GameButton("B", width - 100.0f, y + 16, 32.0f, 32.0f);
 	}
 	
+	public GameButton getBackpackButton() {
+		
+		return backpackButton;
+	}
+	
 	public Object[] getAllComponents() {
 		
 		Object[] result = new Object[2];

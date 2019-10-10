@@ -30,8 +30,7 @@ public class AnimationFactory {
 	 * @param duration
 	 *   The duration to show each frame.
 	 * 
-	 * @return
-	 *   The requested Animation.
+	 * @return The requested Animation.
 	 */
 	public static Animation createAnimation(SpriteSheet spriteSheet, int x, int y, int nSprites, int duration) {
 		

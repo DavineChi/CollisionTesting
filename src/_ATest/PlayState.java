@@ -29,6 +29,7 @@ public class PlayState extends BasicGameState {
 	private Potion potion;
 	private Input input;
 	
+	private Backpack backpack;
 	private ActionBar actionBar;
 	
 	public PlayState(int id) {
@@ -60,6 +61,7 @@ public class PlayState extends BasicGameState {
 		
 		potion = new Potion("Potion", 200.0f, 312.0f, 16.0f, 16.0f);
 		
+		backpack = new Backpack(1030, 330, 140, 240);
 		actionBar = new ActionBar(0, 600, Constants.SCREEN_WIDTH, 75);
 	}
 	
@@ -173,8 +175,7 @@ public class PlayState extends BasicGameState {
 		
 		//drawDebugInfo(brush);
 		
-		brush.clearWorldClip();
-		
+		// Draw actionBar-related components...
 		for (Object object : actionBar.getAllComponents()) {
 			
 			Rectangle shape = null;
@@ -232,6 +233,29 @@ public class PlayState extends BasicGameState {
 		}
 		
 		//brush.draw(potion.getBoundingBox());
+		
+		brush.clearWorldClip();
+		brush.resetTransform();
+		
+		if (!backpack.isDisplayed() && input.isKeyPressed(Input.KEY_B)) {
+			
+			backpack.setDisplayed(true);
+		}
+		
+		else if (backpack.isDisplayed() && input.isKeyPressed(Input.KEY_B)) {
+			
+			backpack.setDisplayed(false);
+		}
+		
+		if (backpack.isDisplayed()) {
+			
+			brush.draw(backpack);
+		}
+		
+		int mouseX = input.getMouseX();
+		int mouseY = input.getMouseY();
+		
+		// TODO: button clicked implementation (refer to MouseListener documenation and find examples)
 	}
 	
 	private void drawPlayer(Graphics brush) {
