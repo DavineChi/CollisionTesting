@@ -1,12 +1,15 @@
 package _ATest;
 
 import org.newdawn.slick.Color;
+import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
@@ -26,6 +29,8 @@ public class PlayState extends BasicGameState {
 	private Potion potion;
 	private Input input;
 	
+	private ActionBar actionBar;
+	
 	public PlayState(int id) {
 		
 		this.id = id;
@@ -44,7 +49,7 @@ public class PlayState extends BasicGameState {
 		
 		spritesheet.setFilter(Image.FILTER_NEAREST);
 		
-		player = new Player("Ayrn", 462.0f, 116.0f, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, new Direction(180.0), spritesheet);
+		player = new Player("Ayrn", 340.0f, 280.0f, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, new Direction(180.0), spritesheet);
 		obstacle = new Player("Water", 64.0f, 384.0f, 192.0f, 192.0f, new Direction(0.0));
 		
 		GameMap.init();
@@ -54,6 +59,8 @@ public class PlayState extends BasicGameState {
 		displayMap = true;
 		
 		potion = new Potion("Potion", 200.0f, 312.0f, 16.0f, 16.0f);
+		
+		actionBar = new ActionBar(0, 600, Constants.SCREEN_WIDTH, 75);
 	}
 	
 	@Override
@@ -164,7 +171,33 @@ public class PlayState extends BasicGameState {
 		brush.setColor(Color.white);
 		//brush.draw(obstacle.getBoundingBox());
 		
-		drawDebugInfo(brush);
+		//drawDebugInfo(brush);
+		
+		brush.clearWorldClip();
+		
+		for (Object object : actionBar.getAllComponents()) {
+			
+			Rectangle shape = null;
+			GameButton gameButton = null;
+			
+			if (object instanceof Rectangle) {
+				
+				shape = (Rectangle)object;
+				
+				brush.draw(shape);
+			}
+			
+			if (object instanceof GameButton) {
+				
+				Shape buttonBound = null;
+				
+				buttonBound = (Shape)object;
+				gameButton = (GameButton)object;
+				
+				brush.draw(buttonBound);
+				brush.drawString(gameButton.getText(), gameButton.getX() + 8, gameButton.getY() + 8);
+			}
+		}
 		
 		if (displayMap) {
 			
@@ -198,7 +231,7 @@ public class PlayState extends BasicGameState {
 			brush.drawImage(potion.getSprite(), potion.getX(), potion.getY());
 		}
 		
-		brush.draw(potion.getBoundingBox());
+		//brush.draw(potion.getBoundingBox());
 	}
 	
 	private void drawPlayer(Graphics brush) {
