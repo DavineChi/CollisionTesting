@@ -12,7 +12,7 @@ public class GameButton extends Rectangle {
 	 * Constructor used to create a new GameButton.
 	 * <p>
 	 * 
-	 * @param text
+	 * @param label
 	 *   The label for this GameButton.
 	 * 
 	 * @param posX
@@ -27,11 +27,11 @@ public class GameButton extends Rectangle {
 	 * @param height
 	 *   The height of this GameButton.
 	 */
-	public GameButton(String text, float posX, float posY, float width, float height) {
+	public GameButton(String label, float posX, float posY, float width, float height) {
 		
 		super(posX, posY, width, height);
 		
-		this.text = text;
+		this.text = label;
 	}
 	
 	/************************************************************************************************************
