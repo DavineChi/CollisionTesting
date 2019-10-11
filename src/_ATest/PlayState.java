@@ -1,7 +1,6 @@
 package _ATest;
 
 import org.newdawn.slick.Color;
-import org.newdawn.slick.Font;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -59,7 +58,7 @@ public class PlayState extends BasicGameState {
 		
 		displayMap = true;
 		
-		potion = new Potion("Potion", 200.0f, 312.0f, 16.0f, 16.0f);
+		potion = new Potion("Potion", 10, 200.0f, 312.0f, 16.0f, 16.0f);
 		
 		backpack = new Backpack(1030, 330, 140, 240);
 		actionBar = new ActionBar(0, 600, Constants.SCREEN_WIDTH, 75);
@@ -200,22 +199,24 @@ public class PlayState extends BasicGameState {
 			}
 		}
 		
+		brush.setWorldClip(0f, 0f, 1200.0f, 600.0f);
+		
+		//Camera.instance().translate(player, map, brush, (float)(Constants.SCREEN_WIDTH / 2), (float)(Constants.SCREEN_HEIGHT / 2));
+		
+		int x = (int)Math.ceil((player.getX() * -1) + Constants.SCREEN_WIDTH / 2);
+		int y = (int)Math.ceil((player.getY() * -1) + Constants.SCREEN_HEIGHT / 2);
+		
+		int width = (int)Math.floor(Constants.SCREEN_WIDTH / 2);
+		int height = (int)Math.floor(Constants.SCREEN_HEIGHT / 2);
+		
+		brush.translate(x, y);
+		
 		if (displayMap) {
 			
-			brush.setWorldClip(0f, 0f, 1200.0f, 600.0f);
-			
-			//Camera.instance().translate(player, map, brush, (float)(Constants.SCREEN_WIDTH / 2), (float)(Constants.SCREEN_HEIGHT / 2));
-			
-			int x = (int)Math.ceil((player.getX() * -1) + Constants.SCREEN_WIDTH / 2);
-			int y = (int)Math.ceil((player.getY() * -1) + Constants.SCREEN_HEIGHT / 2);
-			
-			int width = (int)Math.floor(Constants.SCREEN_WIDTH / 2);
-			int height = (int)Math.floor(Constants.SCREEN_HEIGHT / 2);
-			
-			brush.translate(x, y);
 			map.render(0, 0, 0, 0, width, height);
-			brush.draw(player.getBoundingBox());
 		}
+		
+		brush.draw(player.getBoundingBox());
 		
 		// Draw the potion under the player to simulate perspectived.
 		if ((player.getY() + player.getHeight() >= potion.getY() + potion.getHeight()) ||
