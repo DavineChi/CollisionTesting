@@ -9,7 +9,9 @@ public class Player extends Actor {
 	private static final float SPEED_MODIFIER = 0.10f;
 	private static final float MULTIPLIER = 10.0f;
 	
-	private static final int ANIMATION_SPEED = 180;
+	private static final int ANIMATION_SPEED_WALKING = 180;
+	private static final int ANIMATION_SPEED_RUNNING = 130;
+	private static final int ANIMATION_SPEED_IDLE = 80;
 	
 	private float speedModifier;
 	
@@ -94,17 +96,19 @@ public class Player extends Actor {
 		
 		initStaticDirectionSprites();
 		
-		animatePlayerNorthWalking = AnimationFactory.createAnimationHorizontal(spriteSheet, 0, 0, 3, ANIMATION_SPEED);
-		animatePlayerEastWalking  = AnimationFactory.createAnimationHorizontal(spriteSheet, 0, 1, 3, ANIMATION_SPEED);
-		animatePlayerSouthWalking = AnimationFactory.createAnimationHorizontal(spriteSheet, 0, 2, 3, ANIMATION_SPEED);
-		animatePlayerWestWalking  = AnimationFactory.createAnimationHorizontal(spriteSheet, 0, 3, 3, ANIMATION_SPEED);
+		int diff = 50;
 		
-		animatePlayerNorthRunning = AnimationFactory.createAnimationHorizontal(spriteSheet, 3, 0, 3, ANIMATION_SPEED);
-		animatePlayerEastRunning  = AnimationFactory.createAnimationHorizontal(spriteSheet, 3, 1, 3, ANIMATION_SPEED);
-		animatePlayerSouthRunning = AnimationFactory.createAnimationHorizontal(spriteSheet, 3, 2, 3, ANIMATION_SPEED);
-		animatePlayerWestRunning  = AnimationFactory.createAnimationHorizontal(spriteSheet, 3, 3, 3, ANIMATION_SPEED);
+		animatePlayerNorthWalking = AnimationFactory.createAnimationHorizontal(spriteSheet, 0, 0, 3, ANIMATION_SPEED_WALKING);
+		animatePlayerEastWalking  = AnimationFactory.createAnimationHorizontal(spriteSheet, 0, 1, 3, ANIMATION_SPEED_WALKING);
+		animatePlayerSouthWalking = AnimationFactory.createAnimationHorizontal(spriteSheet, 0, 2, 3, ANIMATION_SPEED_WALKING);
+		animatePlayerWestWalking  = AnimationFactory.createAnimationHorizontal(spriteSheet, 0, 3, 3, ANIMATION_SPEED_WALKING);
 		
-		animatePlayerIdle = AnimationFactory.createAnimationIdlePlayer(spriteSheet, 16, 0, ANIMATION_SPEED - 100);
+		animatePlayerNorthRunning = AnimationFactory.createAnimationHorizontal(spriteSheet, 3, 0, 3, ANIMATION_SPEED_RUNNING);
+		animatePlayerEastRunning  = AnimationFactory.createAnimationHorizontal(spriteSheet, 3, 1, 3, ANIMATION_SPEED_RUNNING);
+		animatePlayerSouthRunning = AnimationFactory.createAnimationHorizontal(spriteSheet, 3, 2, 3, ANIMATION_SPEED_RUNNING);
+		animatePlayerWestRunning  = AnimationFactory.createAnimationHorizontal(spriteSheet, 3, 3, 3, ANIMATION_SPEED_RUNNING);
+		
+		animatePlayerIdle = AnimationFactory.createAnimationIdlePlayer(spriteSheet, 16, 0, ANIMATION_SPEED_IDLE);
 	}
 	
 	public Animation getNorthAnimationWalking() { return animatePlayerNorthWalking; }
