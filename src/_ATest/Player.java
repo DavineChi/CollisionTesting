@@ -104,7 +104,7 @@ public class Player extends Actor {
 		animatePlayerSouthRunning = AnimationFactory.createAnimationHorizontal(spriteSheet, 3, 2, 3, ANIMATION_SPEED);
 		animatePlayerWestRunning  = AnimationFactory.createAnimationHorizontal(spriteSheet, 3, 3, 3, ANIMATION_SPEED);
 		
-		animatePlayerIdle = AnimationFactory.createAnimationIdlePlayer(spriteSheet, 16, 0, ANIMATION_SPEED - 50);
+		animatePlayerIdle = AnimationFactory.createAnimationIdlePlayer(spriteSheet, 16, 0, ANIMATION_SPEED - 100);
 	}
 	
 	public Animation getNorthAnimationWalking() { return animatePlayerNorthWalking; }

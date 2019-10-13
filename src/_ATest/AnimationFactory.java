@@ -116,16 +116,31 @@ public class AnimationFactory {
 	 */
 	public static Animation createAnimationIdlePlayer(SpriteSheet spriteSheet, int x, int y, int duration) {
 		
-		int[] sequence = { 1, 2, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+		int additionalFrames = 36;
+		int[] baseSequence = { 1, 2, 0, 2, 1 };
+		int[] finalSequence = new int[baseSequence.length + additionalFrames];
 		
-		Image[] frames = new Image[sequence.length];
+		for (int k = 0; k < baseSequence.length + additionalFrames; k++) {
+			
+			if (k < baseSequence.length) {
+				
+				finalSequence[k] = baseSequence[k];
+			}
+			
+			else {
+				
+				finalSequence[k] = 1;
+			}
+		}
+		
+		Image[] frames = new Image[finalSequence.length];
 		Animation result = null;
 		
-		for (int k = 0; k < sequence.length; k++) {
+		for (int i = 0; i < finalSequence.length; i++) {
 			
-			int yOffset = sequence[k];
+			int yOffset = finalSequence[i];
 			
-			frames[k] = spriteSheet.getSprite(x, yOffset).getScaledCopy(Constants.SPRITE_SCALE);
+			frames[i] = spriteSheet.getSprite(x, yOffset).getScaledCopy(Constants.SPRITE_SCALE);
 		}
 		
 		result = new Animation(frames, duration);
