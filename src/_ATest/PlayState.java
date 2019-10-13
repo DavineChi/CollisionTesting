@@ -238,6 +238,8 @@ public class PlayState extends BasicGameState {
 		brush.clearWorldClip();
 		brush.resetTransform();
 		
+		brush.drawString(String.valueOf(player.getDirection().getHeading()), 10, 60);
+		
 		if (!backpack.isDisplayed() && input.isKeyPressed(Input.KEY_B)) {
 			
 			backpack.setDisplayed(true);
@@ -313,7 +315,17 @@ public class PlayState extends BasicGameState {
 			
 			else {
 				
-				brush.drawImage(player.getSprite(), player.getX(), player.getY());
+				if (player.getDirection().getHeading() == 180) {
+					
+					player.getPlayerIdleAnimation().draw(player.getX(), player.getY());
+				}
+				
+				if (player.getDirection().getHeading() == 0 ||
+					player.getDirection().getHeading() == 90 ||
+					player.getDirection().getHeading() == 270) {
+					
+					brush.drawImage(player.getSprite(), player.getX(), player.getY());
+				}
 			}
 		}
 	}

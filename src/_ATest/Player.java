@@ -28,6 +28,8 @@ public class Player extends Actor {
 	private Animation animatePlayerSouthRunning;
 	private Animation animatePlayerWestRunning;
 	
+	private Animation animatePlayerIdle;
+	
 	/************************************************************************************************************
 	 * Constructor used to create a new Player.
 	 * <p>
@@ -92,15 +94,17 @@ public class Player extends Actor {
 		
 		initStaticDirectionSprites();
 		
-		animatePlayerNorthWalking = AnimationFactory.createAnimation(spriteSheet, 0, 0, 3, ANIMATION_SPEED);
-		animatePlayerEastWalking  = AnimationFactory.createAnimation(spriteSheet, 0, 1, 3, ANIMATION_SPEED);
-		animatePlayerSouthWalking = AnimationFactory.createAnimation(spriteSheet, 0, 2, 3, ANIMATION_SPEED);
-		animatePlayerWestWalking  = AnimationFactory.createAnimation(spriteSheet, 0, 3, 3, ANIMATION_SPEED);
+		animatePlayerNorthWalking = AnimationFactory.createAnimationHorizontal(spriteSheet, 0, 0, 3, ANIMATION_SPEED);
+		animatePlayerEastWalking  = AnimationFactory.createAnimationHorizontal(spriteSheet, 0, 1, 3, ANIMATION_SPEED);
+		animatePlayerSouthWalking = AnimationFactory.createAnimationHorizontal(spriteSheet, 0, 2, 3, ANIMATION_SPEED);
+		animatePlayerWestWalking  = AnimationFactory.createAnimationHorizontal(spriteSheet, 0, 3, 3, ANIMATION_SPEED);
 		
-		animatePlayerNorthRunning = AnimationFactory.createAnimation(spriteSheet, 3, 0, 3, ANIMATION_SPEED);
-		animatePlayerEastRunning  = AnimationFactory.createAnimation(spriteSheet, 3, 1, 3, ANIMATION_SPEED);
-		animatePlayerSouthRunning = AnimationFactory.createAnimation(spriteSheet, 3, 2, 3, ANIMATION_SPEED);
-		animatePlayerWestRunning  = AnimationFactory.createAnimation(spriteSheet, 3, 3, 3, ANIMATION_SPEED);
+		animatePlayerNorthRunning = AnimationFactory.createAnimationHorizontal(spriteSheet, 3, 0, 3, ANIMATION_SPEED);
+		animatePlayerEastRunning  = AnimationFactory.createAnimationHorizontal(spriteSheet, 3, 1, 3, ANIMATION_SPEED);
+		animatePlayerSouthRunning = AnimationFactory.createAnimationHorizontal(spriteSheet, 3, 2, 3, ANIMATION_SPEED);
+		animatePlayerWestRunning  = AnimationFactory.createAnimationHorizontal(spriteSheet, 3, 3, 3, ANIMATION_SPEED);
+		
+		animatePlayerIdle = AnimationFactory.createAnimationIdlePlayer(spriteSheet, 16, 0, ANIMATION_SPEED - 50);
 	}
 	
 	public Animation getNorthAnimationWalking() { return animatePlayerNorthWalking; }
@@ -112,6 +116,8 @@ public class Player extends Actor {
 	public Animation getEastAnimationRunning()  { return animatePlayerEastRunning;  }
 	public Animation getSouthAnimationRunning() { return animatePlayerSouthRunning; }
 	public Animation getWestAnimationRunning()  { return animatePlayerWestRunning;  }
+	
+	public Animation getPlayerIdleAnimation()   { return animatePlayerIdle;         }
 	
 	// Helper method to initialize the static directional sprites for this Player.
 	private void initStaticDirectionSprites() {
@@ -136,6 +142,8 @@ public class Player extends Actor {
 	}
 	
 	public void setDirection(int heading) {
+		
+		this.setHeading(heading);
 		
 		if (heading == 0)   { currentDirection = playerDirections[0]; }
 		if (heading == 90)  { currentDirection = playerDirections[1]; }
