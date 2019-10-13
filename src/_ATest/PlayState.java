@@ -216,7 +216,7 @@ public class PlayState extends BasicGameState {
 			map.render(0, 0, 0, 0, width, height);
 		}
 		
-		brush.draw(player.getBoundingBox());
+		//brush.draw(player.getBoundingBox());
 		
 		// Draw the potion under the player to simulate perspectived.
 		if ((player.getY() + player.getHeight() >= potion.getY() + potion.getHeight()) ||
