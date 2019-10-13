@@ -19,10 +19,10 @@ public class AnimationFactory {
 	 *   The spritesheet used for the requested Animation.
 	 * 
 	 * @param x
-	 *   The X-location of the starting sprite on the spritesheet.
+	 *   The X-location of the starting sprite on the spritesheet (0-based indexing).
 	 * 
 	 * @param y
-	 *   The Y-location of the starting sprite on the spritesheet.
+	 *   The Y-location of the starting sprite on the spritesheet (0-based indexing).
 	 * 
 	 * @param nSprites
 	 *   The number of unique/distinct sprites for the Animation.
