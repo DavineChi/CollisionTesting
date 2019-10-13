@@ -57,7 +57,7 @@ public abstract class Actor extends Entity implements IDurable {
 		this.heading.setHeading(heading);
 	}
 	
-	public Direction getHeading() { return heading; }
+	public Direction getDirection() { return heading; }
 	
 	/************************************************************************************************************
 	 * An accessor method to retrieve this Actor's level.
