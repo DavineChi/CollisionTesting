@@ -96,8 +96,6 @@ public class Player extends Actor {
 		
 		initStaticDirectionSprites();
 		
-		int diff = 50;
-		
 		animatePlayerNorthWalking = AnimationFactory.createAnimationHorizontal(spriteSheet, 0, 0, 3, ANIMATION_SPEED_WALKING);
 		animatePlayerEastWalking  = AnimationFactory.createAnimationHorizontal(spriteSheet, 0, 1, 3, ANIMATION_SPEED_WALKING);
 		animatePlayerSouthWalking = AnimationFactory.createAnimationHorizontal(spriteSheet, 0, 2, 3, ANIMATION_SPEED_WALKING);
