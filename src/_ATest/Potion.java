@@ -12,9 +12,9 @@ public class Potion extends Entity {
 	private SpriteSheet spritesheet;
 	private Image potionImage;
 	
-	public Potion(String name, int capacity, float x, float y, float width, float height) {
+	public Potion(int capacity, float x, float y, float width, float height) {
 		
-		this.name = name;
+		this.name = "potion";
 		this.capacity = capacity;
 		this.x = x;
 		this.y = y;
@@ -30,7 +30,6 @@ public class Potion extends Entity {
 		try {
 			
 			potionSprites = new Image("res/potions.png");
-			//sprites = sprites.getScaledCopy(1.5f);
 			spritesheet = new SpriteSheet(potionSprites, (int)width, (int)height);
 			spritesheet.setFilter(Image.FILTER_NEAREST);
 			potionImage = spritesheet.getSprite(7, 0).getScaledCopy(2f);
