@@ -22,14 +22,16 @@ public class PlayState extends BasicGameState {
 	private String coords;
 	private String strIntersects;
 	private Image playerSprites;
-	private SpriteSheet spritesheet;
+	private SpriteSheet playerSpriteSheet;
 	private GameMap map;
 	private boolean displayMap;
 	private Potion potion;
+	private Gold gold;
 	private Input input;
 	
 	private Backpack backpack;
 	private ActionBar actionBar;
+	private HealthBar healthBar;
 	
 	public PlayState(int id) {
 		
@@ -45,11 +47,11 @@ public class PlayState extends BasicGameState {
 		strIntersects = "FALSE";
 		
 		playerSprites = new Image("res/Fumiko.png");
-		spritesheet = new SpriteSheet(playerSprites, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT);
+		playerSpriteSheet = new SpriteSheet(playerSprites, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT);
 		
-		spritesheet.setFilter(Image.FILTER_NEAREST);
+		playerSpriteSheet.setFilter(Image.FILTER_NEAREST);
 		
-		player = new Player("Ayrn", 340.0f, 280.0f, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, new Direction(180.0), spritesheet);
+		player = new Player("Ayrn", 340.0f, 280.0f, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, new Direction(180.0), playerSpriteSheet);
 		obstacle = new Player("Water", 64.0f, 384.0f, 192.0f, 192.0f, new Direction(0.0));
 		
 		GameMap.init();
@@ -58,10 +60,12 @@ public class PlayState extends BasicGameState {
 		
 		displayMap = true;
 		
-		potion = new Potion("Potion", 10, 200.0f, 312.0f, 16.0f, 16.0f);
+		potion = new Potion(10, 200.0f, 312.0f, 16.0f, 16.0f);
+		gold = new Gold(10, 560.0f, 360.0f, 16.0f, 16.0f);
 		
 		backpack = new Backpack(1030, 330, 140, 240);
 		actionBar = new ActionBar(0, 600, Constants.SCREEN_WIDTH, 75);
+		healthBar = new HealthBar(0,0,0,0,player);
 	}
 	
 	@Override
@@ -219,18 +223,33 @@ public class PlayState extends BasicGameState {
 		//brush.draw(player.getBoundingBox());
 		
 		// Draw the potion under the player to simulate perspectived.
-		if ((player.getY() + player.getHeight() >= potion.getY() + potion.getHeight()) ||
-		    (player.getY() <= potion.getY() + potion.getHeight())) {
+//		if ((player.getY() + player.getHeight() >= potion.getY() + potion.getHeight()) ||
+//		    (player.getY() <= potion.getY() + potion.getHeight())) {
+//			
+//			brush.drawImage(potion.getSprite(), potion.getX(), potion.getY());
+//			drawPlayer(brush);
+//		}
+//		
+//		// Draw the potion over the player to simulate perspective.
+//		if (player.getY() + player.getHeight() < potion.getY() + potion.getHeight()) {
+//			
+//			drawPlayer(brush);
+//			brush.drawImage(potion.getSprite(), potion.getX(), potion.getY());
+//		}
+		
+		// Draw the potion under the player to simulate perspectived.
+		if ((player.getY() + player.getHeight() >= gold.getY() + gold.getHeight()) ||
+		    (player.getY() <= gold.getY() + gold.getHeight())) {
 			
-			brush.drawImage(potion.getSprite(), potion.getX(), potion.getY());
+			brush.drawImage(gold.getSprite(), gold.getX(), gold.getY());
 			drawPlayer(brush);
 		}
 		
 		// Draw the potion over the player to simulate perspective.
-		if (player.getY() + player.getHeight() < potion.getY() + potion.getHeight()) {
+		if (player.getY() + player.getHeight() < gold.getY() + gold.getHeight()) {
 			
 			drawPlayer(brush);
-			brush.drawImage(potion.getSprite(), potion.getX(), potion.getY());
+			brush.drawImage(gold.getSprite(), gold.getX(), gold.getY());
 		}
 		
 		//brush.draw(potion.getBoundingBox());
@@ -254,6 +273,9 @@ public class PlayState extends BasicGameState {
 			
 			brush.draw(backpack);
 		}
+
+		// TODO: draw healthbar
+		
 		
 		int mouseX = input.getMouseX();
 		int mouseY = input.getMouseY();
