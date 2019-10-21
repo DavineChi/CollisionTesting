@@ -31,7 +31,7 @@ public class PlayState extends BasicGameState {
 	
 	private Backpack backpack;
 	private ActionBar actionBar;
-	private HealthBar healthBar;
+	//private HealthBar healthBar;
 	
 	public PlayState(int id) {
 		
@@ -51,7 +51,8 @@ public class PlayState extends BasicGameState {
 		
 		playerSpriteSheet.setFilter(Image.FILTER_NEAREST);
 		
-		player = new Player("Ayrn", 340.0f, 280.0f, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, new Direction(180.0), playerSpriteSheet);
+		//player = new Player("Ayrn", 340.0f, 280.0f, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, new Direction(180.0), playerSpriteSheet);
+		player = Player.instance();
 		obstacle = new Player("Water", 64.0f, 384.0f, 192.0f, 192.0f, new Direction(0.0));
 		
 		GameMap.init();
@@ -65,7 +66,7 @@ public class PlayState extends BasicGameState {
 		
 		backpack = new Backpack(1030, 330, 140, 240);
 		actionBar = new ActionBar(0, 600, Constants.SCREEN_WIDTH, 75);
-		healthBar = new HealthBar(0,0,0,0,player);
+		//healthBar = new HealthBar(0,0,0,0,player);
 	}
 	
 	@Override
