@@ -31,7 +31,7 @@ public class Main extends StateBasedGame {
 			
 			gameContainer.setDisplayMode(Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT, false);
 			gameContainer.setTargetFrameRate(60);
-			gameContainer.setShowFPS(true);
+			gameContainer.setShowFPS(false);
 			gameContainer.start();
 		}
 		
