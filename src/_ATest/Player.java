@@ -2,9 +2,12 @@ package _ATest;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 
 public class Player extends Actor {
+	
+	protected static Player player = null;
 	
 	private static final float SPEED_MODIFIER = 0.10f;
 	private static final float MULTIPLIER = 10.0f;
@@ -15,6 +18,7 @@ public class Player extends Actor {
 	
 	private float speedModifier;
 	
+	private Image playerSprites;
 	private SpriteSheet spriteSheet;
 	
 	private Image currentDirection;
@@ -53,42 +57,25 @@ public class Player extends Actor {
 	 * 
 	 * @param heading
 	 *   The heading of this Player.
-	 */
-	public Player(String name, float x, float y, float width, float height, Direction heading) {
-		
-		super(name, x, y, width * Constants.SPRITE_SCALE, height * Constants.SPRITE_SCALE, heading);
-	}
-	
-	/************************************************************************************************************
-	 * Constructor used to create a new Player.
-	 * <p>
-	 * 
-	 * @param name
-	 *   The name for this Player.
-	 * 
-	 * @param x
-	 *   The Cartesian x-coordinate for this Player.
-	 * 
-	 * @param y
-	 *   The Cartesian y-coordinate for this Player.
-	 * 
-	 * @param width
-	 *   The width of this Player.
-	 * 
-	 * @param height
-	 *   The height of this Player.
-	 * 
-	 * @param heading
-	 *   The heading of this Player.
 	 * 
 	 * @param spriteSheet
 	 *   The sprite sheet used for rendering this Player's graphics.
 	 */
-	public Player(String name, float x, float y, float width, float height, Direction heading, SpriteSheet spriteSheet) {
+	protected Player(String name, float x, float y, float width, float height, Direction heading) {
 		
 		super(name, x, y, width * Constants.SPRITE_SCALE, height * Constants.SPRITE_SCALE, heading);
 		
-		this.spriteSheet = spriteSheet;
+		try {
+			
+			playerSprites = new Image("res/Fumiko.png");
+		}
+		
+		catch (SlickException ex) {
+			
+			ex.printStackTrace();
+		}
+		
+		this.spriteSheet = new SpriteSheet(playerSprites, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT);
 		
 		speedModifier = 0.10f;
 		
@@ -107,6 +94,16 @@ public class Player extends Actor {
 		animatePlayerWestRunning  = AnimationFactory.createAnimationHorizontal(spriteSheet, 3, 3, 3, ANIMATION_SPEED_RUNNING);
 		
 		animatePlayerIdle = AnimationFactory.createAnimationIdlePlayer(spriteSheet, 16, 0, ANIMATION_SPEED_IDLE);
+	}
+	
+	public static Player instance() {
+
+		if (player == null) {
+			
+			player = new Player("Ayrn", 340.0f, 280.0f, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, new Direction(180.0));
+		}
+
+		return player;
 	}
 	
 	public Animation getNorthAnimationWalking() { return animatePlayerNorthWalking; }
