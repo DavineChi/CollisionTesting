@@ -1,5 +1,6 @@
 package _ATest;
 
+import org.lwjgl.util.Timer;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -13,9 +14,9 @@ public class TestState extends BasicGameState {
 	
 	private int id;
 	private Player player;
-	private GameTimer timer;
 	private Input input;
 	private Music music;
+	private Timer libTimer;
 	
 	private HealthBar healthBar;
 	
@@ -33,34 +34,34 @@ public class TestState extends BasicGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
 		
+		libTimer = new Timer();
+		
 		healthBar = new HealthBar(70.0f, 70.0f, 120.0f, 10.0f);
 		
 		music = new Music(Constants.MUSIC_PATH + "dayforest01.ogg");
 		input = container.getInput();
-		timer = new GameTimer();
 		player = Player.instance();
 	}
 	
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 		
-		timer.tick(delta);
-		
-		if (input.isKeyPressed(Input.KEY_R)) {
-			
-			timer.reset();
-		}
-		
 		if (input.isKeyPressed(Input.KEY_H)) {
 			
-			player.setHitPoints(player.getHitPoints() / 2);
-			timer.reset();
+			player.setHitPoints(player.getHitPoints() / 2);	
 		}
 		
-		if (player.getHitPoints() < player.getMaxHitPoints()) {
+		if (input.isKeyPressed(Input.KEY_LBRACKET)) {
 			
-			timer.reset();
+			player.setState(Player.State.IN_COMBAT);
 		}
+		
+		if (input.isKeyPressed(Input.KEY_RBRACKET)) {
+			
+			player.setState(Player.State.OUT_COMBAT);
+		}
+		
+		healthBar.update();
 	}
 	
 	@Override
@@ -68,13 +69,17 @@ public class TestState extends BasicGameState {
 		
 		Color color = brush.getColor();
 		brush.drawString(String.valueOf(player.getHitPoints()), 50, 10);
-		brush.drawString("Time : " + timer.getTime() / 1000, 500, 500);
+		brush.drawString("HB Timer : " + (int)healthBar.getTime(), 500, 550);
 		
 		brush.setColor(Color.white.darker(0.40f));
 		brush.draw(healthBar.getFrame());
 		brush.setColor(Color.green.darker(0.30f));
 		brush.fill(healthBar.getFillBar());
 		brush.setColor(color);
+		
+		brush.drawString(healthBar.getState().toString(), 250.0f, 250.0f);
+		
+		brush.drawString(player.getState().toString(), 600.0f, 20.0f);
 	}
 	
 	@Override
