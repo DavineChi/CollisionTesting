@@ -43,17 +43,17 @@ public class PlayState extends BasicGameState {
 		this.id = id;
 	}
 	
-	@Override
-	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
-		
-		music.play(1.0f, 0.3f);
-	}
-	
-	@Override
-	public void leave(GameContainer container, StateBasedGame game) throws SlickException {
-		
-		music.stop();
-	}
+//	@Override
+//	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+//		
+//		music.play(1.0f, 0.3f);
+//	}
+//	
+//	@Override
+//	public void leave(GameContainer container, StateBasedGame game) throws SlickException {
+//		
+//		music.stop();
+//	}
 	
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {

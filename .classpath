@@ -7,7 +7,5 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Users/fishers/workspace/_Libraries/lwjgl-2.9.3/native/windows"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/Users/Maelok/workspace/_Libraries/slick2d/lib/jogg-0.0.7.jar"/>
-	<classpathentry kind="lib" path="D:/Users/Maelok/workspace/_Libraries/slick2d/lib/jorbis-0.0.15.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
