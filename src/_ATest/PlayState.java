@@ -5,6 +5,7 @@ import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Rectangle;
@@ -13,6 +14,8 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class PlayState extends BasicGameState {
+	
+	private static final String MUSIC_PATH = "C:\\Users\\Maelok\\eclipse_oxygen_workspace\\CollisionTesting\\res\\audio\\environment\\";
 	
 	private int id;
 	private Player player;
@@ -33,6 +36,8 @@ public class PlayState extends BasicGameState {
 	private ActionBar actionBar;
 	//private HealthBar healthBar;
 	
+	private Music music;
+	
 	public PlayState(int id) {
 		
 		this.id = id;
@@ -40,6 +45,8 @@ public class PlayState extends BasicGameState {
 	
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
+		
+		music = new Music(MUSIC_PATH + "dayforest01.ogg");
 		
 		input = container.getInput();
 		
@@ -67,6 +74,8 @@ public class PlayState extends BasicGameState {
 		backpack = new Backpack(1030, 330, 140, 240);
 		actionBar = new ActionBar(0, 600, Constants.SCREEN_WIDTH, 75);
 		//healthBar = new HealthBar(0,0,0,0,player);
+		
+		music.play(1.0f, 0.3f);
 	}
 	
 	@Override

@@ -7,8 +7,8 @@ import org.newdawn.slick.state.StateBasedGame;
 
 public class Main extends StateBasedGame {
 	
-	//private static final int PLAY = 0;
-	private static final int TEST = 1;
+	private static final int PLAY = 0;
+	//private static final int TEST = 1;
 	
 	public Main(String gameName) {
 		
@@ -18,9 +18,9 @@ public class Main extends StateBasedGame {
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
 		
-		//this.addState(new PlayState(PLAY));
-		this.addState(new TestState(TEST));
-		this.enterState(TEST);
+		this.addState(new PlayState(PLAY));
+		//this.addState(new TestState(TEST));
+		this.enterState(PLAY);
 	}
 	
 	public static void main(String[] args) {

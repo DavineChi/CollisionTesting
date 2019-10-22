@@ -4,16 +4,21 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import org.newdawn.slick.Music;
+import org.newdawn.slick.MusicListener;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class TestState extends BasicGameState {
 	
+	private static final String MUSIC_PATH = "C:\\Users\\Maelok\\eclipse_oxygen_workspace\\CollisionTesting\\res\\audio\\environment\\";
+	
 	private int id;
 	private Player player;
 	private GameTimer timer;
 	private Input input;
+	private Music music;
 	
 	private HealthBar healthBar;
 	
@@ -26,9 +31,14 @@ public class TestState extends BasicGameState {
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
 		
 		healthBar = new HealthBar(70.0f, 70.0f, 120.0f, 10.0f);
+		
+		music = new Music(MUSIC_PATH + "dayforest01.ogg");
 		input = container.getInput();
 		timer = new GameTimer();
 		player = Player.instance();
+		
+		music.play(1.0f, 0.3f);
+		MusicListener mListener;
 	}
 	
 	@Override
@@ -45,6 +55,13 @@ public class TestState extends BasicGameState {
 			
 			player.setHitPoints(player.getHitPoints() / 2);
 			timer.reset();
+		}
+		
+		if (player.getHitPoints() < player.getMaxHitPoints()) {
+			
+			timer.reset();
+			
+			
 		}
 	}
 	
