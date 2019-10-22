@@ -35,10 +35,24 @@ public class HealthBar extends CommonBar {
 	
 	private void queryFillLevel() {
 		
+		float fillFactor = (float)(Player.instance().getHitPoints()) / (float)(Player.instance().getMaxHitPoints());
+		
 		if ((float)(Player.instance().getHitPoints()) < (float)(Player.instance().getMaxHitPoints())) {
 			
 			state = State.REGEN;
 		}
+		
+		if ((float)(Player.instance().getHitPoints()) == (float)(Player.instance().getMaxHitPoints())) {
+			
+			state = State.FULL;
+		}
+		
+		if (Player.instance().getState() == Player.State.IN_COMBAT) {
+			
+			state = State.COMBAT;
+		}
+		
+		fillBar.setWidth(width * fillFactor);
 	}
 	
 	public HealthBar.State getState() {
@@ -59,9 +73,13 @@ public class HealthBar extends CommonBar {
 			
 			Timer.tick();
 			
-			if (timer.getTime() / 1000 > 3) {
+			if (timer.getTime() > 2) {
 				
 				timer.reset();
+				
+				int fillValue = (int)(Player.instance().getMaxHitPoints() * 0.01f);
+				
+				Player.instance().addHitPoints(fillValue);
 				
 				float fillFactor = (float)(Player.instance().getHitPoints()) / (float)(Player.instance().getMaxHitPoints());
 				
@@ -69,4 +87,10 @@ public class HealthBar extends CommonBar {
 			}
 		}
 	}
+	
+	public int getTime() {
+		
+		return (int)timer.getTime();
+	}
+	
 }
