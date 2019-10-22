@@ -36,7 +36,7 @@ public class TestState extends BasicGameState {
 		
 		libTimer = new Timer();
 		
-		healthBar = new HealthBar(70.0f, 70.0f, 120.0f, 10.0f);
+		healthBar = new HealthBar(70.0f, 70.0f, 180.0f, 10.0f);
 		
 		music = new Music(Constants.MUSIC_PATH + "dayforest01.ogg");
 		input = container.getInput();
