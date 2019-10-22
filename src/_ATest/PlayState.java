@@ -1,5 +1,7 @@
 package _ATest;
 
+import java.util.Timer;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -14,8 +16,6 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 public class PlayState extends BasicGameState {
-	
-	private static final String MUSIC_PATH = "C:\\Users\\Maelok\\eclipse_oxygen_workspace\\CollisionTesting\\res\\audio\\environment\\";
 	
 	private int id;
 	private Player player;
@@ -34,7 +34,7 @@ public class PlayState extends BasicGameState {
 	
 	private Backpack backpack;
 	private ActionBar actionBar;
-	//private HealthBar healthBar;
+	private HealthBar healthBar;
 	
 	private Music music;
 	
@@ -44,9 +44,22 @@ public class PlayState extends BasicGameState {
 	}
 	
 	@Override
+	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+		
+		music.play(1.0f, 0.3f);
+	}
+	
+	@Override
+	public void leave(GameContainer container, StateBasedGame game) throws SlickException {
+		
+		music.stop();
+	}
+	
+	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
 		
-		music = new Music(MUSIC_PATH + "dayforest01.ogg");
+		music = new Music(Constants.MUSIC_PATH + "dayforest01.ogg");
+		healthBar = new HealthBar(70.0f, 70.0f, 120.0f, 10.0f);
 		
 		input = container.getInput();
 		
@@ -73,9 +86,8 @@ public class PlayState extends BasicGameState {
 		
 		backpack = new Backpack(1030, 330, 140, 240);
 		actionBar = new ActionBar(0, 600, Constants.SCREEN_WIDTH, 75);
-		//healthBar = new HealthBar(0,0,0,0,player);
 		
-		music.play(1.0f, 0.3f);
+		music.stop();
 	}
 	
 	@Override
@@ -283,9 +295,14 @@ public class PlayState extends BasicGameState {
 			
 			brush.draw(backpack);
 		}
-
-		// TODO: draw healthbar
 		
+		// Draw health bar...
+		Color color = brush.getColor();
+		brush.setColor(Color.white.darker(0.40f));
+		brush.draw(healthBar.getFrame());
+		brush.setColor(Color.green.darker(0.30f));
+		brush.fill(healthBar.getFillBar());
+		brush.setColor(color);
 		
 		int mouseX = input.getMouseX();
 		int mouseY = input.getMouseY();
