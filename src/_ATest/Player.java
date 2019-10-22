@@ -7,6 +7,8 @@ import org.newdawn.slick.SpriteSheet;
 
 public class Player extends Actor {
 	
+	public static enum State { OUT_COMBAT, IN_COMBAT };
+	
 	protected static Player player = null;
 	
 	private static final float SPEED_MODIFIER = 0.10f;
@@ -35,6 +37,8 @@ public class Player extends Actor {
 	private Animation animatePlayerWestRunning;
 	
 	private Animation animatePlayerIdle;
+	
+	private State state;
 	
 	/************************************************************************************************************
 	 * Constructor used to create a new Player.
@@ -74,6 +78,8 @@ public class Player extends Actor {
 			
 			ex.printStackTrace();
 		}
+		
+		this.state = State.OUT_COMBAT;
 		
 		this.spriteSheet = new SpriteSheet(playerSprites, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT);
 		
@@ -174,6 +180,16 @@ public class Player extends Actor {
 			this.setX(x + (delta * dx) * SPEED_MODIFIER);
 			this.setY(y + (delta * dy) * SPEED_MODIFIER);
 		}
+	}
+	
+	public State getState() {
+		
+		return state;
+	}
+	
+	public void setState(Player.State state) {
+		
+		this.state = state;
 	}
 	
 	@Override
