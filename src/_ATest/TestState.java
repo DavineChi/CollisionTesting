@@ -27,7 +27,7 @@ public class TestState extends BasicGameState {
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) {
 		
-		//music.play(1.0f, 0.3f);
+		music.loop(1.0f, 0.2f);
 	}
 	
 	@Override
@@ -78,7 +78,7 @@ public class TestState extends BasicGameState {
 		Color color = brush.getColor();
 		brush.drawString(String.valueOf(player.getLevel()), 50, 2);
 		brush.drawString(String.valueOf(player.getHitPoints()), 50, 20);
-		brush.drawString("HB Timer : " + (int)healthBar.getTime(), 500, 550);
+		brush.drawString("Timer : " + (int)healthBar.getTime(), 500, 550);
 		
 		brush.setColor(Color.white.darker(0.40f));
 		brush.draw(healthBar.getFrame());

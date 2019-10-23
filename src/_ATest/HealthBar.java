@@ -7,6 +7,11 @@ public class HealthBar extends CommonBar {
 	
 	public static enum State { EMPTY, FULL, COMBAT, REGEN };
 	
+	private static final float STEP_FN_LEVEL_01_TO_04  = 0.2f;
+	private static final float STEP_FN_LEVEL_05_TO_07  = 0.065f;
+	private static final float STEP_FN_LEVEL_08_TO_09  = 0.025f;
+	private static final float STEP_FN_LEVEL_10_AND_UP = 0.005f;
+	
 	private HealthBar.State state;
 	
 	private Timer timer;
@@ -91,14 +96,29 @@ public class HealthBar extends CommonBar {
 				
 				timer.reset();
 				
-				float factor = 0.2f;
+				int level = Player.instance().getLevel();
+				int fillValue = 0;
 				
-				if (Player.instance().getMaxHitPoints() > 500) {
+				if (level >= 1 && level <= 4) {
 					
-					factor = 0.01f;
+					fillValue = (int)(Player.instance().getMaxHitPoints() * STEP_FN_LEVEL_01_TO_04);
 				}
 				
-				int fillValue = (int)(Player.instance().getMaxHitPoints() * factor);
+				else if (level >= 5 && level <= 7) {
+					
+					fillValue = (int)(Player.instance().getMaxHitPoints() * STEP_FN_LEVEL_05_TO_07);
+				}
+				
+				else if (level >= 8 && level <= 9) {
+					
+					fillValue = (int)(Player.instance().getMaxHitPoints() * STEP_FN_LEVEL_08_TO_09);
+				}
+				
+				else if (level >= 10) {
+					
+					fillValue = (int)(Player.instance().getMaxHitPoints() * STEP_FN_LEVEL_10_AND_UP);
+					//fillValue = 1;
+				}
 				
 				Player.instance().addHitPoints(fillValue);
 				

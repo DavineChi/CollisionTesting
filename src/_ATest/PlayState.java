@@ -1,7 +1,6 @@
 package _ATest;
 
-import java.util.Timer;
-
+import org.lwjgl.util.Timer;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -20,15 +19,11 @@ public class PlayState extends BasicGameState {
 	private int id;
 	private Player player;
 	private Player obstacle;
-	private int mouseX;
-	private int mouseY;
-	private String coords;
-	private String strIntersects;
 	private Image playerSprites;
 	private SpriteSheet playerSpriteSheet;
 	private GameMap map;
 	private boolean displayMap;
-	private Potion potion;
+	//private Potion potion;
 	private Gold gold;
 	private Input input;
 	
@@ -43,28 +38,25 @@ public class PlayState extends BasicGameState {
 		this.id = id;
 	}
 	
-//	@Override
-//	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
-//		
-//		music.play(1.0f, 0.3f);
-//	}
-//	
-//	@Override
-//	public void leave(GameContainer container, StateBasedGame game) throws SlickException {
-//		
-//		music.stop();
-//	}
+	@Override
+	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
+		
+		//music.loop(1.0f, 0.3f);
+	}
+	
+	@Override
+	public void leave(GameContainer container, StateBasedGame game) throws SlickException {
+		
+		//music.stop();
+	}
 	
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
 		
 		music = new Music(Constants.MUSIC_PATH + "dayforest01.ogg");
-		healthBar = new HealthBar(70.0f, 70.0f, 120.0f, 10.0f);
+		healthBar = new HealthBar(50.0f, 46.0f, 180.0f, 10.0f);
 		
 		input = container.getInput();
-		
-		coords = "";
-		strIntersects = "FALSE";
 		
 		playerSprites = new Image("res/Fumiko.png");
 		playerSpriteSheet = new SpriteSheet(playerSprites, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT);
@@ -81,7 +73,7 @@ public class PlayState extends BasicGameState {
 		
 		displayMap = true;
 		
-		potion = new Potion(10, 200.0f, 312.0f, 16.0f, 16.0f);
+		//potion = new Potion(10, 200.0f, 312.0f, 16.0f, 16.0f);
 		gold = new Gold(10, 560.0f, 360.0f, 16.0f, 16.0f);
 		
 		backpack = new Backpack(1030, 330, 140, 240);
@@ -160,25 +152,34 @@ public class PlayState extends BasicGameState {
 			}
 		}
 		
-		boolean intersects = player.getBoundingBox().intersects(obstacle.getBoundingBox());
+		// Timer section for HealthBar testing...
+		Timer.tick();
 		
-		if (intersects) {
+		if (input.isKeyPressed(Input.KEY_H)) {
 			
-			strIntersects = "Intersects: TRUE";
+			player.setHitPoints(player.getHitPoints() / 2);
+			healthBar.getTimer().reset();
+			healthBar.getCooldownTimer().reset();
 		}
 		
-		else if (!intersects) {
+		if (input.isKeyPressed(Input.KEY_LBRACKET)) {
 			
-			strIntersects = "Intersects: FALSE";
+			player.setState(Player.State.IN_COMBAT);
 		}
 		
-		if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
+		if (input.isKeyPressed(Input.KEY_RBRACKET)) {
 			
-			mouseX = input.getMouseX();
-			mouseY = input.getMouseY();
-			
-			coords = "x: " + mouseX + ", y: " + mouseY;
+			player.setState(Player.State.NORMAL);
+			healthBar.getTimer().reset();
+			healthBar.getCooldownTimer().reset();
 		}
+		
+		if (input.isKeyPressed(Input.KEY_L)) {
+			
+			Player.addLevel();
+		}
+		
+		healthBar.update();
 	}
 	
 	private boolean isValidMovementKey(Input input) {
@@ -235,6 +236,7 @@ public class PlayState extends BasicGameState {
 		int width = (int)Math.floor(Constants.SCREEN_WIDTH / 2);
 		int height = (int)Math.floor(Constants.SCREEN_HEIGHT / 2);
 		
+		// This line moves the map instead of the player.
 		brush.translate(x, y);
 		
 		if (displayMap) {
@@ -279,7 +281,7 @@ public class PlayState extends BasicGameState {
 		brush.clearWorldClip();
 		brush.resetTransform();
 		
-		brush.drawString(String.valueOf(player.getDirection().getHeading()), 10, 60);
+		brush.drawString(String.valueOf("        Heading: " + player.getDirection().getHeading()), 10.0f, 130.0f);
 		
 		if (!backpack.isDisplayed() && input.isKeyPressed(Input.KEY_B)) {
 			
@@ -296,16 +298,20 @@ public class PlayState extends BasicGameState {
 			brush.draw(backpack);
 		}
 		
-		// Draw health bar...
+		// -- draw health bar --
 		Color color = brush.getColor();
+		brush.drawString(String.valueOf("Level " + player.getLevel()), 50.0f, 2.0f);
+		brush.drawString(String.valueOf("Health " + player.getHitPoints()) + " / " + player.getMaxHitPoints(), 50.0f, 20.0f);
+		
 		brush.setColor(Color.white.darker(0.40f));
 		brush.draw(healthBar.getFrame());
 		brush.setColor(Color.green.darker(0.30f));
 		brush.fill(healthBar.getFillBar());
 		brush.setColor(color);
 		
-		int mouseX = input.getMouseX();
-		int mouseY = input.getMouseY();
+		brush.drawString("   Player State: " + player.getState().toString(), 10.0f, 90.0f);
+		brush.drawString("HealthBar State: " + healthBar.getState().toString(), 10.0f, 110.0f);
+		// -- end health bar section --
 		
 		// TODO: button clicked implementation (refer to MouseListener documenation and find examples)
 	}
@@ -379,13 +385,13 @@ public class PlayState extends BasicGameState {
 		}
 	}
 	
-	private void drawDebugInfo(Graphics brush) {
-		
-		brush.drawString(coords, 20.0f, Constants.SCREEN_HEIGHT - 30.0f);
-		brush.drawString(strIntersects, 90.0f, 10.0f);
-		brush.drawString("Player X: " + String.valueOf(player.getX()), Constants.SCREEN_WIDTH - 154.0f, Constants.SCREEN_HEIGHT - 45.0f);
-		brush.drawString("Player Y: " + String.valueOf(player.getY()), Constants.SCREEN_WIDTH - 154.0f, Constants.SCREEN_HEIGHT - 25.0f);
-	}
+//	private void drawDebugInfo(Graphics brush) {
+//		
+//		brush.drawString(coords, 20.0f, Constants.SCREEN_HEIGHT - 30.0f);
+//		brush.drawString(strIntersects, 90.0f, 10.0f);
+//		brush.drawString("Player X: " + String.valueOf(player.getX()), Constants.SCREEN_WIDTH - 154.0f, Constants.SCREEN_HEIGHT - 45.0f);
+//		brush.drawString("Player Y: " + String.valueOf(player.getY()), Constants.SCREEN_WIDTH - 154.0f, Constants.SCREEN_HEIGHT - 25.0f);
+//	}
 	
 	private void teleport() {
 		

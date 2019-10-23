@@ -7,11 +7,11 @@ import org.newdawn.slick.SpriteSheet;
 
 public class Player extends Actor {
 	
-	public static enum State { NORMAL, IN_COMBAT };
+	public static enum State { NORMAL, RESTED, IN_COMBAT, DEAD };
 	
 	protected static Player player = null;
 	
-	protected static final int  MAXIMUM_LEVEL = 60;
+	protected static final int  MAXIMUM_LEVEL = 100;
 	
 	private static final float SPEED_MODIFIER = 0.10f;
 	private static final float MULTIPLIER = 10.0f;
