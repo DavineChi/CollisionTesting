@@ -16,7 +16,6 @@ public class TestState extends BasicGameState {
 	private Player player;
 	private Input input;
 	private Music music;
-	private Timer libTimer;
 	
 	private HealthBar healthBar;
 	
@@ -34,8 +33,6 @@ public class TestState extends BasicGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
 		
-		libTimer = new Timer();
-		
 		healthBar = new HealthBar(70.0f, 70.0f, 180.0f, 10.0f);
 		
 		music = new Music(Constants.MUSIC_PATH + "dayforest01.ogg");
@@ -46,9 +43,13 @@ public class TestState extends BasicGameState {
 	@Override
 	public void update(GameContainer container, StateBasedGame game, int delta) throws SlickException {
 		
+		Timer.tick();
+		
 		if (input.isKeyPressed(Input.KEY_H)) {
 			
-			player.setHitPoints(player.getHitPoints() / 2);	
+			player.setHitPoints(player.getHitPoints() / 2);
+			healthBar.getTimer().reset();
+			healthBar.getCooldownTimer().reset();
 		}
 		
 		if (input.isKeyPressed(Input.KEY_LBRACKET)) {
@@ -59,6 +60,8 @@ public class TestState extends BasicGameState {
 		if (input.isKeyPressed(Input.KEY_RBRACKET)) {
 			
 			player.setState(Player.State.OUT_COMBAT);
+			healthBar.getTimer().reset();
+			healthBar.getCooldownTimer().reset();
 		}
 		
 		healthBar.update();
@@ -78,7 +81,6 @@ public class TestState extends BasicGameState {
 		brush.setColor(color);
 		
 		brush.drawString(healthBar.getState().toString(), 250.0f, 250.0f);
-		
 		brush.drawString(player.getState().toString(), 600.0f, 20.0f);
 	}
 	

@@ -10,6 +10,9 @@ public class HealthBar extends CommonBar {
 	private HealthBar.State state;
 	
 	private Timer timer;
+	private Timer cooldownTimer;
+	
+	private boolean cooldown;
 	
 	public HealthBar(float xPosition, float yPosition, float width, float height) {
 		
@@ -17,6 +20,9 @@ public class HealthBar extends CommonBar {
 		
 		state = State.FULL;
 		timer = new Timer();
+		cooldownTimer = new Timer();
+		
+		cooldown = false;
 	}
 	
 	@Override
@@ -33,7 +39,7 @@ public class HealthBar extends CommonBar {
 		return fillBar;
 	}
 	
-	private void queryFillLevel() {
+	private void queryState() {
 		
 		float fillFactor = (float)(Player.instance().getHitPoints()) / (float)(Player.instance().getMaxHitPoints());
 		
@@ -67,17 +73,32 @@ public class HealthBar extends CommonBar {
 	
 	public void update() {
 		
-		queryFillLevel();
+		queryState();
 		
 		if (state == State.REGEN) {
 			
-			Timer.tick();
+			if (cooldownTimer.getTime() < 3) {
+				
+				cooldown = true;
+			}
 			
-			if (timer.getTime() > 2) {
+			else {
+				
+				cooldown = false;
+			}
+			
+			if (!cooldown && timer.getTime() > 2) {
 				
 				timer.reset();
 				
-				int fillValue = (int)(Player.instance().getMaxHitPoints() * 0.01f);
+				float factor = 0.2f;
+				
+				if (Player.instance().getMaxHitPoints() > 500) {
+					
+					factor = 0.01f;
+				}
+				
+				int fillValue = (int)(Player.instance().getMaxHitPoints() * factor);
 				
 				Player.instance().addHitPoints(fillValue);
 				
@@ -93,4 +114,13 @@ public class HealthBar extends CommonBar {
 		return (int)timer.getTime();
 	}
 	
+	public Timer getTimer() {
+		
+		return timer;
+	}
+	
+	public Timer getCooldownTimer() {
+		
+		return cooldownTimer;
+	}
 }
