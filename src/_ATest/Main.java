@@ -15,10 +15,10 @@ public class Main extends StateBasedGame {
 	@Override
 	public void initStatesList(GameContainer container) throws SlickException {
 		
-		this.addState(new PlayState(States.PLAY));
+		//this.addState(new PlayState(States.PLAY));
 		this.addState(new TestState(States.TEST));
-		this.addState(new MenuState(States.MENU));
-		this.enterState(States.MENU);
+		//this.addState(new MenuState(States.MENU));
+		this.enterState(States.TEST);
 	}
 	
 	public static void main(String[] args) {

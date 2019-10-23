@@ -59,9 +59,14 @@ public class TestState extends BasicGameState {
 		
 		if (input.isKeyPressed(Input.KEY_RBRACKET)) {
 			
-			player.setState(Player.State.OUT_COMBAT);
+			player.setState(Player.State.NORMAL);
 			healthBar.getTimer().reset();
 			healthBar.getCooldownTimer().reset();
+		}
+		
+		if (input.isKeyPressed(Input.KEY_L)) {
+			
+			Player.addLevel();
 		}
 		
 		healthBar.update();
@@ -71,7 +76,8 @@ public class TestState extends BasicGameState {
 	public void render(GameContainer container, StateBasedGame game, Graphics brush) throws SlickException {
 		
 		Color color = brush.getColor();
-		brush.drawString(String.valueOf(player.getHitPoints()), 50, 10);
+		brush.drawString(String.valueOf(player.getLevel()), 50, 2);
+		brush.drawString(String.valueOf(player.getHitPoints()), 50, 20);
 		brush.drawString("HB Timer : " + (int)healthBar.getTime(), 500, 550);
 		
 		brush.setColor(Color.white.darker(0.40f));

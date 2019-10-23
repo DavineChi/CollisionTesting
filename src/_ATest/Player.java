@@ -7,9 +7,11 @@ import org.newdawn.slick.SpriteSheet;
 
 public class Player extends Actor {
 	
-	public static enum State { OUT_COMBAT, IN_COMBAT };
+	public static enum State { NORMAL, IN_COMBAT };
 	
 	protected static Player player = null;
+	
+	protected static final int  MAXIMUM_LEVEL = 60;
 	
 	private static final float SPEED_MODIFIER = 0.10f;
 	private static final float MULTIPLIER = 10.0f;
@@ -79,7 +81,7 @@ public class Player extends Actor {
 			ex.printStackTrace();
 		}
 		
-		this.state = State.OUT_COMBAT;
+		this.state = State.NORMAL;
 		
 		this.spriteSheet = new SpriteSheet(playerSprites, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT);
 		
@@ -190,6 +192,42 @@ public class Player extends Actor {
 	public void setState(Player.State state) {
 		
 		this.state = state;
+	}
+	
+	/************************************************************************************************************
+	 * Modifier method to increment the Player's level by 1.
+	 * <p>
+	 * 
+	 * @postcondition The Player's level has been increased by 1.
+	 * 
+	 * @throws NullPointerException
+	 *         Thrown if there was a problem with the instance() method.
+	 * 
+	 * @throws IllegalArgumentException
+	 *         Thrown if the Player is dead or is level 60.
+	 */
+	public static void addLevel() {
+
+		if (player == null) {
+			
+			throw new NullPointerException("Check the instance() method for errors.");
+		}
+
+		if (!player.isAlive()) {
+			
+			throw new IllegalArgumentException("Cannot level up a dead player.");
+		}
+		
+		if ((player.getLevel() + 1) <= MAXIMUM_LEVEL)
+			player.setLevel(player.getLevel() + 1);
+
+		updateAttributes();
+	}
+	
+	private static void updateAttributes() {
+
+		player.setMaxHitPoints(HitPoints.calculate(player));
+		player.setHitPoints(player.getMaxHitPoints());
 	}
 	
 	@Override
