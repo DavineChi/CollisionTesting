@@ -1,5 +1,10 @@
 package _ATest;
 
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.io.IOException;
+import java.io.InputStream;
+
 import org.lwjgl.util.Timer;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -9,10 +14,13 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.UnicodeFont;
+import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.util.ResourceLoader;
 
 public class PlayState extends BasicGameState {
 	
@@ -33,6 +41,11 @@ public class PlayState extends BasicGameState {
 	
 	private Music music;
 	
+	private Font awtFont;
+	private UnicodeFont font;
+	
+	private InputStream inStream;
+	
 	public PlayState(int id) {
 		
 		this.id = id;
@@ -41,7 +54,7 @@ public class PlayState extends BasicGameState {
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
 		
-		//music.loop(1.0f, 0.3f);
+		music.loop(1.0f, 0.125f);
 	}
 	
 	@Override
@@ -53,8 +66,36 @@ public class PlayState extends BasicGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
 		
+		inStream = ResourceLoader.getResourceAsStream("res/fonts/Friz Quadrata TT Regular.ttf");
+		
+		try {
+			
+			awtFont = Font.createFont(Font.TRUETYPE_FONT, inStream);
+		}
+		
+		catch (FontFormatException ffEx) {
+			
+			ffEx.printStackTrace();
+		}
+		
+		catch (IOException ex) {
+			
+			ex.printStackTrace();
+		}
+		
+		awtFont = awtFont.deriveFont(Font.PLAIN, 15.0f);
+		font = new UnicodeFont(awtFont);
+		
+		font.addAsciiGlyphs();
+		
+		ColorEffect effect = new ColorEffect();
+		
+		effect.setColor(java.awt.Color.white);
+		font.getEffects().add(effect);
+		font.loadGlyphs();
+		
 		music = new Music(Constants.MUSIC_PATH + "dayforest01.ogg");
-		healthBar = new HealthBar(50.0f, 46.0f, 180.0f, 10.0f);
+		healthBar = new HealthBar(50.0f, 46.0f, 180.0f, 8.0f);
 		
 		input = container.getInput();
 		
@@ -281,7 +322,7 @@ public class PlayState extends BasicGameState {
 		brush.clearWorldClip();
 		brush.resetTransform();
 		
-		brush.drawString(String.valueOf("        Heading: " + player.getDirection().getHeading()), 10.0f, 130.0f);
+		
 		
 		if (!backpack.isDisplayed() && input.isKeyPressed(Input.KEY_B)) {
 			
@@ -300,18 +341,19 @@ public class PlayState extends BasicGameState {
 		
 		// -- draw health bar --
 		Color color = brush.getColor();
-		brush.drawString(String.valueOf("Level " + player.getLevel()), 50.0f, 2.0f);
-		brush.drawString(String.valueOf("Health " + player.getHitPoints()) + " / " + player.getMaxHitPoints(), 50.0f, 20.0f);
+		font.drawString(50.0f, 2.0f, String.valueOf("Level " + player.getLevel()));
+		font.drawString(50.0f, 20.0f, String.valueOf("Health " + player.getHitPoints()) + " / " + player.getMaxHitPoints());
 		
 		brush.setColor(Color.white.darker(0.40f));
 		brush.draw(healthBar.getFrame());
 		brush.setColor(Color.green.darker(0.30f));
 		brush.fill(healthBar.getFillBar());
 		brush.setColor(color);
-		
-		brush.drawString("   Player State: " + player.getState().toString(), 10.0f, 90.0f);
-		brush.drawString("HealthBar State: " + healthBar.getState().toString(), 10.0f, 110.0f);
 		// -- end health bar section --
+		
+		font.drawString(10.0f, 90.0f, "       Player State: " + player.getState().toString());
+		font.drawString(10.0f, 110.0f, "HealthBar State: " + healthBar.getState().toString());
+		font.drawString(10.0f, 130.0f, String.valueOf("            Heading: " + player.getDirection().getHeading()));
 		
 		// TODO: button clicked implementation (refer to MouseListener documenation and find examples)
 	}
