@@ -2,7 +2,6 @@ package _ATest;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -13,7 +12,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Music;
-import org.newdawn.slick.MusicListener;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.SpriteSheet;
@@ -27,7 +25,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.ResourceLoader;
 
-public class PlayState extends BasicGameState implements MusicListener {
+public class PlayState extends BasicGameState {
 	
 	private int id;
 	private Player player;
@@ -36,7 +34,7 @@ public class PlayState extends BasicGameState implements MusicListener {
 	private SpriteSheet playerSpriteSheet;
 	private GameMap map;
 	private boolean displayMap;
-	//private Potion potion;
+	private Potion potion;
 	private Gold gold;
 	private Input input;
 	
@@ -44,7 +42,6 @@ public class PlayState extends BasicGameState implements MusicListener {
 	private ActionBar actionBar;
 	private HealthBar healthBar;
 	
-	private Music nowPlaying;
 	private Music dayforest01;
 	private Music dayforest02;
 	
@@ -56,7 +53,6 @@ public class PlayState extends BasicGameState implements MusicListener {
 	private Sound levelUpSound;
 	
 	private Image particleImage;
-	private File particleXmlFile;
 	private ParticleSystem particleSystem;
 	
 	private Sound forestNormalDay;
@@ -69,11 +65,7 @@ public class PlayState extends BasicGameState implements MusicListener {
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
 		
-		nowPlaying.play(1.0f, 0.25f);
-		
-		
-		
-		//dayforest01.loop(1.0f, 0.25f);
+		dayforest01.loop(1.0f, 0.25f);
 		forestNormalDay.loop(1.0f, 0.25f);
 	}
 	
@@ -128,10 +120,6 @@ public class PlayState extends BasicGameState implements MusicListener {
 		dayforest01 = new Music(Constants.MUSIC_PATH + "dayforest01.ogg");
 		dayforest02 = new Music(Constants.MUSIC_PATH + "dayforest02.ogg");
 		
-		nowPlaying = dayforest01;
-		
-		nowPlaying.addListener(this);
-		
 		healthBar = new HealthBar(50.0f, 46.0f, 180.0f, 8.0f);
 		
 		input = container.getInput();
@@ -147,11 +135,12 @@ public class PlayState extends BasicGameState implements MusicListener {
 		
 		GameMap.init();
 		
-		map = new GameMap("res/base_test.tmx");
+		//map = new GameMap("res/base_test.tmx");
+		map = new GameMap("res/northshire_test.tmx");
 		
 		displayMap = true;
 		
-		//potion = new Potion(10, 200.0f, 312.0f, 16.0f, 16.0f);
+		potion = new Potion(10, 200.0f, 312.0f, 16.0f, 16.0f);
 		gold = new Gold(10, 560.0f, 360.0f, 16.0f, 16.0f);
 		
 		backpack = new Backpack(1030, 330, 140, 240);
@@ -250,7 +239,7 @@ public class PlayState extends BasicGameState implements MusicListener {
 			healthBar.getCooldownTimer().reset();
 		}
 		
-		if (input.isKeyPressed(Input.KEY_L)) {
+		if (input.isKeyPressed(Input.KEY_L) && (player.getLevel() + 1) <= Player.MAXIMUM_LEVEL) {
 			
 			Player.addLevel();
 			levelUpSound.play(1.0f, 0.375f);
@@ -259,11 +248,6 @@ public class PlayState extends BasicGameState implements MusicListener {
 		healthBar.update();
 		
 		particleSystem.update(delta);
-		
-		if (!nowPlaying.playing()) {
-			
-			this.musicSwapped(null, dayforest02);
-		}
 	}
 	
 	private boolean isValidMovementKey(Input input) {
@@ -323,8 +307,6 @@ public class PlayState extends BasicGameState implements MusicListener {
 		// This line moves the map instead of the player.
 		brush.translate(x, y);
 		
-
-		
 		if (displayMap) {
 			
 			map.render(0, 0, 0, 0, width, height);
@@ -341,19 +323,19 @@ public class PlayState extends BasicGameState implements MusicListener {
 		//brush.draw(player.getBoundingBox());
 		
 		// Draw the potion under the player to simulate perspectived.
-//		if ((player.getY() + player.getHeight() >= potion.getY() + potion.getHeight()) ||
-//		    (player.getY() <= potion.getY() + potion.getHeight())) {
-//			
-//			brush.drawImage(potion.getSprite(), potion.getX(), potion.getY());
-//			drawPlayer(brush);
-//		}
-//		
-//		// Draw the potion over the player to simulate perspective.
-//		if (player.getY() + player.getHeight() < potion.getY() + potion.getHeight()) {
-//			
-//			drawPlayer(brush);
-//			brush.drawImage(potion.getSprite(), potion.getX(), potion.getY());
-//		}
+		if ((player.getY() + player.getHeight() >= potion.getY() + potion.getHeight()) ||
+		    (player.getY() <= potion.getY() + potion.getHeight())) {
+			
+			brush.drawImage(potion.getSprite(), potion.getX(), potion.getY());
+			drawPlayer(brush);
+		}
+		
+		// Draw the potion over the player to simulate perspective.
+		if (player.getY() + player.getHeight() < potion.getY() + potion.getHeight()) {
+			
+			drawPlayer(brush);
+			brush.drawImage(potion.getSprite(), potion.getX(), potion.getY());
+		}
 		
 		// Draw the potion under the player to simulate perspectived.
 		if ((player.getY() + player.getHeight() >= gold.getY() + gold.getHeight()) ||
@@ -496,17 +478,5 @@ public class PlayState extends BasicGameState implements MusicListener {
 	public int getID() {
 		
 		return id;
-	}
-
-	@Override
-	public void musicEnded(Music music) {
-		
-		
-	}
-
-	@Override
-	public void musicSwapped(Music music, Music newMusic) {
-		
-		nowPlaying = newMusic;
 	}
 }
