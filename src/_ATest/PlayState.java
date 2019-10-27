@@ -2,6 +2,7 @@ package _ATest;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -12,17 +13,21 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.Music;
+import org.newdawn.slick.MusicListener;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.particles.ParticleSystem;
+import org.newdawn.slick.particles.effects.FireEmitter;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.ResourceLoader;
 
-public class PlayState extends BasicGameState {
+public class PlayState extends BasicGameState implements MusicListener {
 	
 	private int id;
 	private Player player;
@@ -39,12 +44,22 @@ public class PlayState extends BasicGameState {
 	private ActionBar actionBar;
 	private HealthBar healthBar;
 	
-	private Music music;
+	private Music nowPlaying;
+	private Music dayforest01;
+	private Music dayforest02;
 	
 	private Font awtFont;
 	private UnicodeFont font;
 	
 	private InputStream inStream;
+	
+	private Sound levelUpSound;
+	
+	private Image particleImage;
+	private File particleXmlFile;
+	private ParticleSystem particleSystem;
+	
+	private Sound forestNormalDay;
 	
 	public PlayState(int id) {
 		
@@ -54,7 +69,12 @@ public class PlayState extends BasicGameState {
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
 		
-		music.loop(1.0f, 0.125f);
+		nowPlaying.play(1.0f, 0.25f);
+		
+		
+		
+		//dayforest01.loop(1.0f, 0.25f);
+		forestNormalDay.loop(1.0f, 0.25f);
 	}
 	
 	@Override
@@ -63,8 +83,19 @@ public class PlayState extends BasicGameState {
 		//music.stop();
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
+		
+		forestNormalDay = new Sound("res/audio/environment/ForestNormalDay.ogg");
+		
+		particleImage = new Image("res/particle-data/sparkling_fireball_pack/particles_fireball_wind/0011.png", false);
+		particleSystem = new ParticleSystem(particleImage, 100);
+		
+		particleSystem.addEmitter(new FireEmitter());
+		particleSystem.setBlendingMode(ParticleSystem.BLEND_COMBINE);
+		
+		levelUpSound = new Sound("res/audio/effects/levelup.ogg");
 		
 		inStream = ResourceLoader.getResourceAsStream("res/fonts/Friz Quadrata TT Regular.ttf");
 		
@@ -83,7 +114,7 @@ public class PlayState extends BasicGameState {
 			ex.printStackTrace();
 		}
 		
-		awtFont = awtFont.deriveFont(Font.PLAIN, 15.0f);
+		awtFont = awtFont.deriveFont(Font.PLAIN, 14.0f);
 		font = new UnicodeFont(awtFont);
 		
 		font.addAsciiGlyphs();
@@ -94,7 +125,13 @@ public class PlayState extends BasicGameState {
 		font.getEffects().add(effect);
 		font.loadGlyphs();
 		
-		music = new Music(Constants.MUSIC_PATH + "dayforest01.ogg");
+		dayforest01 = new Music(Constants.MUSIC_PATH + "dayforest01.ogg");
+		dayforest02 = new Music(Constants.MUSIC_PATH + "dayforest02.ogg");
+		
+		nowPlaying = dayforest01;
+		
+		nowPlaying.addListener(this);
+		
 		healthBar = new HealthBar(50.0f, 46.0f, 180.0f, 8.0f);
 		
 		input = container.getInput();
@@ -119,8 +156,6 @@ public class PlayState extends BasicGameState {
 		
 		backpack = new Backpack(1030, 330, 140, 240);
 		actionBar = new ActionBar(0, 600, Constants.SCREEN_WIDTH, 75);
-		
-		music.stop();
 	}
 	
 	@Override
@@ -218,9 +253,17 @@ public class PlayState extends BasicGameState {
 		if (input.isKeyPressed(Input.KEY_L)) {
 			
 			Player.addLevel();
+			levelUpSound.play(1.0f, 0.375f);
 		}
 		
 		healthBar.update();
+		
+		particleSystem.update(delta);
+		
+		if (!nowPlaying.playing()) {
+			
+			this.musicSwapped(null, dayforest02);
+		}
 	}
 	
 	private boolean isValidMovementKey(Input input) {
@@ -280,10 +323,20 @@ public class PlayState extends BasicGameState {
 		// This line moves the map instead of the player.
 		brush.translate(x, y);
 		
+
+		
 		if (displayMap) {
 			
 			map.render(0, 0, 0, 0, width, height);
 		}
+		
+		// Okay, that's interesting. Although this is incorrect, this appears to provide a parallax effect
+		// layered above the map itself. Once potential use-case for this would be something like tree-cover
+		// above, and, if we recreate Teldrassil, also a background effect that moves also.
+//		for (int i = 0; i < 100; i++) {
+//			
+//			particleSystem.render(x, y);
+//		}
 		
 		//brush.draw(player.getBoundingBox());
 		
@@ -321,8 +374,6 @@ public class PlayState extends BasicGameState {
 		
 		brush.clearWorldClip();
 		brush.resetTransform();
-		
-		
 		
 		if (!backpack.isDisplayed() && input.isKeyPressed(Input.KEY_B)) {
 			
@@ -445,5 +496,17 @@ public class PlayState extends BasicGameState {
 	public int getID() {
 		
 		return id;
+	}
+
+	@Override
+	public void musicEnded(Music music) {
+		
+		
+	}
+
+	@Override
+	public void musicSwapped(Music music, Music newMusic) {
+		
+		nowPlaying = newMusic;
 	}
 }
