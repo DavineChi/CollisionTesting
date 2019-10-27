@@ -11,7 +11,7 @@ public class Player extends Actor {
 	
 	protected static Player player = null;
 	
-	protected static final int  MAXIMUM_LEVEL = 100;
+	protected static final int  MAXIMUM_LEVEL = 60;
 	
 	private static final float SPEED_MODIFIER = 0.10f;
 	private static final float MULTIPLIER = 10.0f;
@@ -218,10 +218,11 @@ public class Player extends Actor {
 			throw new IllegalArgumentException("Cannot level up a dead player.");
 		}
 		
-		if ((player.getLevel() + 1) <= MAXIMUM_LEVEL)
+		if ((player.getLevel() + 1) <= MAXIMUM_LEVEL) {
+			
 			player.setLevel(player.getLevel() + 1);
-
-		updateAttributes();
+			updateAttributes();
+		}
 	}
 	
 	private static void updateAttributes() {
