@@ -7,6 +7,8 @@ public class HealthBar extends CommonBar {
 	
 	public static enum State { EMPTY, FULL, COMBAT, REGEN };
 	
+	private static final float REGEN_DELAY = 2.0f;
+	
 	private static final float STEP_FN_LEVEL_01_TO_04  = 0.2f;
 	private static final float STEP_FN_LEVEL_05_TO_07  = 0.065f;
 	private static final float STEP_FN_LEVEL_08_TO_09  = 0.025f;
@@ -92,7 +94,7 @@ public class HealthBar extends CommonBar {
 				cooldown = false;
 			}
 			
-			if (!cooldown && timer.getTime() > 2) {
+			if (!cooldown && timer.getTime() > REGEN_DELAY) {
 				
 				timer.reset();
 				
