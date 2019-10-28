@@ -42,6 +42,8 @@ public class Player extends Actor {
 	
 	private State state;
 	
+	private Currency currency;
+	
 	/************************************************************************************************************
 	 * Constructor used to create a new Player.
 	 * <p>
@@ -102,6 +104,8 @@ public class Player extends Actor {
 		animatePlayerWestRunning  = AnimationFactory.createAnimationHorizontal(spriteSheet, 3, 3, 3, ANIMATION_SPEED_RUNNING);
 		
 		animatePlayerIdle = AnimationFactory.createAnimationIdlePlayer(spriteSheet, 16, 0, ANIMATION_SPEED_IDLE);
+		
+		currency = new Currency();
 	}
 	
 	public static Player instance() {
@@ -229,6 +233,21 @@ public class Player extends Actor {
 
 		player.setMaxHitPoints(HitPoints.calculate(player));
 		player.setHitPoints(player.getMaxHitPoints());
+	}
+	
+	public void addCurrency(int value) {
+		
+		currency.addValue(value);
+	}
+	
+	public void removeCurrency(int value) {
+		
+		currency.removeValue(value);
+	}
+	
+	public Currency getCurrency() {
+		
+		return currency;
 	}
 	
 	@Override
