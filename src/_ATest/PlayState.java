@@ -4,7 +4,6 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Random;
 
 import org.lwjgl.util.Timer;
 import org.newdawn.slick.Color;
@@ -57,6 +56,8 @@ public class PlayState extends BasicGameState {
 	private Bank bank;
 	
 	private ConfigurableEmitter configurableEmitter;
+	
+	private ExperienceBar experienceBar;
 	
 	public PlayState(int id) {
 		
@@ -168,7 +169,8 @@ public class PlayState extends BasicGameState {
 		gold = new Gold(10, 560.0f, 360.0f, 16.0f, 16.0f);
 		
 		backpack = new Backpack(1030, 330, 140, 240);
-		actionBar = new ActionBar(0, 600, Constants.SCREEN_WIDTH, 75);
+		experienceBar = new ExperienceBar(100.0f, 608.0f, 1000.0f, 8.0f);
+		actionBar = new ActionBar(0, 608, Constants.SCREEN_WIDTH, 75-8);
 	}
 	
 	@Override
@@ -308,6 +310,11 @@ public class PlayState extends BasicGameState {
 			levelUpParticleTimer.reset();
 			
 			isLevelingUp = true;
+		}
+		
+		if (input.isKeyPressed(Input.KEY_ADD)) {
+			
+			experienceBar.addPoints(10);
 		}
 		
 		healthBar.update();
@@ -480,8 +487,15 @@ public class PlayState extends BasicGameState {
 		brush.draw(healthBar.getFrame());
 		brush.setColor(Color.green.darker(0.30f));
 		brush.fill(healthBar.getFillBar());
-		brush.setColor(color);
 		// -- end health bar section --
+		
+		// -- draw experience bar --
+		brush.setColor(Color.white.darker(0.40f));
+		brush.draw(experienceBar.getFrame());
+		brush.setColor(Color.yellow.darker(0.30f));
+		brush.draw(experienceBar.getFillBar());
+		brush.setColor(color);
+		// -- end experience bar section--
 		
 		font.drawString(10.0f, 90.0f, "       Player State: " + player.getState().toString());
 		font.drawString(10.0f, 110.0f, "HealthBar State: " + healthBar.getState().toString());
