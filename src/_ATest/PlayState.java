@@ -244,26 +244,42 @@ public class PlayState extends BasicGameState {
 		// Timer section for HealthBar testing...
 		Timer.tick();
 		
-
-		
 		if (input.isKeyPressed(Input.KEY_APOSTROPHE)) {
 			
 			int index = getCurrencyCollectSoundIndex();
 			
-			System.out.println(index);
-			
 			player.addCurrency(15);
 			currencyCollectSound[index].play(1.0f, 0.2f);
+		}
+		
+		if (input.isKeyPressed(Input.KEY_SEMICOLON)) {
+			
+			if (player.getCurrency().getValue() > 0) {
+				
+				int index = getCurrencyCollectSoundIndex();
+				
+				player.removeCurrency(5);
+				currencyCollectSound[index].play(1.0f, 0.2f);
+			}
 		}
 		
 		if (input.isKeyPressed(Input.KEY_PERIOD)) {
 			
 			int index = getCurrencyCollectSoundIndex();
 			
-			System.out.println(index);
-			
 			player.addCurrency(2525);
 			currencyCollectSound[index].play(1.0f, 0.2f);
+		}
+		
+		if (input.isKeyPressed(Input.KEY_COMMA)) {
+			
+			if (player.getCurrency().getValue() > 0) {
+				
+				int index = getCurrencyCollectSoundIndex();
+				
+				player.removeCurrency(500);
+				currencyCollectSound[index].play(1.0f, 0.2f);
+			}
 		}
 		
 		if (input.isKeyPressed(Input.KEY_H)) {
@@ -295,7 +311,6 @@ public class PlayState extends BasicGameState {
 		}
 		
 		healthBar.update();
-		
 		particleSystem.update(delta);
 	}
 
@@ -310,8 +325,6 @@ public class PlayState extends BasicGameState {
 		}
 		
 		if (randomValue < 0.5 && randomValue > 0.0) {
-			
-			System.out.println("random value: " + randomValue);
 			
 			index = (int)Math.floor(randomValue * 10);
 		}
