@@ -37,25 +37,21 @@ public class PlayState extends BasicGameState {
 	private Potion potion;
 	private Gold gold;
 	private Input input;
-	
 	private Backpack backpack;
 	private ActionBar actionBar;
 	private HealthBar healthBar;
-	
 	private Music dayforest01;
 	private Music dayforest02;
-	
 	private Font awtFont;
 	private UnicodeFont font;
-	
 	private InputStream inStream;
-	
 	private Sound levelUpSound;
-	
 	private Image particleImage;
 	private ParticleSystem particleSystem;
-	
 	private Sound forestNormalDay;
+	private Timer levelUpParticleTimer;
+	private boolean isLevelingUp;
+	private Sound currencyCollect;
 	
 	public PlayState(int id) {
 		
@@ -65,8 +61,8 @@ public class PlayState extends BasicGameState {
 	@Override
 	public void enter(GameContainer container, StateBasedGame game) throws SlickException {
 		
-		dayforest01.loop(1.0f, 0.25f);
-		forestNormalDay.loop(1.0f, 0.25f);
+		dayforest01.loop(1.0f, 0.125f);
+		forestNormalDay.loop(1.0f, 0.2f);
 	}
 	
 	@Override
@@ -79,12 +75,18 @@ public class PlayState extends BasicGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
 		
+		currencyCollect = new Sound("res/audio/interactive/Coins_Few_30.ogg");
+		
+		isLevelingUp = false;
+		
+		levelUpParticleTimer = new Timer();
+		
 		forestNormalDay = new Sound("res/audio/environment/ForestNormalDay.ogg");
 		
-		particleImage = new Image("res/particle-data/sparkling_fireball_pack/particles_fireball_wind/0011.png", false);
+		particleImage = new Image("res/particle-data/sparkling_fireball_pack/particles_fireball_small_wind/0011.png", false);
 		particleSystem = new ParticleSystem(particleImage, 100);
 		
-		particleSystem.addEmitter(new FireEmitter());
+		particleSystem.addEmitter(new FireEmitter(0, 0, 10));
 		particleSystem.setBlendingMode(ParticleSystem.BLEND_COMBINE);
 		
 		levelUpSound = new Sound("res/audio/effects/levelup.ogg");
@@ -220,6 +222,18 @@ public class PlayState extends BasicGameState {
 		// Timer section for HealthBar testing...
 		Timer.tick();
 		
+		if (input.isKeyPressed(Input.KEY_APOSTROPHE)) {
+			
+			player.addCurrency(55);
+			currencyCollect.play(1.0f, 0.25f);
+		}
+		
+		if (input.isKeyPressed(Input.KEY_PERIOD)) {
+			
+			player.addCurrency(3850);
+			currencyCollect.play(1.0f, 0.25f);
+		}
+		
 		if (input.isKeyPressed(Input.KEY_H)) {
 			
 			player.setHitPoints(player.getHitPoints() / 2);
@@ -243,6 +257,9 @@ public class PlayState extends BasicGameState {
 			
 			Player.addLevel();
 			levelUpSound.play(1.0f, 0.375f);
+			levelUpParticleTimer.reset();
+			
+			isLevelingUp = true;
 		}
 		
 		healthBar.update();
@@ -315,9 +332,9 @@ public class PlayState extends BasicGameState {
 		// Okay, that's interesting. Although this is incorrect, this appears to provide a parallax effect
 		// layered above the map itself. Once potential use-case for this would be something like tree-cover
 		// above, and, if we recreate Teldrassil, also a background effect that moves also.
-//		for (int i = 0; i < 100; i++) {
+//		for (int i = 0; i < 250; i++) {
 //			
-//			particleSystem.render(x, y);
+//			particleSystem.render(player.getX() - width, player.getY() - height);
 //		}
 		
 		//brush.draw(player.getBoundingBox());
@@ -354,6 +371,17 @@ public class PlayState extends BasicGameState {
 		
 		//brush.draw(potion.getBoundingBox());
 		
+		// Level-up particle rendering...
+		if (isLevelingUp && levelUpParticleTimer.getTime() < 3.0f) {
+			
+			//float size = 1.0f;
+			
+			for (int i = 0; i < 20; i++) {
+				
+				particleSystem.render(player.getX() + (player.getWidth() / 2), player.getY() + player.getHeight());
+			}
+		}
+		
 		brush.clearWorldClip();
 		brush.resetTransform();
 		
@@ -387,6 +415,8 @@ public class PlayState extends BasicGameState {
 		font.drawString(10.0f, 90.0f, "       Player State: " + player.getState().toString());
 		font.drawString(10.0f, 110.0f, "HealthBar State: " + healthBar.getState().toString());
 		font.drawString(10.0f, 130.0f, String.valueOf("            Heading: " + player.getDirection().getHeading()));
+		
+		font.drawString(10.0f, 570.0f, Player.instance().getCurrency().toString());
 		
 		// TODO: button clicked implementation (refer to MouseListener documenation and find examples)
 	}
