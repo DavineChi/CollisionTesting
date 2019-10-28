@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Random;
 
 import org.lwjgl.util.Timer;
 import org.newdawn.slick.Color;
@@ -19,6 +20,7 @@ import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.particles.ConfigurableEmitter;
 import org.newdawn.slick.particles.ParticleSystem;
 import org.newdawn.slick.particles.effects.FireEmitter;
 import org.newdawn.slick.state.BasicGameState;
@@ -51,7 +53,10 @@ public class PlayState extends BasicGameState {
 	private Sound forestNormalDay;
 	private Timer levelUpParticleTimer;
 	private boolean isLevelingUp;
-	private Sound currencyCollect;
+	private Sound[] currencyCollectSound;
+	private Bank bank;
+	
+	private ConfigurableEmitter configurableEmitter;
 	
 	public PlayState(int id) {
 		
@@ -75,7 +80,22 @@ public class PlayState extends BasicGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame game) throws SlickException {
 		
-		currencyCollect = new Sound("res/audio/interactive/Coins_Few_30.ogg");
+		// TODO: Find or make a sprite for a bank...
+		//bank = new Bank(0, 0, 0, 0);
+		
+		Sound curSound01 = new Sound("res/audio/interactive/Coins_Few_03.ogg");
+		Sound curSound02 = new Sound("res/audio/interactive/Coins_Few_06.ogg");
+		Sound curSound03 = new Sound("res/audio/interactive/Coins_Few_07.ogg");
+		Sound curSound04 = new Sound("res/audio/interactive/Coins_Few_30.ogg");
+		Sound curSound05 = new Sound("res/audio/interactive/Coins_Few_44.ogg");
+		
+		currencyCollectSound = new Sound[5];
+		
+		currencyCollectSound[0] = curSound01;
+		currencyCollectSound[1] = curSound02;
+		currencyCollectSound[2] = curSound03;
+		currencyCollectSound[3] = curSound04;
+		currencyCollectSound[4] = curSound05;
 		
 		isLevelingUp = false;
 		
@@ -85,6 +105,8 @@ public class PlayState extends BasicGameState {
 		
 		particleImage = new Image("res/particle-data/sparkling_fireball_pack/particles_fireball_small_wind/0011.png", false);
 		particleSystem = new ParticleSystem(particleImage, 100);
+		
+		configurableEmitter = new ConfigurableEmitter(null);
 		
 		particleSystem.addEmitter(new FireEmitter(0, 0, 10));
 		particleSystem.setBlendingMode(ParticleSystem.BLEND_COMBINE);
@@ -222,16 +244,22 @@ public class PlayState extends BasicGameState {
 		// Timer section for HealthBar testing...
 		Timer.tick();
 		
+
+		
 		if (input.isKeyPressed(Input.KEY_APOSTROPHE)) {
 			
-			player.addCurrency(55);
-			currencyCollect.play(1.0f, 0.25f);
+			int index = getCurrencyCollectSoundIndex();
+			
+			player.addCurrency(15);
+			currencyCollectSound[index].play(1.0f, 0.2f);
 		}
 		
 		if (input.isKeyPressed(Input.KEY_PERIOD)) {
 			
-			player.addCurrency(3850);
-			currencyCollect.play(1.0f, 0.25f);
+			int index = getCurrencyCollectSoundIndex();
+			
+			player.addCurrency(2525);
+			currencyCollectSound[index].play(1.0f, 0.2f);
 		}
 		
 		if (input.isKeyPressed(Input.KEY_H)) {
@@ -265,6 +293,19 @@ public class PlayState extends BasicGameState {
 		healthBar.update();
 		
 		particleSystem.update(delta);
+	}
+
+	private int getCurrencyCollectSoundIndex() {
+		
+		int index = 0;
+		double randomValue = Math.random();
+		
+		if (randomValue < 0.5 && randomValue > 0.0) {
+			
+			index = (int)Math.floor(randomValue * 10);
+		}
+		
+		return index;
 	}
 	
 	private boolean isValidMovementKey(Input input) {
@@ -380,6 +421,12 @@ public class PlayState extends BasicGameState {
 				
 				particleSystem.render(player.getX() + (player.getWidth() / 2), player.getY() + player.getHeight());
 			}
+		}
+		
+		if (levelUpParticleTimer.getTime() >= 3.0f) {
+			
+			isLevelingUp = false;
+			levelUpParticleTimer.reset();
 		}
 		
 		brush.clearWorldClip();
