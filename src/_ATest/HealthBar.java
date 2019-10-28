@@ -32,20 +32,6 @@ public class HealthBar extends CommonBar {
 		cooldown = false;
 	}
 	
-	@Override
-	public Rectangle getFrame() {
-		
-		return frame;
-	}
-	
-	@Override
-	public Rectangle getFillBar() {
-		
-		update();
-		
-		return fillBar;
-	}
-	
 	private void queryState() {
 		
 		float fillFactor = (float)(Player.instance().getHitPoints()) / (float)(Player.instance().getMaxHitPoints());
@@ -144,5 +130,19 @@ public class HealthBar extends CommonBar {
 	public Timer getCooldownTimer() {
 		
 		return cooldownTimer;
+	}
+	
+	@Override
+	public Rectangle getFrame() {
+		
+		return frame;
+	}
+	
+	@Override
+	public Rectangle getFillBar() {
+		
+		update();
+		
+		return fillBar;
 	}
 }
