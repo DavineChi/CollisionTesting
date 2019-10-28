@@ -2,7 +2,7 @@ package _ATest;
 
 public class Currency {
 	
-	private int value;
+	private long value;
 	
 	/************************************************************************************************************
 	 * Constructor to create a new Currency object.
@@ -56,7 +56,7 @@ public class Currency {
 	 * @return
 	 *   The value of this Currency object.
 	 */
-	public int getValue() {
+	public long getValue() {
 		
 		return value;
 	}
