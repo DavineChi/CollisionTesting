@@ -250,6 +250,8 @@ public class PlayState extends BasicGameState {
 			
 			int index = getCurrencyCollectSoundIndex();
 			
+			System.out.println(index);
+			
 			player.addCurrency(15);
 			currencyCollectSound[index].play(1.0f, 0.2f);
 		}
@@ -257,6 +259,8 @@ public class PlayState extends BasicGameState {
 		if (input.isKeyPressed(Input.KEY_PERIOD)) {
 			
 			int index = getCurrencyCollectSoundIndex();
+			
+			System.out.println(index);
 			
 			player.addCurrency(2525);
 			currencyCollectSound[index].play(1.0f, 0.2f);
@@ -300,7 +304,14 @@ public class PlayState extends BasicGameState {
 		int index = 0;
 		double randomValue = Math.random();
 		
+		if (randomValue > 0.5 && randomValue < 1.0) {
+			
+			randomValue = randomValue - 0.25;
+		}
+		
 		if (randomValue < 0.5 && randomValue > 0.0) {
+			
+			System.out.println("random value: " + randomValue);
 			
 			index = (int)Math.floor(randomValue * 10);
 		}
