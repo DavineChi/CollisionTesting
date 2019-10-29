@@ -126,7 +126,7 @@ public class PlayState extends BasicGameState {
 		}
 		
 		awtFont = awtFont.deriveFont(Font.PLAIN, 14.0f);
-		awtFontXP = awtFont.deriveFont(Font.PLAIN, 10.0f);
+		awtFontXP = awtFont.deriveFont(Font.BOLD, 10.0f);
 		
 		font = new UnicodeFont(awtFont);
 		xpFont = new UnicodeFont(awtFontXP);
@@ -310,7 +310,8 @@ public class PlayState extends BasicGameState {
 			Player.addLevel();
 		}
 		
-		if (input.isKeyPressed(Input.KEY_EQUALS) || input.isKeyPressed(Input.KEY_MINUS)) {
+		if (input.isKeyPressed(Input.KEY_EQUALS) || input.isKeyPressed(Input.KEY_MINUS) ||
+		    input.isKeyDown(Input.KEY_EQUALS) || input.isKeyDown(Input.KEY_MINUS)) {
 			
 			int valueToAdd = 50;
 			

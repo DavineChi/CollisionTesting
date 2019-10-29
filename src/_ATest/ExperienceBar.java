@@ -21,9 +21,6 @@ public class ExperienceBar extends CommonBar {
 		
 		for (int i = 0; i < measureMarkers.length; i++) {
 			
-			System.out.println("x1 = " + x1);
-			System.out.println("x2 = " + x2);
-			
 			measureMarkers[i] = new Line(x1, y1, x2, y2);
 			
 			x1 = x1 + (width / 20);
