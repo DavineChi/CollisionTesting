@@ -125,7 +125,7 @@ public class PlayState extends BasicGameState {
 		}
 		
 		awtFont = awtFont.deriveFont(Font.PLAIN, 14.0f);
-		awtFontXP = awtFont.deriveFont(Font.PLAIN, 12.0f);
+		awtFontXP = awtFont.deriveFont(Font.PLAIN, 10.0f);
 		
 		font = new UnicodeFont(awtFont);
 		xpFont = new UnicodeFont(awtFontXP);
@@ -309,9 +309,9 @@ public class PlayState extends BasicGameState {
 			Player.addLevel();
 		}
 		
-		if (input.isKeyPressed(Input.KEY_EQUALS)) {
+		if (input.isKeyPressed(Input.KEY_EQUALS) || input.isKeyPressed(Input.KEY_MINUS)) {
 			
-			int valueToAdd = 65;
+			int valueToAdd = 500;
 			
 			Player.instance().addXP(valueToAdd);
 			experienceBar.addPoints(valueToAdd);
@@ -490,7 +490,7 @@ public class PlayState extends BasicGameState {
 		
 		font.drawString(10.0f, 570.0f, Player.instance().getCurrency().toString());
 		
-		xpFont.drawString(550, 598, "XP   " + Player.instance().getExperiencePoints() + " / " + Player.instance().getMaxExperiencePoints());
+		xpFont.drawString(550, 600, "XP   " + Player.instance().getExperiencePoints() + " / " + Player.instance().getMaxExperiencePoints());
 		
 		// TODO: button clicked implementation (refer to MouseListener documenation and find examples)
 	}
