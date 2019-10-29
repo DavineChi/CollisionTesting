@@ -477,11 +477,16 @@ public class PlayState extends BasicGameState {
 		// -- end health bar section --
 		
 		// -- draw experience bar --
-		brush.setColor(Color.white.darker(0.40f));
-		brush.draw(experienceBar.getFrame());
-		brush.setColor(Color.magenta.darker(0.65f));
-		brush.fill(experienceBar.getFillBar());
-		brush.setColor(color);
+		if (Player.instance().getLevel() < Constants.MAXIMUM_PLAYER_LEVEL) {
+			
+			brush.setColor(Color.white.darker(0.40f));
+			brush.draw(experienceBar.getFrame());
+			brush.setColor(Color.magenta.darker(0.65f));
+			brush.fill(experienceBar.getFillBar());
+			brush.setColor(color);
+			
+			xpFont.drawString(550, 600, "XP   " + Player.instance().getExperiencePoints() + " / " + Player.instance().getMaxExperiencePoints());
+		}
 		// -- end experience bar section--
 		
 		font.drawString(10.0f, 90.0f, "       Player State: " + player.getState().toString());
@@ -489,8 +494,6 @@ public class PlayState extends BasicGameState {
 		font.drawString(10.0f, 130.0f, String.valueOf("            Heading: " + player.getDirection().getHeading()));
 		
 		font.drawString(10.0f, 570.0f, Player.instance().getCurrency().toString());
-		
-		xpFont.drawString(550, 600, "XP   " + Player.instance().getExperiencePoints() + " / " + Player.instance().getMaxExperiencePoints());
 		
 		// TODO: button clicked implementation (refer to MouseListener documenation and find examples)
 	}
