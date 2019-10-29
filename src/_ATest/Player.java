@@ -1,9 +1,12 @@
 package _ATest;
 
+import org.lwjgl.util.Timer;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.SpriteSheet;
+import org.newdawn.slick.particles.ParticleSystem;
 
 public class Player extends Actor {
 	
@@ -11,7 +14,9 @@ public class Player extends Actor {
 	
 	protected static Player player = null;
 	
-	protected static final int  MAXIMUM_LEVEL = 60;
+	private static Timer levelUpParticleTimer;
+	private static Sound levelUpSound;
+	private static boolean isLevelingUp;
 	
 	private static final float SPEED_MODIFIER = 0.10f;
 	private static final float MULTIPLIER = 10.0f;
@@ -43,6 +48,9 @@ public class Player extends Actor {
 	private State state;
 	
 	private Currency currency;
+	
+	private int experiencePoints;
+	private int maxExperiencePoints;
 	
 	/************************************************************************************************************
 	 * Constructor used to create a new Player.
@@ -76,6 +84,7 @@ public class Player extends Actor {
 		try {
 			
 			playerSprites = new Image("res/Fumiko.png");
+			levelUpSound = new Sound("res/audio/effects/levelup.ogg");
 		}
 		
 		catch (SlickException ex) {
@@ -106,6 +115,12 @@ public class Player extends Actor {
 		animatePlayerIdle = AnimationFactory.createAnimationIdlePlayer(spriteSheet, 16, 0, ANIMATION_SPEED_IDLE);
 		
 		currency = new Currency();
+		
+		experiencePoints = 0;
+		maxExperiencePoints = ExperienceSystem.getExperienceForNextLevel(level);
+		
+		levelUpParticleTimer = new Timer();
+		isLevelingUp = false;
 	}
 	
 	public static Player instance() {
@@ -222,17 +237,23 @@ public class Player extends Actor {
 			throw new IllegalArgumentException("Cannot level up a dead player.");
 		}
 		
-		if ((player.getLevel() + 1) <= MAXIMUM_LEVEL) {
+		if ((player.getLevel() + 1) <= Constants.MAXIMUM_PLAYER_LEVEL) {
+			
+			isLevelingUp = true;
 			
 			player.setLevel(player.getLevel() + 1);
+			levelUpParticleTimer.reset();
+			levelUpSound.play(1.0f, 0.375f);
+			
 			updateAttributes();
 		}
 	}
 	
 	private static void updateAttributes() {
-
+		
 		player.setMaxHitPoints(HitPoints.calculate(player));
 		player.setHitPoints(player.getMaxHitPoints());
+		player.setMaxExperiencePoints(ExperienceSystem.getExperienceForNextLevel(Player.instance().getLevel()));
 	}
 	
 	public void addCurrency(int value) {
@@ -248,6 +269,68 @@ public class Player extends Actor {
 	public Currency getCurrency() {
 		
 		return currency;
+	}
+	
+	public int getExperiencePoints() {
+		
+		return experiencePoints;
+	}
+	
+	public void addXP(int points) {
+		
+		if (experiencePoints + points >= maxExperiencePoints) {
+			
+			int diff = (experiencePoints + points) - maxExperiencePoints;
+			
+			Player.addLevel();
+			
+			experiencePoints = diff;
+		}
+		
+		else {
+			
+			experiencePoints = experiencePoints + points;
+		}
+	}
+	
+	public int getMaxExperiencePoints() {
+		
+		return maxExperiencePoints;
+	}
+	
+	public void setMaxExperiencePoints(int maxExperiencePoints) {
+		
+		this.maxExperiencePoints = maxExperiencePoints;
+	}
+	
+	public static Timer getLevelUpParticleTimer() {
+		
+		return levelUpParticleTimer;
+	}
+	
+	public static boolean isLevelingUp() {
+		
+		return isLevelingUp;
+	}
+	
+	public static void update(ParticleSystem particleSystem) {
+		
+		// Level-up particle rendering...
+		if (isLevelingUp && levelUpParticleTimer.getTime() < 3.0f) {
+			
+			//float size = 1.0f;
+			
+			for (int i = 0; i < 20; i++) {
+				
+				particleSystem.render(player.getX() + (player.getWidth() / 2), player.getY() + player.getHeight());
+			}
+		}
+		
+		if (levelUpParticleTimer.getTime() >= 3.0f) {
+			
+			isLevelingUp = false;
+			levelUpParticleTimer.reset();
+		}
 	}
 	
 	@Override

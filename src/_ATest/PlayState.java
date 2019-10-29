@@ -44,14 +44,13 @@ public class PlayState extends BasicGameState {
 	private Music dayforest01;
 	private Music dayforest02;
 	private Font awtFont;
+	private Font awtFontXP;
 	private UnicodeFont font;
+	private UnicodeFont xpFont;
 	private InputStream inStream;
-	private Sound levelUpSound;
 	private Image particleImage;
 	private ParticleSystem particleSystem;
 	private Sound forestNormalDay;
-	private Timer levelUpParticleTimer;
-	private boolean isLevelingUp;
 	private Sound[] currencyCollectSound;
 	private Bank bank;
 	
@@ -98,10 +97,6 @@ public class PlayState extends BasicGameState {
 		currencyCollectSound[3] = curSound04;
 		currencyCollectSound[4] = curSound05;
 		
-		isLevelingUp = false;
-		
-		levelUpParticleTimer = new Timer();
-		
 		forestNormalDay = new Sound("res/audio/environment/ForestNormalDay.ogg");
 		
 		particleImage = new Image("res/particle-data/sparkling_fireball_pack/particles_fireball_small_wind/0011.png", false);
@@ -111,8 +106,6 @@ public class PlayState extends BasicGameState {
 		
 		particleSystem.addEmitter(new FireEmitter(0, 0, 10));
 		particleSystem.setBlendingMode(ParticleSystem.BLEND_COMBINE);
-		
-		levelUpSound = new Sound("res/audio/effects/levelup.ogg");
 		
 		inStream = ResourceLoader.getResourceAsStream("res/fonts/Friz Quadrata TT Regular.ttf");
 		
@@ -132,15 +125,23 @@ public class PlayState extends BasicGameState {
 		}
 		
 		awtFont = awtFont.deriveFont(Font.PLAIN, 14.0f);
+		awtFontXP = awtFont.deriveFont(Font.PLAIN, 12.0f);
+		
 		font = new UnicodeFont(awtFont);
+		xpFont = new UnicodeFont(awtFontXP);
 		
 		font.addAsciiGlyphs();
+		xpFont.addAsciiGlyphs();
 		
 		ColorEffect effect = new ColorEffect();
 		
 		effect.setColor(java.awt.Color.white);
+		
 		font.getEffects().add(effect);
 		font.loadGlyphs();
+		
+		xpFont.getEffects().add(effect);
+		xpFont.loadGlyphs();
 		
 		dayforest01 = new Music(Constants.MUSIC_PATH + "dayforest01.ogg");
 		dayforest02 = new Music(Constants.MUSIC_PATH + "dayforest02.ogg");
@@ -169,8 +170,8 @@ public class PlayState extends BasicGameState {
 		gold = new Gold(10, 560.0f, 360.0f, 16.0f, 16.0f);
 		
 		backpack = new Backpack(1030, 330, 140, 240);
-		experienceBar = new ExperienceBar(100.0f, 608.0f, 1000.0f, 8.0f);
-		actionBar = new ActionBar(0, 608, Constants.SCREEN_WIDTH, 75-8);
+		experienceBar = new ExperienceBar(50.0f, 601.0f, 1100.0f, 10.0f);
+		actionBar = new ActionBar(0, 600, Constants.SCREEN_WIDTH, 75);
 	}
 	
 	@Override
@@ -303,21 +304,21 @@ public class PlayState extends BasicGameState {
 			healthBar.getCooldownTimer().reset();
 		}
 		
-		if (input.isKeyPressed(Input.KEY_L) && (player.getLevel() + 1) <= Player.MAXIMUM_LEVEL) {
+		if (input.isKeyPressed(Input.KEY_L) && (player.getLevel() + 1) <= Constants.MAXIMUM_PLAYER_LEVEL) {
 			
 			Player.addLevel();
-			levelUpSound.play(1.0f, 0.375f);
-			levelUpParticleTimer.reset();
-			
-			isLevelingUp = true;
 		}
 		
-		if (input.isKeyPressed(Input.KEY_ADD)) {
+		if (input.isKeyPressed(Input.KEY_EQUALS)) {
 			
-			experienceBar.addPoints(10);
+			int valueToAdd = 65;
+			
+			Player.instance().addXP(valueToAdd);
+			experienceBar.addPoints(valueToAdd);
 		}
 		
 		healthBar.update();
+		experienceBar.update();
 		particleSystem.update(delta);
 	}
 
@@ -443,22 +444,7 @@ public class PlayState extends BasicGameState {
 		
 		//brush.draw(potion.getBoundingBox());
 		
-		// Level-up particle rendering...
-		if (isLevelingUp && levelUpParticleTimer.getTime() < 3.0f) {
-			
-			//float size = 1.0f;
-			
-			for (int i = 0; i < 20; i++) {
-				
-				particleSystem.render(player.getX() + (player.getWidth() / 2), player.getY() + player.getHeight());
-			}
-		}
-		
-		if (levelUpParticleTimer.getTime() >= 3.0f) {
-			
-			isLevelingUp = false;
-			levelUpParticleTimer.reset();
-		}
+		Player.update(particleSystem);
 		
 		brush.clearWorldClip();
 		brush.resetTransform();
@@ -487,13 +473,14 @@ public class PlayState extends BasicGameState {
 		brush.draw(healthBar.getFrame());
 		brush.setColor(Color.green.darker(0.30f));
 		brush.fill(healthBar.getFillBar());
+		brush.setColor(color);
 		// -- end health bar section --
 		
 		// -- draw experience bar --
 		brush.setColor(Color.white.darker(0.40f));
 		brush.draw(experienceBar.getFrame());
-		brush.setColor(Color.yellow.darker(0.30f));
-		brush.draw(experienceBar.getFillBar());
+		brush.setColor(Color.magenta.darker(0.65f));
+		brush.fill(experienceBar.getFillBar());
 		brush.setColor(color);
 		// -- end experience bar section--
 		
@@ -502,6 +489,8 @@ public class PlayState extends BasicGameState {
 		font.drawString(10.0f, 130.0f, String.valueOf("            Heading: " + player.getDirection().getHeading()));
 		
 		font.drawString(10.0f, 570.0f, Player.instance().getCurrency().toString());
+		
+		xpFont.drawString(550, 598, "XP   " + Player.instance().getExperiencePoints() + " / " + Player.instance().getMaxExperiencePoints());
 		
 		// TODO: button clicked implementation (refer to MouseListener documenation and find examples)
 	}
