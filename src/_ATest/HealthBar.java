@@ -64,6 +64,36 @@ public class HealthBar extends CommonBar {
 		this.state = state;
 	}
 	
+	public int getTime() {
+		
+		return (int)timer.getTime();
+	}
+	
+	public Timer getTimer() {
+		
+		return timer;
+	}
+	
+	public Timer getCooldownTimer() {
+		
+		return cooldownTimer;
+	}
+	
+	@Override
+	public Rectangle getFrame() {
+		
+		return frame;
+	}
+	
+	@Override
+	public Rectangle getFillBar() {
+		
+		update();
+		
+		return fillBar;
+	}
+	
+	@Override
 	public void update() {
 		
 		queryState();
@@ -115,34 +145,5 @@ public class HealthBar extends CommonBar {
 				fillBar.setWidth(width * fillFactor);
 			}
 		}
-	}
-	
-	public int getTime() {
-		
-		return (int)timer.getTime();
-	}
-	
-	public Timer getTimer() {
-		
-		return timer;
-	}
-	
-	public Timer getCooldownTimer() {
-		
-		return cooldownTimer;
-	}
-	
-	@Override
-	public Rectangle getFrame() {
-		
-		return frame;
-	}
-	
-	@Override
-	public Rectangle getFillBar() {
-		
-		update();
-		
-		return fillBar;
 	}
 }

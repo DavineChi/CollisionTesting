@@ -4,23 +4,23 @@ import org.newdawn.slick.geom.Rectangle;
 
 public class ExperienceBar extends CommonBar {
 	
-	private Experience experience;
+	private int experiencePoints;
 	
 	public ExperienceBar(float xPosition, float yPosition, float width, float height) {
 		
 		super(xPosition, yPosition, width, height);
 		
-		this.experience = new Experience();
+		this.experiencePoints = 0;
 	}
 	
 	public void addPoints(int points) {
 		
-		experience.addExperiencePoints(points);
+		experiencePoints = experiencePoints + points;
 	}
 	
 	public int getPoints() {
 		
-		return experience.getExperiencePoints();
+		return experiencePoints;
 	}
 	
 	@Override
@@ -33,5 +33,13 @@ public class ExperienceBar extends CommonBar {
 	public Rectangle getFillBar() {
 		
 		return fillBar;
+	}
+	
+	@Override
+	public void update() {
+		
+		float fillFactor = (float)(Player.instance().getExperiencePoints()) / (float)(Player.instance().getMaxExperiencePoints());
+		
+		fillBar.setWidth(width * fillFactor);
 	}
 }
