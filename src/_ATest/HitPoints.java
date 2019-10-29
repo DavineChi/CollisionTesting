@@ -29,11 +29,15 @@ public class HitPoints {
 
 		int hitPoints;
 		
-		if (!(player instanceof Player))
+		if (!(player instanceof Player)) {
+			
 			throw new IllegalArgumentException("Invalid parameter type.");
+		}
 		
-		else
+		else {
+			
 			hitPoints = calculatePlayerHitPoints(player.getLevel());
+		}
 		
 		return hitPoints;
 	}
@@ -80,8 +84,10 @@ public class HitPoints {
 
 		int hitPoints;
 		
-		if (level < 1)
+		if (level < 1) {
+			
 			throw new IllegalArgumentException("Invalid parameter: " + level);
+		}
 		
 		hitPoints = calculatePlayerHitPoints(level);
 		
@@ -99,8 +105,10 @@ public class HitPoints {
 		convertedHitPoints = (int) (Math.ceil(hitPoints));
 		newHitPoints = ((convertedHitPoints / 5) * 5);
 		
-		if (newHitPoints < convertedHitPoints)
+		if (newHitPoints < convertedHitPoints) {
+			
 			newHitPoints = newHitPoints + 5;
+		}
 		
 		return newHitPoints;
 	}
@@ -112,13 +120,14 @@ public class HitPoints {
 		int convertedHitPoints;
 		int newHitPoints;
 		
-		hitPoints = (int) ((10 * (Math.pow(level, 3)) / 9) + (475 * ((Math.pow(level, 2)) / 36))
-				- ((1165 * level) / 36) + (1675 / 18));
-		convertedHitPoints = (int) (Math.ceil(hitPoints));
+		hitPoints = (int)((10 * (Math.pow(level, 3)) / 9) + (475 * ((Math.pow(level, 2)) / 36)) - ((1165 * level) / 36) + (1675 / 18));
+		convertedHitPoints = (int)(Math.ceil(hitPoints));
 		newHitPoints = ((convertedHitPoints / 5) * 5);
 		
-		if (newHitPoints < convertedHitPoints)
+		if (newHitPoints < convertedHitPoints) {
+			
 			newHitPoints = newHitPoints + 5;
+		}
 		
 		return newHitPoints;
 	}
@@ -133,8 +142,8 @@ public class HitPoints {
 	 * @postcondition Varies depending on testing.
 	 */
 	public static void main(String[] args) {
-
-		final int MAX_LEVEL = 60;
+		
+		final int MAX_LEVEL = Constants.MAXIMUM_PLAYER_LEVEL;
 		
 		for (int i = 1; i <= MAX_LEVEL; i++) {
 			
