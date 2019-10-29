@@ -75,6 +75,11 @@ public class ExperienceSystem {
 	 */
 	public static int getExperienceForNextLevel(int level) {
 		
+		if (level == Constants.MAXIMUM_PLAYER_LEVEL) {
+			
+			level = level - 1;
+		}
+		
 		return matrix[level];
 	}
 }
