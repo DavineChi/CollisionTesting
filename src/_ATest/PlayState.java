@@ -17,6 +17,7 @@ import org.newdawn.slick.Sound;
 import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;
+import org.newdawn.slick.geom.Line;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.particles.ConfigurableEmitter;
@@ -311,7 +312,7 @@ public class PlayState extends BasicGameState {
 		
 		if (input.isKeyPressed(Input.KEY_EQUALS) || input.isKeyPressed(Input.KEY_MINUS)) {
 			
-			int valueToAdd = 500;
+			int valueToAdd = 50;
 			
 			Player.instance().addXP(valueToAdd);
 			experienceBar.addPoints(valueToAdd);
@@ -479,10 +480,17 @@ public class PlayState extends BasicGameState {
 		// -- draw experience bar --
 		if (Player.instance().getLevel() < Constants.MAXIMUM_PLAYER_LEVEL) {
 			
-			brush.setColor(Color.white.darker(0.40f));
-			brush.draw(experienceBar.getFrame());
 			brush.setColor(Color.magenta.darker(0.65f));
 			brush.fill(experienceBar.getFillBar());
+			
+			brush.setColor(Color.white.darker(0.40f));
+			brush.draw(experienceBar.getFrame());
+			
+			for (Line marker : experienceBar.getMeasureMarkers()) {
+				
+				brush.draw(marker);
+			}
+			
 			brush.setColor(color);
 			
 			xpFont.drawString(550, 600, "XP   " + Player.instance().getExperiencePoints() + " / " + Player.instance().getMaxExperiencePoints());
