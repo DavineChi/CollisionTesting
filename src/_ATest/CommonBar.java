@@ -55,4 +55,11 @@ public abstract class CommonBar {
 	 *   This CommonBar's fill Rectangle object.
 	 */
 	public abstract Rectangle getFillBar();
+	
+	/************************************************************************************************************
+	 * Method implementing this CommonBar's behavior.
+	 * <p>
+	 * 
+	 */
+	public abstract void update();
 }
