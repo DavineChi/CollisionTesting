@@ -9,5 +9,7 @@ public interface Constants {
 	public static final int     PLAYER_HEIGHT    = 32;
 	public static final float   SPRITE_SCALE     = 2f;
 	
+	public static final int MAXIMUM_PLAYER_LEVEL = 60;
+	
 	public static final String  MUSIC_PATH       = "res/audio/environment/";
 }
