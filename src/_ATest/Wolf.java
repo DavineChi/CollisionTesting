@@ -41,15 +41,17 @@ public class Wolf extends Actor {
 		}
 		
 		this.state = State.WANDERING;
-		this.spriteSheet = new SpriteSheet(wolfSprites, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT);
+		this.spriteSheet = new SpriteSheet(wolfSprites, (int)width, (int)height);
 		this.directions = new Image[4];
+		
+		spriteSheet.setFilter(Image.FILTER_NEAREST);
 		
 		initStaticDirectionSprites();
 		
-		animateWolfNorthWalking = AnimationFactory.createAnimationHorizontal(spriteSheet, 0, 0, 3, ANIMATION_SPEED_WALKING);
-		animateWolfEastWalking  = AnimationFactory.createAnimationHorizontal(spriteSheet, 0, 1, 3, ANIMATION_SPEED_WALKING);
-		animateWolfSouthWalking = AnimationFactory.createAnimationHorizontal(spriteSheet, 0, 2, 3, ANIMATION_SPEED_WALKING);
-		animateWolfWestWalking  = AnimationFactory.createAnimationHorizontal(spriteSheet, 0, 3, 3, ANIMATION_SPEED_WALKING);
+//		animateWolfNorthWalking = AnimationFactory.createAnimationHorizontal(spriteSheet, 0, 0, 3, ANIMATION_SPEED_WALKING);
+//		animateWolfEastWalking  = AnimationFactory.createAnimationHorizontal(spriteSheet, 0, 3, 3, ANIMATION_SPEED_WALKING);
+		animateWolfSouthWalking = AnimationFactory.createAnimationHorizontal(spriteSheet, 0, 0, 3, ANIMATION_SPEED_WALKING);
+//		animateWolfWestWalking  = AnimationFactory.createAnimationHorizontal(spriteSheet, 0, 3, 3, ANIMATION_SPEED_WALKING);
 		
 		this.setLevel(2);
 		

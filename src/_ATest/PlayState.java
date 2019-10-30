@@ -161,7 +161,7 @@ public class PlayState extends BasicGameState {
 		//player = new Player("Ayrn", 340.0f, 280.0f, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, new Direction(180.0), playerSpriteSheet);
 		player = Player.instance();
 		obstacle = new Player("Water", 64.0f, 384.0f, 192.0f, 192.0f, new Direction(0.0));
-		wolf = new Wolf("Wolf", 500, 500, 32, 32, new Direction(90.0));
+		wolf = new Wolf("Wolf", 800, 500, 32, 64, new Direction(180.0));
 		
 		GameMap.init();
 		
@@ -405,6 +405,8 @@ public class PlayState extends BasicGameState {
 		if (displayMap) {
 			
 			map.render(0, 0, 0, 0, width, height);
+			
+			wolf.getSouthAnimationWalking().draw(wolf.getX(), wolf.getY());
 		}
 		
 		// Okay, that's interesting. Although this is incorrect, this appears to provide a parallax effect
@@ -508,8 +510,6 @@ public class PlayState extends BasicGameState {
 		font.drawString(10.0f, 570.0f, Player.instance().getCurrency().toString());
 		
 		// TODO: button clicked implementation (refer to MouseListener documenation and find examples)
-		
-		wolf.getEastAnimationWalking().draw(wolf.getX(), wolf.getY());
 	}
 	
 	private void drawPlayer(Graphics brush) {
