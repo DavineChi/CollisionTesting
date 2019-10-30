@@ -59,6 +59,8 @@ public class PlayState extends BasicGameState {
 	
 	private ExperienceBar experienceBar;
 	
+	private Wolf wolf;
+	
 	public PlayState(int id) {
 		
 		this.id = id;
@@ -159,6 +161,7 @@ public class PlayState extends BasicGameState {
 		//player = new Player("Ayrn", 340.0f, 280.0f, Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT, new Direction(180.0), playerSpriteSheet);
 		player = Player.instance();
 		obstacle = new Player("Water", 64.0f, 384.0f, 192.0f, 192.0f, new Direction(0.0));
+		wolf = new Wolf("Wolf", 500, 500, 32, 32, new Direction(90.0));
 		
 		GameMap.init();
 		
@@ -406,7 +409,7 @@ public class PlayState extends BasicGameState {
 		
 		// Okay, that's interesting. Although this is incorrect, this appears to provide a parallax effect
 		// layered above the map itself. Once potential use-case for this would be something like tree-cover
-		// above, and, if we recreate Teldrassil, also a background effect that moves also.
+		// above, and, if we recreate Teldrassil, also a background effect that moves similarly.
 //		for (int i = 0; i < 250; i++) {
 //			
 //			particleSystem.render(player.getX() - width, player.getY() - height);
@@ -505,6 +508,8 @@ public class PlayState extends BasicGameState {
 		font.drawString(10.0f, 570.0f, Player.instance().getCurrency().toString());
 		
 		// TODO: button clicked implementation (refer to MouseListener documenation and find examples)
+		
+		wolf.getEastAnimationWalking().draw(wolf.getX(), wolf.getY());
 	}
 	
 	private void drawPlayer(Graphics brush) {

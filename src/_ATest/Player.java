@@ -145,7 +145,7 @@ public class Player extends Actor {
 	
 	public Animation getPlayerIdleAnimation()   { return animatePlayerIdle;         }
 	
-	// Helper method to initialize the static directional sprites for this Player.
+	// Helper method to initialize the static directional sprites for this Actor.
 	private void initStaticDirectionSprites() {
 		
 		int counter = 0;
